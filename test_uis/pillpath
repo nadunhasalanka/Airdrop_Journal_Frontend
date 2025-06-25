@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call to Action Section - Pillpath</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* * --- General Body Styles ---
+         * Sets a base font and background color to emulate your design.
+         * You can ignore this section if you're integrating into an existing stylesheet.
+        */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fbfb;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* * --- CTA Section Container ---
+         * UPDATED: The background now uses the primary vibrant green from your design for perfect alignment.
+        */
+        .cta-section {
+            background-color: #00A99D; /* UPDATED: Matched the primary green from your hero/testimonial sections */
+            width: 100%;
+            padding: 6rem 1.5rem;
+            box-sizing: border-box;
+        }
+
+        /* * --- Content Wrapper ---
+         * Centers the content and sets a maximum width for readability.
+        */
+        .cta-container {
+            max-width: 750px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* * --- Typography ---
+         * - Uses white text for high contrast against the green background.
+         * - Font weights and sizes create a clear hierarchy.
+        */
+        .cta-heading {
+            color: #ffffff;
+            font-size: 2.75rem;
+            font-weight: 800;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .cta-subheading {
+            color: #e6f7f5; /* A very light tint of the background for the subheading */
+            font-size: 1.125rem;
+            line-height: 1.7;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 3rem;
+        }
+
+        /* * --- Form Styles ---
+         * Uses flexbox for alignment and responsiveness.
+        */
+        .cta-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap; 
+        }
+
+        /* * --- Input Field Styles ---
+         * UPDATED: Adjusted border and focus styles for better visibility on the new background.
+        */
+        .cta-input {
+            flex: 1 1 240px;
+            padding: 1rem;
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.35); /* UPDATED: Slightly more opaque border */
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            color: #ffffff;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .cta-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .cta-input:focus {
+            outline: none;
+            border-color: #ffffff; /* UPDATED: White border on focus for clear indication */
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+        }
+
+        /* * --- Button Styles ---
+         * - Aligned with the "Get in Touch" button from your header (white button, dark text).
+         * - The text color matches the dark teal from your logo/footer text.
+        */
+        .cta-button {
+            background-color: #ffffff; 
+            color: #00423A; /* This is the dark teal from your original design */
+            border: none;
+            border-radius: 8px;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .cta-button:hover {
+            background-color: #e6f7f5;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Call-to-Action Section -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <!-- Main Heading -->
+            <h2 class="cta-heading">Streamline Your Pharmacy Today</h2>
+            
+            <!-- Subheading / Description -->
+            <p class="cta-subheading">
+                Ready to reduce staff overload and eliminate operational inefficiencies? Contact us to see how PILLPATH can transform your workflow.
+            </p>
+            
+            <!-- Signup Form -->
+            <form class="cta-form" action="#" method="post">
+                <!-- Name Input Field -->
+                <input type="text" name="name" class="cta-input" placeholder="Your Full Name" required>
+                
+                <!-- Email Input Field -->
+                <input type="email" name="email" class="cta-input" placeholder="Work Email Address" required>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="cta-button">Request a Demo</button>
+            </form>
+        </div>
+    </section>
+
+</body>
+</html>

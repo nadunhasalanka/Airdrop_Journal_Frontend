@@ -1,0 +1,34 @@
+name: Airdrop CI
+
+on:
+    push:
+        branches: ["main", "dev"]
+    pull_request:
+        branches: ["main", "dev"]
+
+jobs:
+    build:
+
+        runs-on: ubuntu-latest
+
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@2
+        
+        - name: Setup Node.js
+          uses: actions/setup-node@4
+          with:
+            node-version: '20'
+            package-manager: 'npm'
+            cache: 'npm'
+
+        - name: Install dependencies
+          run: npm install
+        
+        - name: Run tests
+          run: npm test 
+          # assume that we have a test script
+
+        - name: Build Project
+          run: npm run build
+

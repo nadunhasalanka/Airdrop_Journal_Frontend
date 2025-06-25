@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airdrop Journal - Track Your Crypto Airdrops Effortlessly</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0A0A0A;
+            color: #E2E8F0;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #6366F1, #A855F7, #EC4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .cta-button {
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2), 0 6px 6px rgba(168, 85, 247, 0.2);
+        }
+        .feature-card {
+            transition: all 0.3s ease;
+            border: 1px solid #1E293B;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #4F46E5;
+            background-color: #111827;
+        }
+        .testimonial-card {
+            border: 1px solid #1E293B;
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #A78BFA;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #A78BFA;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .background-blur {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, rgba(168, 85, 247, 0.1) 50%, rgba(10,10,10,0) 70%);
+            filter: blur(80px);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Background Glows -->
+    <div class="background-blur top-0 left-0"></div>
+    <div class="background-blur bottom-0 right-0 hidden md:block"></div>
+    <div class="background-blur top-1/3 right-1/4 animate-pulse"></div>
+
+
+    <!-- Header / Navigation -->
+    <header class="sticky top-0 z-50 bg-black/30 backdrop-blur-lg border-b border-slate-800">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 12v1m0 1v1m0 1v1M4 12H3m1 0h1m16 0h-1m-1 0h-1M12 4c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8z" />
+                </svg>
+                <span class="text-xl font-bold text-slate-100">Airdrop Journal</span>
+            </div>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#features" class="nav-link text-slate-300">Features</a>
+                <a href="#how-it-works" class="nav-link text-slate-300">How It Works</a>
+                <a href="#testimonials" class="nav-link text-slate-300">Testimonials</a>
+            </nav>
+            <a href="#cta" class="cta-button bg-indigo-600 text-white font-semibold px-5 py-2 rounded-lg shadow-lg hover:bg-indigo-500">
+                Get Started
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="py-24 md:py-32 text-center">
+            <div class="container mx-auto px-6 relative">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-50 tracking-tight leading-tight mb-4">
+                    Never Miss Another Airdrop.
+                    <br>
+                    <span class="gradient-text">Track Everything in One Place.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-8">
+                    Airdrop Journal is the ultimate tool for serious airdrop hunters. Stop juggling spreadsheets and start tracking your eligibility, tasks, and potential rewards with our streamlined platform.
+                </p>
+                <div class="flex justify-center space-x-4">
+                     <a href="#cta" class="cta-button bg-indigo-600 text-white font-bold px-8 py-4 rounded-lg text-lg shadow-indigo-500/30 shadow-xl">
+                        Start Tracking for Free
+                    </a>
+                    <a href="#features" class="cta-button bg-slate-800 text-slate-200 font-bold px-8 py-4 rounded-lg text-lg hover:bg-slate-700">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-20 bg-black/20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-100">Why You'll Love Airdrop Journal</h2>
+                    <p class="text-lg text-slate-400 mt-2">Everything you need to stay ahead in the airdrop game.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="feature-card bg-slate-900/50 p-8 rounded-xl">
+                        <div class="mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-100 mb-2">Comprehensive Tracking</h3>
+                        <p class="text-slate-400">Log every airdrop you're farming. Add notes, track task completion, and monitor deadlines effortlessly.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="feature-card bg-slate-900/50 p-8 rounded-xl">
+                        <div class="mb-4">
+                           <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-100 mb-2">Deadline Alerts</h3>
+                        <p class="text-slate-400">Never miss a snapshot or claim period again. Get timely notifications so you can take action when it matters most.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="feature-card bg-slate-900/50 p-8 rounded-xl">
+                        <div class="mb-4">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-100 mb-2">Portfolio Analytics</h3>
+                        <p class="text-slate-400">Visualize your potential and claimed airdrop values. Understand your ROI and optimize your farming strategy.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="py-20">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-100">Get Started in 3 Simple Steps</h2>
+                    <p class="text-lg text-slate-400 mt-2">From zero to organized in minutes.</p>
+                </div>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
+                    <!-- Step 1 -->
+                    <div class="text-center max-w-xs">
+                        <div class="relative mb-4">
+                            <div class="w-24 h-24 mx-auto rounded-full bg-slate-800 flex items-center justify-center text-3xl font-bold text-indigo-400">1</div>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-100 mb-2">Create Your Account</h3>
+                        <p class="text-slate-400">Sign up for free. No wallet connection required to get started.</p>
+                    </div>
+                    
+                    <div class="h-1 w-16 bg-slate-700 hidden md:block"></div>
+
+                    <!-- Step 2 -->
+                    <div class="text-center max-w-xs">
+                        <div class="relative mb-4">
+                             <div class="w-24 h-24 mx-auto rounded-full bg-slate-800 flex items-center justify-center text-3xl font-bold text-indigo-400">2</div>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-100 mb-2">Add Airdrops</h3>
+                        <p class="text-slate-400">Start logging the airdrops you're tracking. Use our templates or create custom entries.</p>
+                    </div>
+
+                    <div class="h-1 w-16 bg-slate-700 hidden md:block"></div>
+                    
+                    <!-- Step 3 -->
+                    <div class="text-center max-w-xs">
+                        <div class="relative mb-4">
+                             <div class="w-24 h-24 mx-auto rounded-full bg-slate-800 flex items-center justify-center text-3xl font-bold text-indigo-400">3</div>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-100 mb-2">Stay Organized</h3>
+                        <p class="text-slate-400">Update your progress, check off tasks, and watch your potential earnings grow.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="py-20 bg-black/20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-100">Trusted by Airdrop Hunters</h2>
+                    <p class="text-lg text-slate-400 mt-2">Don't just take our word for it. Here's what our users say.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card bg-slate-900/50 p-8 rounded-xl">
+                        <p class="text-slate-300 mb-6">"This tool is a game-changer. I was using a messy spreadsheet before, and now everything is clean, organized, and I haven't missed a single task. Essential for any serious farmer."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/40x40/6366F1/FFFFFF?text=D" alt="User Avatar" class="w-10 h-10 rounded-full mr-4">
+                            <div>
+                                <h4 class="font-bold text-slate-100">@defi_degenerate</h4>
+                                <p class="text-sm text-slate-400">Crypto Twitter</p>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- Testimonial 2 -->
+                    <div class="testimonial-card bg-slate-900/50 p-8 rounded-xl">
+                        <p class="text-slate-300 mb-6">"The deadline alerts are worth the price of admission alone. Saved me from missing a $5,000 claim. Can't recommend Airdrop Journal enough."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/40x40/A855F7/FFFFFF?text=J" alt="User Avatar" class="w-10 h-10 rounded-full mr-4">
+                            <div>
+                                <h4 class="font-bold text-slate-100">Jen S.</h4>
+                                <p class="text-sm text-slate-400">Product Manager</p>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- Testimonial 3 -->
+                    <div class="testimonial-card bg-slate-900/50 p-8 rounded-xl">
+                        <p class="text-slate-300 mb-6">"Finally, a beautifully designed app for airdrops. It's fast, intuitive, and does exactly what it promises. The analytics help me focus on the most promising projects."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/40x40/EC4899/FFFFFF?text=A" alt="User Avatar" class="w-10 h-10 rounded-full mr-4">
+                            <div>
+                                <h4 class="font-bold text-slate-100">Alexey G.</h4>
+                                <p class="text-sm text-slate-400">Solana Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="cta" class="py-24">
+            <div class="container mx-auto px-6 text-center">
+                <div class="bg-slate-900 rounded-2xl p-12 relative overflow-hidden">
+                     <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-pink-500/20 opacity-30 z-0"></div>
+                     <div class="relative z-10">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Take Control of Your Airdrops?</h2>
+                        <p class="text-lg text-slate-300 max-w-2xl mx-auto mb-8">
+                            Stop the chaos. Start your journey to organized, efficient airdrop farming today.
+                            It's free to get started.
+                        </p>
+                        <a href="#" class="cta-button bg-indigo-600 text-white font-bold px-8 py-4 rounded-lg text-lg inline-block shadow-lg hover:bg-indigo-500">
+                           Sign Up Now & Track Your First Airdrop
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <p class="text-slate-400">&copy; 2024 Airdrop Journal. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-slate-400 hover:text-indigo-400 transition">Twitter</a>
+                    <a href="#" class="text-slate-400 hover:text-indigo-400 transition">Privacy Policy</a>
+                    <a href="#" class="text-slate-400 hover:text-indigo-400 transition">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
