@@ -13,10 +13,10 @@ jobs:
 
         steps:
         - name: Checkout code
-          uses: actions/checkout@2
+          uses: actions/checkout@v2
         
         - name: Setup Node.js
-          uses: actions/setup-node@4
+          uses: actions/setup-node@v4
           with:
             node-version: '20'
             package-manager: 'npm'
