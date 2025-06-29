@@ -5,6 +5,8 @@ import Home from './pages/Home'
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
+import Airdrops from './pages/Airdrops';
+import Tasks from './pages/Tasks';
 
 const queryClient = new QueryClient();
 
@@ -16,7 +18,8 @@ const App = () => (
           <Route path="/signup" element={<SignUp/>} />
           <Route path="/login" element={<SignIn/>} />
           <Route path="/dashboard" element={<Dashboard />} />
-
+          <Route path="/airdrops" element={<Airdrops />} />
+          <Route path="/tasks" element={<Tasks />} />
         </Routes>
       </BrowserRouter>
   </QueryClientProvider>
