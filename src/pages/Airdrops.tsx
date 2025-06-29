@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Card from '@/components/Dashboard/Card';
 
@@ -16,19 +17,27 @@ interface Airdrop {
   category: string;
   priority: 'High' | 'Medium' | 'Low';
   lastUpdated: string;
+  ecosystem: 'Ethereum' | 'Solana' | 'Polygon' | 'Arbitrum' | 'Optimism' | 'BSC' | 'Avalanche' | 'Multi-chain';
+  type: 'Testnet' | 'Mainnet' | 'Telegram' | 'Web3' | 'Social';
+  officialLink: string;
+  referralLink?: string;
+  logoUrl: string;
 }
 
 const Airdrops = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>('All');
+  const [ecosystemFilter, setEcosystemFilter] = useState<string>('All');
+  const [typeFilter, setTypeFilter] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [copiedLink, setCopiedLink] = useState<string>('');
 
   const airdrops: Airdrop[] = [
     {
       id: '1',
       name: 'ZkSync Era',
-      description: 'Layer 2 scaling solution for Ethereum with zero-knowledge proofs. Complete transactions and interact with dApps.',
-      tags: ['Layer 2', 'Ethereum', 'ZK-Proofs', 'DeFi'],
+      description: 'Layer 2 scaling solution for Ethereum with zero-knowledge proofs. Complete transactions and interact with dApps to earn potential rewards.',
+      tags: ['Layer 2', 'Ethereum', 'ZK-Proofs', 'DeFi', 'Bridge'],
       status: 'Farming',
       tasksCompleted: 8,
       totalTasks: 15,
@@ -37,13 +46,18 @@ const Airdrops = () => {
       network: 'Ethereum',
       category: 'Infrastructure',
       priority: 'High',
-      lastUpdated: '2 hours ago'
+      lastUpdated: '2 hours ago',
+      ecosystem: 'Ethereum',
+      type: 'Mainnet',
+      officialLink: 'https://zksync.io',
+      referralLink: 'https://zksync.io?ref=airdropjournal',
+      logoUrl: 'https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
     },
     {
       id: '2',
       name: 'LayerZero',
-      description: 'Omnichain interoperability protocol enabling cross-chain applications. Bridge assets and use cross-chain dApps.',
-      tags: ['Interoperability', 'Cross-chain', 'Bridge', 'Omnichain'],
+      description: 'Omnichain interoperability protocol enabling cross-chain applications. Bridge assets and use cross-chain dApps across multiple networks.',
+      tags: ['Interoperability', 'Cross-chain', 'Bridge', 'Omnichain', 'DeFi'],
       status: 'Farming',
       tasksCompleted: 23,
       totalTasks: 30,
@@ -52,13 +66,18 @@ const Airdrops = () => {
       network: 'Multi-chain',
       category: 'Infrastructure',
       priority: 'High',
-      lastUpdated: '1 day ago'
+      lastUpdated: '1 day ago',
+      ecosystem: 'Multi-chain',
+      type: 'Web3',
+      officialLink: 'https://layerzero.network',
+      referralLink: 'https://layerzero.network?ref=airdropjournal',
+      logoUrl: 'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
     },
     {
       id: '3',
       name: 'Starknet',
-      description: 'Ethereum Layer 2 using STARK technology. Deploy contracts and interact with the ecosystem.',
-      tags: ['Layer 2', 'STARK', 'Ethereum', 'Smart Contracts'],
+      description: 'Ethereum Layer 2 using STARK technology. Deploy contracts, interact with dApps, and participate in the growing ecosystem.',
+      tags: ['Layer 2', 'STARK', 'Ethereum', 'Smart Contracts', 'Cairo'],
       status: 'Claimable',
       tasksCompleted: 12,
       totalTasks: 12,
@@ -67,13 +86,18 @@ const Airdrops = () => {
       network: 'Ethereum',
       category: 'Infrastructure',
       priority: 'Medium',
-      lastUpdated: '3 hours ago'
+      lastUpdated: '3 hours ago',
+      ecosystem: 'Ethereum',
+      type: 'Mainnet',
+      officialLink: 'https://starknet.io',
+      referralLink: 'https://starknet.io?ref=airdropjournal',
+      logoUrl: 'https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
     },
     {
       id: '4',
       name: 'Wormhole',
-      description: 'Cross-chain bridge connecting multiple blockchains. Already distributed tokens to early users.',
-      tags: ['Bridge', 'Cross-chain', 'Multi-chain', 'Completed'],
+      description: 'Cross-chain bridge connecting multiple blockchains. Already distributed tokens to early users who bridged assets.',
+      tags: ['Bridge', 'Cross-chain', 'Multi-chain', 'Completed', 'Solana'],
       status: 'Completed',
       tasksCompleted: 8,
       totalTasks: 8,
@@ -82,13 +106,17 @@ const Airdrops = () => {
       network: 'Multi-chain',
       category: 'Infrastructure',
       priority: 'Low',
-      lastUpdated: '1 week ago'
+      lastUpdated: '1 week ago',
+      ecosystem: 'Multi-chain',
+      type: 'Mainnet',
+      officialLink: 'https://wormhole.com',
+      logoUrl: 'https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
     },
     {
       id: '5',
       name: 'Scroll',
-      description: 'zkEVM Layer 2 solution for Ethereum. Participate in testnet and mainnet activities.',
-      tags: ['zkEVM', 'Layer 2', 'Ethereum', 'Testnet'],
+      description: 'zkEVM Layer 2 solution for Ethereum. Participate in testnet and mainnet activities to earn potential rewards.',
+      tags: ['zkEVM', 'Layer 2', 'Ethereum', 'Testnet', 'Mainnet'],
       status: 'Farming',
       tasksCompleted: 5,
       totalTasks: 20,
@@ -97,13 +125,18 @@ const Airdrops = () => {
       network: 'Ethereum',
       category: 'Infrastructure',
       priority: 'Medium',
-      lastUpdated: '5 hours ago'
+      lastUpdated: '5 hours ago',
+      ecosystem: 'Ethereum',
+      type: 'Testnet',
+      officialLink: 'https://scroll.io',
+      referralLink: 'https://scroll.io?ref=airdropjournal',
+      logoUrl: 'https://images.pexels.com/photos/1181298/pexels-photo-1181298.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
     },
     {
       id: '6',
       name: 'Blast',
-      description: 'Ethereum Layer 2 with native yield for ETH and stablecoins. Interact with yield-generating dApps.',
-      tags: ['Layer 2', 'Yield', 'ETH', 'Stablecoins'],
+      description: 'Ethereum Layer 2 with native yield for ETH and stablecoins. Interact with yield-generating dApps and earn rewards.',
+      tags: ['Layer 2', 'Yield', 'ETH', 'Stablecoins', 'DeFi'],
       status: 'Farming',
       tasksCompleted: 12,
       totalTasks: 18,
@@ -112,51 +145,70 @@ const Airdrops = () => {
       network: 'Ethereum',
       category: 'DeFi',
       priority: 'High',
-      lastUpdated: '1 hour ago'
+      lastUpdated: '1 hour ago',
+      ecosystem: 'Ethereum',
+      type: 'Mainnet',
+      officialLink: 'https://blast.io',
+      referralLink: 'https://blast.io/airdrop?ref=airdropjournal',
+      logoUrl: 'https://images.pexels.com/photos/1181316/pexels-photo-1181316.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
     },
     {
       id: '7',
-      name: 'Linea',
-      description: 'ConsenSys zkEVM Layer 2 network. Complete quests and interact with ecosystem dApps.',
-      tags: ['zkEVM', 'ConsenSys', 'Layer 2', 'Quests'],
-      status: 'Upcoming',
-      tasksCompleted: 0,
-      totalTasks: 10,
+      name: 'Telegram Dogs',
+      description: 'Play-to-earn game on Telegram. Complete daily tasks, invite friends, and earn DOGS tokens through gameplay.',
+      tags: ['Telegram', 'Gaming', 'P2E', 'Social', 'TON'],
+      status: 'Farming',
+      tasksCompleted: 15,
+      totalTasks: 25,
       deadline: 'Q3 2024',
-      estimatedValue: '$200-600',
-      network: 'Ethereum',
-      category: 'Infrastructure',
+      estimatedValue: '$50-300',
+      network: 'TON',
+      category: 'Gaming',
       priority: 'Medium',
-      lastUpdated: '2 days ago'
+      lastUpdated: '30 minutes ago',
+      ecosystem: 'Multi-chain',
+      type: 'Telegram',
+      officialLink: 'https://t.me/dogshouse_bot',
+      referralLink: 'https://t.me/dogshouse_bot?start=ref_airdropjournal',
+      logoUrl: 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
     },
     {
       id: '8',
-      name: 'Arbitrum Orbit',
-      description: 'Build and deploy custom chains using Arbitrum technology. Participate in governance and ecosystem.',
-      tags: ['Arbitrum', 'Custom Chains', 'Governance', 'Ecosystem'],
+      name: 'Galxe Campaigns',
+      description: 'Complete various Web3 quests and campaigns across different protocols. Earn credentials and potential rewards.',
+      tags: ['Quests', 'Credentials', 'Multi-protocol', 'Social', 'NFT'],
       status: 'Farming',
-      tasksCompleted: 3,
-      totalTasks: 12,
-      deadline: 'TBA',
+      tasksCompleted: 8,
+      totalTasks: 15,
+      deadline: 'Ongoing',
       estimatedValue: '$100-500',
-      network: 'Arbitrum',
-      category: 'Infrastructure',
+      network: 'Multi-chain',
+      category: 'Social',
       priority: 'Low',
-      lastUpdated: '6 hours ago'
+      lastUpdated: '2 days ago',
+      ecosystem: 'Multi-chain',
+      type: 'Web3',
+      officialLink: 'https://galxe.com',
+      referralLink: 'https://galxe.com?referral=airdropjournal',
+      logoUrl: 'https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
     }
   ];
 
-  // Get all unique tags
+  // Get all unique values for filters
   const allTags = Array.from(new Set(airdrops.flatMap(airdrop => airdrop.tags)));
+  const allEcosystems = Array.from(new Set(airdrops.map(airdrop => airdrop.ecosystem)));
+  const allTypes = Array.from(new Set(airdrops.map(airdrop => airdrop.type)));
 
   // Filter airdrops based on selected filters
   const filteredAirdrops = airdrops.filter(airdrop => {
     const matchesSearch = airdrop.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          airdrop.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'All' || airdrop.status === statusFilter;
+    const matchesEcosystem = ecosystemFilter === 'All' || airdrop.ecosystem === ecosystemFilter;
+    const matchesType = typeFilter === 'All' || airdrop.type === typeFilter;
     const matchesTags = selectedTags.length === 0 || selectedTags.some(tag => airdrop.tags.includes(tag));
     
-    return matchesSearch && matchesStatus && matchesTags;
+    return matchesSearch && matchesStatus && matchesEcosystem && matchesType && matchesTags;
   });
 
   const getStatusClass = (status: string) => {
@@ -178,12 +230,33 @@ const Airdrops = () => {
     }
   };
 
+  const getTypeClass = (type: string) => {
+    switch (type) {
+      case 'Testnet': return 'bg-purple-500/20 text-purple-300';
+      case 'Mainnet': return 'bg-indigo-500/20 text-indigo-300';
+      case 'Telegram': return 'bg-cyan-500/20 text-cyan-300';
+      case 'Web3': return 'bg-emerald-500/20 text-emerald-300';
+      case 'Social': return 'bg-pink-500/20 text-pink-300';
+      default: return 'bg-slate-700/20 text-slate-300';
+    }
+  };
+
   const toggleTag = (tag: string) => {
     setSelectedTags(prev => 
       prev.includes(tag) 
         ? prev.filter(t => t !== tag)
         : [...prev, tag]
     );
+  };
+
+  const copyToClipboard = async (text: string, type: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedLink(`${type}`);
+      setTimeout(() => setCopiedLink(''), 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
   };
 
   return (
@@ -211,62 +284,93 @@ const Airdrops = () => {
           {/* Filters Section */}
           <Card className="mb-8">
             <div className="p-6">
-              <div className="flex flex-col lg:flex-row gap-6">
-                {/* Search */}
-                <div className="flex-1">
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Search Airdrops</label>
-                  <input
-                    type="text"
-                    placeholder="Search by name or description..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  />
+              <div className="flex flex-col gap-6">
+                {/* Search and Main Filters */}
+                <div className="flex flex-col lg:flex-row gap-4">
+                  <div className="flex-1">
+                    <label className="block text-sm font-medium text-slate-300 mb-2">Search Airdrops</label>
+                    <input
+                      type="text"
+                      placeholder="Search by name or description..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:w-auto">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Status</label>
+                      <select
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                        className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      >
+                        <option value="All">All Status</option>
+                        <option value="Farming">Farming</option>
+                        <option value="Claimable">Claimable</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Upcoming">Upcoming</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Ecosystem</label>
+                      <select
+                        value={ecosystemFilter}
+                        onChange={(e) => setEcosystemFilter(e.target.value)}
+                        className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      >
+                        <option value="All">All Ecosystems</option>
+                        {allEcosystems.map(ecosystem => (
+                          <option key={ecosystem} value={ecosystem}>{ecosystem}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-slate-300 mb-2">Type</label>
+                      <select
+                        value={typeFilter}
+                        onChange={(e) => setTypeFilter(e.target.value)}
+                        className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      >
+                        <option value="All">All Types</option>
+                        {allTypes.map(type => (
+                          <option key={type} value={type}>{type}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Status Filter */}
-                <div className="lg:w-48">
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Status</label>
-                  <select
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                    className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  >
-                    <option value="All">All Status</option>
-                    <option value="Farming">Farming</option>
-                    <option value="Claimable">Claimable</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Upcoming">Upcoming</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Tags Filter */}
-              <div className="mt-6">
-                <label className="block text-sm font-medium text-slate-300 mb-3">Filter by Tags</label>
-                <div className="flex flex-wrap gap-2">
-                  {allTags.map(tag => (
+                {/* Tags Filter */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-3">Filter by Tags</label>
+                  <div className="flex flex-wrap gap-2">
+                    {allTags.map(tag => (
+                      <button
+                        key={tag}
+                        onClick={() => toggleTag(tag)}
+                        className={`px-3 py-1 rounded-full text-sm font-medium transition ${
+                          selectedTags.includes(tag)
+                            ? 'bg-indigo-500/30 text-indigo-300 border border-indigo-500/50'
+                            : 'bg-slate-800/60 text-slate-400 border border-slate-700 hover:bg-slate-700/60'
+                        }`}
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                  {selectedTags.length > 0 && (
                     <button
-                      key={tag}
-                      onClick={() => toggleTag(tag)}
-                      className={`px-3 py-1 rounded-full text-sm font-medium transition ${
-                        selectedTags.includes(tag)
-                          ? 'bg-indigo-500/30 text-indigo-300 border border-indigo-500/50'
-                          : 'bg-slate-800/60 text-slate-400 border border-slate-700 hover:bg-slate-700/60'
-                      }`}
+                      onClick={() => setSelectedTags([])}
+                      className="mt-2 text-sm text-indigo-400 hover:text-indigo-300"
                     >
-                      {tag}
+                      Clear all tags
                     </button>
-                  ))}
+                  )}
                 </div>
-                {selectedTags.length > 0 && (
-                  <button
-                    onClick={() => setSelectedTags([])}
-                    className="mt-2 text-sm text-indigo-400 hover:text-indigo-300"
-                  >
-                    Clear all tags
-                  </button>
-                )}
               </div>
             </div>
           </Card>
@@ -281,20 +385,25 @@ const Airdrops = () => {
           {/* Airdrops Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {filteredAirdrops.map(airdrop => (
-              <Card key={airdrop.id} className="hover:border-indigo-500/50 transition-colors cursor-pointer">
+              <Card key={airdrop.id} className="hover:border-indigo-500/50 transition-colors">
                 <div className="p-6">
-                  {/* Header */}
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-slate-100 mb-1">{airdrop.name}</h3>
-                      <p className="text-sm text-slate-400">{airdrop.network} • {airdrop.category}</p>
+                  {/* Header with Logo */}
+                  <div className="flex items-start gap-4 mb-4">
+                    <img 
+                      src={airdrop.logoUrl} 
+                      alt={`${airdrop.name} logo`}
+                      className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-xl font-bold text-slate-100 mb-1 truncate">{airdrop.name}</h3>
+                      <p className="text-sm text-slate-400">{airdrop.ecosystem} • {airdrop.category}</p>
                     </div>
                     <div className="flex flex-col items-end gap-2">
                       <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getStatusClass(airdrop.status)}`}>
                         {airdrop.status}
                       </span>
-                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getPriorityClass(airdrop.priority)}`}>
-                        {airdrop.priority}
+                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getTypeClass(airdrop.type)}`}>
+                        {airdrop.type}
                       </span>
                     </div>
                   </div>
@@ -304,14 +413,14 @@ const Airdrops = () => {
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-1 mb-4">
-                    {airdrop.tags.slice(0, 3).map(tag => (
+                    {airdrop.tags.slice(0, 4).map(tag => (
                       <span key={tag} className="px-2 py-1 bg-slate-800/60 text-slate-400 text-xs rounded-md">
                         {tag}
                       </span>
                     ))}
-                    {airdrop.tags.length > 3 && (
+                    {airdrop.tags.length > 4 && (
                       <span className="px-2 py-1 bg-slate-800/60 text-slate-400 text-xs rounded-md">
-                        +{airdrop.tags.length - 3}
+                        +{airdrop.tags.length - 4}
                       </span>
                     )}
                   </div>
@@ -331,7 +440,7 @@ const Airdrops = () => {
                   </div>
 
                   {/* Footer Info */}
-                  <div className="flex justify-between items-center text-sm">
+                  <div className="flex justify-between items-center text-sm mb-4">
                     <div>
                       <p className="text-slate-400">Est. Value</p>
                       <p className="text-slate-200 font-semibold">{airdrop.estimatedValue}</p>
@@ -339,6 +448,76 @@ const Airdrops = () => {
                     <div className="text-right">
                       <p className="text-slate-400">Deadline</p>
                       <p className="text-slate-200 font-semibold">{airdrop.deadline}</p>
+                    </div>
+                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${getPriorityClass(airdrop.priority)}`}>
+                      {airdrop.priority}
+                    </span>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex gap-2">
+                      <Link 
+                        to={`/airdrops/${airdrop.id}`}
+                        className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white text-center py-2 px-3 rounded-lg text-sm font-medium transition"
+                      >
+                        View Details
+                      </Link>
+                      <a 
+                        href={airdrop.officialLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-200 text-center py-2 px-3 rounded-lg text-sm font-medium transition"
+                      >
+                        Visit Site
+                      </a>
+                    </div>
+                    
+                    {/* Copy Links */}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => copyToClipboard(airdrop.officialLink, `${airdrop.name}-official`)}
+                        className="flex-1 bg-slate-800/60 hover:bg-slate-700/60 text-slate-300 py-2 px-3 rounded-lg text-xs font-medium transition flex items-center justify-center gap-1"
+                      >
+                        {copiedLink === `${airdrop.name}-official` ? (
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            Copied!
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Copy Link
+                          </>
+                        )}
+                      </button>
+                      
+                      {airdrop.referralLink && (
+                        <button
+                          onClick={() => copyToClipboard(airdrop.referralLink!, `${airdrop.name}-referral`)}
+                          className="flex-1 bg-green-800/60 hover:bg-green-700/60 text-green-300 py-2 px-3 rounded-lg text-xs font-medium transition flex items-center justify-center gap-1"
+                        >
+                          {copiedLink === `${airdrop.name}-referral` ? (
+                            <>
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              </svg>
+                              Copied!
+                            </>
+                          ) : (
+                            <>
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                              </svg>
+                              Copy Referral
+                            </>
+                          )}
+                        </button>
+                      )}
                     </div>
                   </div>
 

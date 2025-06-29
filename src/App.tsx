@@ -6,6 +6,7 @@ import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
 import Airdrops from './pages/Airdrops';
+import AirdropDetails from './pages/AirdropDetails';
 import Tasks from './pages/Tasks';
 
 const queryClient = new QueryClient();
@@ -19,6 +20,7 @@ const App = () => (
           <Route path="/login" element={<SignIn/>} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/airdrops" element={<Airdrops />} />
+          <Route path="/airdrops/:id" element={<AirdropDetails />} />
           <Route path="/tasks" element={<Tasks />} />
         </Routes>
       </BrowserRouter>
