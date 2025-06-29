@@ -6,15 +6,10 @@ interface Task {
   id: string;
   project: string;
   title: string;
-  description: string;
-  priority: 'High' | 'Medium' | 'Low';
-  estimatedTime: string;
-  category: string;
-  deadline: string;
+  note: string;
   completed: boolean;
-  tags: string[];
-  reward: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
+  isDaily: boolean;
+  createdAt: string;
 }
 
 const Tasks = () => {
@@ -23,118 +18,59 @@ const Tasks = () => {
       id: '1',
       project: 'ZkSync Era',
       title: 'Bridge ETH to ZkSync Era',
-      description: 'Transfer ETH from Ethereum mainnet to ZkSync Era using the official bridge',
-      priority: 'High',
-      estimatedTime: '10 min',
-      category: 'Bridge',
-      deadline: 'Today',
+      note: 'Complete daily bridge transaction of at least 0.01 ETH',
       completed: false,
-      tags: ['Bridge', 'ETH', 'Layer 2'],
-      reward: '10-50 points',
-      difficulty: 'Easy'
+      isDaily: true,
+      createdAt: 'Today'
     },
     {
       id: '2',
       project: 'LayerZero',
-      title: 'Swap on Stargate Finance',
-      description: 'Perform a cross-chain swap using Stargate Finance protocol',
-      priority: 'Medium',
-      estimatedTime: '15 min',
-      category: 'DeFi',
-      deadline: 'Today',
+      title: 'Cross-chain Swap',
+      note: 'Use Stargate Finance for cross-chain swap',
       completed: true,
-      tags: ['Swap', 'Cross-chain', 'DeFi'],
-      reward: '20-100 points',
-      difficulty: 'Medium'
+      isDaily: true,
+      createdAt: 'Today'
     },
     {
       id: '3',
-      project: 'Scroll',
-      title: 'Deploy Smart Contract on Testnet',
-      description: 'Deploy a simple smart contract on Scroll testnet using Remix or Hardhat',
-      priority: 'Medium',
-      estimatedTime: '30 min',
-      category: 'Development',
-      deadline: 'Today',
+      project: 'Starknet',
+      title: 'Claim STRK Tokens',
+      note: 'Visit official site and claim available tokens',
       completed: false,
-      tags: ['Smart Contract', 'Testnet', 'Development'],
-      reward: '50-200 points',
-      difficulty: 'Hard'
+      isDaily: false,
+      createdAt: 'Today'
     },
     {
       id: '4',
-      project: 'Starknet',
-      title: 'Claim STRK Airdrop',
-      description: 'Visit the official Starknet website and claim your STRK tokens',
-      priority: 'High',
-      estimatedTime: '5 min',
-      category: 'Claim',
-      deadline: '13 days left',
-      completed: false,
-      tags: ['Claim', 'Airdrop', 'STRK'],
-      reward: '$200-800',
-      difficulty: 'Easy'
+      project: 'Blast',
+      title: 'Yield Farming',
+      note: 'Interact with yield-generating dApps',
+      completed: true,
+      isDaily: true,
+      createdAt: 'Today'
     },
     {
       id: '5',
-      project: 'EigenLayer',
-      title: 'Restake ETH',
-      description: 'Restake your ETH through EigenLayer protocol to earn additional rewards',
-      priority: 'Medium',
-      estimatedTime: '20 min',
-      category: 'Staking',
-      deadline: 'Today',
+      project: 'Scroll',
+      title: 'Testnet Activity',
+      note: 'Complete transactions on Scroll testnet',
       completed: false,
-      tags: ['Restaking', 'ETH', 'Rewards'],
-      reward: '30-150 points',
-      difficulty: 'Medium'
+      isDaily: true,
+      createdAt: 'Today'
     },
     {
       id: '6',
-      project: 'Blast',
-      title: 'Interact with Blast dApp',
-      description: 'Use any dApp on Blast mainnet to generate yield and activity',
-      priority: 'High',
-      estimatedTime: '15 min',
-      category: 'DeFi',
-      deadline: 'Today',
-      completed: true,
-      tags: ['dApp', 'Yield', 'Blast'],
-      reward: '25-120 points',
-      difficulty: 'Easy'
-    },
-    {
-      id: '7',
-      project: 'Linea',
-      title: 'Complete Linea Quest',
-      description: 'Participate in the latest Linea Voyage quest and complete all steps',
-      priority: 'Medium',
-      estimatedTime: '45 min',
-      category: 'Quest',
-      deadline: 'Tomorrow',
+      project: 'Telegram Dogs',
+      title: 'Daily Check-in',
+      note: 'Complete daily tasks and claim rewards',
       completed: false,
-      tags: ['Quest', 'Voyage', 'NFT'],
-      reward: '40-180 points',
-      difficulty: 'Medium'
-    },
-    {
-      id: '8',
-      project: 'Arbitrum',
-      title: 'Vote on Governance Proposal',
-      description: 'Participate in Arbitrum DAO governance by voting on active proposals',
-      priority: 'Low',
-      estimatedTime: '10 min',
-      category: 'Governance',
-      deadline: 'This week',
-      completed: false,
-      tags: ['Governance', 'DAO', 'Voting'],
-      reward: '15-60 points',
-      difficulty: 'Easy'
+      isDaily: true,
+      createdAt: 'Today'
     }
   ]);
 
   const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all');
-  const [priorityFilter, setPriorityFilter] = useState<string>('All');
 
   const toggleTask = (taskId: string) => {
     setTasks(prev => prev.map(task => 
@@ -146,30 +82,12 @@ const Tasks = () => {
     const statusMatch = filter === 'all' || 
                        (filter === 'pending' && !task.completed) || 
                        (filter === 'completed' && task.completed);
-    const priorityMatch = priorityFilter === 'All' || task.priority === priorityFilter;
-    return statusMatch && priorityMatch;
+    return statusMatch;
   });
 
-  const todayTasks = filteredTasks.filter(task => task.deadline === 'Today');
-  const otherTasks = filteredTasks.filter(task => task.deadline !== 'Today');
-
-  const getPriorityClass = (priority: string) => {
-    switch (priority) {
-      case 'High': return 'bg-red-500/20 text-red-300 border-red-500/30';
-      case 'Medium': return 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30';
-      case 'Low': return 'bg-green-500/20 text-green-300 border-green-500/30';
-      default: return 'bg-slate-700/20 text-slate-300 border-slate-700/30';
-    }
-  };
-
-  const getDifficultyClass = (difficulty: string) => {
-    switch (difficulty) {
-      case 'Easy': return 'text-green-400';
-      case 'Medium': return 'text-yellow-400';
-      case 'Hard': return 'text-red-400';
-      default: return 'text-slate-400';
-    }
-  };
+  const todayTasks = filteredTasks.filter(task => task.createdAt === 'Today');
+  const dailyTasks = todayTasks.filter(task => task.isDaily);
+  const otherTasks = todayTasks.filter(task => !task.isDaily);
 
   const completedCount = tasks.filter(task => task.completed).length;
   const totalCount = tasks.length;
@@ -242,7 +160,7 @@ const Tasks = () => {
           {/* Filters */}
           <Card className="mb-8">
             <div className="p-6">
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex gap-4">
                 <div className="flex-1">
                   <label className="block text-sm font-medium text-slate-300 mb-2">Status Filter</label>
                   <div className="flex space-x-2">
@@ -265,29 +183,16 @@ const Tasks = () => {
                     ))}
                   </div>
                 </div>
-                <div className="sm:w-48">
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Priority</label>
-                  <select
-                    value={priorityFilter}
-                    onChange={(e) => setPriorityFilter(e.target.value)}
-                    className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  >
-                    <option value="All">All Priorities</option>
-                    <option value="High">High Priority</option>
-                    <option value="Medium">Medium Priority</option>
-                    <option value="Low">Low Priority</option>
-                  </select>
-                </div>
               </div>
             </div>
           </Card>
 
-          {/* Today's Tasks */}
-          {todayTasks.length > 0 && (
+          {/* Daily Tasks */}
+          {dailyTasks.length > 0 && (
             <div className="mb-8">
-              <h2 className="text-xl font-bold text-slate-100 mb-4">Due Today ({todayTasks.length})</h2>
+              <h2 className="text-xl font-bold text-slate-100 mb-4">Daily Tasks ({dailyTasks.length})</h2>
               <div className="space-y-4">
-                {todayTasks.map(task => (
+                {dailyTasks.map(task => (
                   <Card key={task.id} className={`transition-all ${task.completed ? 'opacity-60' : 'hover:border-indigo-500/50'}`}>
                     <div className="p-6">
                       <div className="flex items-start space-x-4">
@@ -300,45 +205,17 @@ const Tasks = () => {
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-3 mb-2">
-                                <h3 className={`text-lg font-semibold ${task.completed ? 'line-through text-slate-500' : 'text-slate-100'}`}>
-                                  {task.title}
-                                </h3>
-                                <span className={`px-2 py-1 text-xs font-semibold rounded-full border ${getPriorityClass(task.priority)}`}>
-                                  {task.priority}
-                                </span>
-                              </div>
-                              <p className="text-sm text-slate-400 mb-2">{task.project}</p>
-                              <p className={`text-sm mb-3 ${task.completed ? 'text-slate-500' : 'text-slate-300'}`}>
-                                {task.description}
-                              </p>
-                              <div className="flex flex-wrap gap-2 mb-3">
-                                {task.tags.map(tag => (
-                                  <span key={tag} className="px-2 py-1 bg-slate-800/60 text-slate-400 text-xs rounded-md">
-                                    {tag}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                            <div className="flex-shrink-0 text-right space-y-2">
-                              <div>
-                                <p className="text-xs text-slate-400">Reward</p>
-                                <p className="text-sm font-semibold text-green-400">{task.reward}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-slate-400">Time</p>
-                                <p className="text-sm text-slate-300">{task.estimatedTime}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-slate-400">Difficulty</p>
-                                <p className={`text-sm font-medium ${getDifficultyClass(task.difficulty)}`}>
-                                  {task.difficulty}
-                                </p>
-                              </div>
-                            </div>
+                          <div className="flex items-center justify-between mb-2">
+                            <h3 className={`text-lg font-semibold ${task.completed ? 'line-through text-slate-500' : 'text-slate-100'}`}>
+                              {task.title}
+                            </h3>
+                            <span className="text-sm text-slate-400 bg-slate-800/60 px-2 py-1 rounded">
+                              {task.project}
+                            </span>
                           </div>
+                          <p className={`text-sm ${task.completed ? 'text-slate-500' : 'text-slate-300'}`}>
+                            {task.note}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -351,7 +228,7 @@ const Tasks = () => {
           {/* Other Tasks */}
           {otherTasks.length > 0 && (
             <div>
-              <h2 className="text-xl font-bold text-slate-100 mb-4">Upcoming Tasks ({otherTasks.length})</h2>
+              <h2 className="text-xl font-bold text-slate-100 mb-4">Other Tasks ({otherTasks.length})</h2>
               <div className="space-y-4">
                 {otherTasks.map(task => (
                   <Card key={task.id} className={`transition-all ${task.completed ? 'opacity-60' : 'hover:border-indigo-500/50'}`}>
@@ -366,45 +243,17 @@ const Tasks = () => {
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-3 mb-2">
-                                <h3 className={`text-lg font-semibold ${task.completed ? 'line-through text-slate-500' : 'text-slate-100'}`}>
-                                  {task.title}
-                                </h3>
-                                <span className={`px-2 py-1 text-xs font-semibold rounded-full border ${getPriorityClass(task.priority)}`}>
-                                  {task.priority}
-                                </span>
-                              </div>
-                              <p className="text-sm text-slate-400 mb-2">{task.project} • Due {task.deadline}</p>
-                              <p className={`text-sm mb-3 ${task.completed ? 'text-slate-500' : 'text-slate-300'}`}>
-                                {task.description}
-                              </p>
-                              <div className="flex flex-wrap gap-2 mb-3">
-                                {task.tags.map(tag => (
-                                  <span key={tag} className="px-2 py-1 bg-slate-800/60 text-slate-400 text-xs rounded-md">
-                                    {tag}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                            <div className="flex-shrink-0 text-right space-y-2">
-                              <div>
-                                <p className="text-xs text-slate-400">Reward</p>
-                                <p className="text-sm font-semibold text-green-400">{task.reward}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-slate-400">Time</p>
-                                <p className="text-sm text-slate-300">{task.estimatedTime}</p>
-                              </div>
-                              <div>
-                                <p className="text-xs text-slate-400">Difficulty</p>
-                                <p className={`text-sm font-medium ${getDifficultyClass(task.difficulty)}`}>
-                                  {task.difficulty}
-                                </p>
-                              </div>
-                            </div>
+                          <div className="flex items-center justify-between mb-2">
+                            <h3 className={`text-lg font-semibold ${task.completed ? 'line-through text-slate-500' : 'text-slate-100'}`}>
+                              {task.title}
+                            </h3>
+                            <span className="text-sm text-slate-400 bg-slate-800/60 px-2 py-1 rounded">
+                              {task.project}
+                            </span>
                           </div>
+                          <p className={`text-sm ${task.completed ? 'text-slate-500' : 'text-slate-300'}`}>
+                            {task.note}
+                          </p>
                         </div>
                       </div>
                     </div>
