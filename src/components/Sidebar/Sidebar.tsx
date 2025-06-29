@@ -51,16 +51,16 @@ const Sidebar = () => {
     const location = useLocation();
     
     return (
-        <aside className="fixed top-0 left-0 h-full w-64 bg-slate-950/80 backdrop-blur-xl border-r border-slate-800/50 flex flex-col z-30">
+        <aside className="fixed top-0 left-0 h-full w-64 bg-gray-950/90 backdrop-blur-xl border-r border-gray-800/40 flex flex-col z-30">
             {/* Logo Section */}
-            <div className="flex items-center justify-center h-20 border-b border-slate-800/50 flex-shrink-0">
+            <div className="flex items-center justify-center h-20 border-b border-gray-800/40 flex-shrink-0">
                 <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                    <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-purple-600 rounded-lg flex items-center justify-center">
                         <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                         </svg>
                     </div>
-                    <span className="text-xl font-semibold text-slate-100">Airdrop Journal</span>
+                    <span className="text-xl font-semibold text-gray-100">Airdrop Journal</span>
                 </div>
             </div>
             
@@ -89,7 +89,7 @@ const Sidebar = () => {
             </nav>
 
             {/* User Profile */}
-            <div className="p-6 border-t border-slate-800/50 flex-shrink-0">
+            <div className="p-6 border-t border-gray-800/40 flex-shrink-0">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                         <img 
@@ -98,11 +98,11 @@ const Sidebar = () => {
                             className="w-10 h-10 rounded-full object-cover"
                         />
                         <div>
-                            <p className="text-sm font-medium text-slate-100">A. Hunter</p>
-                            <p className="text-xs text-slate-400">Pro Member</p>
+                            <p className="text-sm font-medium text-gray-100">A. Hunter</p>
+                            <p className="text-xs text-gray-400">Pro Member</p>
                         </div>
                     </div>
-                    <button className="text-slate-500 hover:text-indigo-400 transition-colors p-1">
+                    <button className="text-gray-500 hover:text-violet-400 transition-colors p-1 rounded-md">
                         <LogoutIcon />
                     </button>
                 </div>

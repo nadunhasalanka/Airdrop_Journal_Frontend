@@ -213,31 +213,31 @@ const Airdrops = () => {
 
   const getStatusClass = (status: string) => {
     switch (status) {
-      case 'Farming': return 'bg-blue-500/20 text-blue-300 border border-blue-500/30';
-      case 'Claimable': return 'bg-green-500/20 text-green-300 border border-green-500/30 animate-pulse';
-      case 'Completed': return 'bg-slate-600/20 text-slate-400 border border-slate-600/30';
-      case 'Upcoming': return 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30';
-      default: return 'bg-slate-700/20 text-slate-300 border border-slate-700/30';
+      case 'Farming': return 'status-farming';
+      case 'Claimable': return 'status-claimable animate-pulse';
+      case 'Completed': return 'status-completed';
+      case 'Upcoming': return 'status-upcoming';
+      default: return 'status-upcoming';
     }
   };
 
   const getPriorityClass = (priority: string) => {
     switch (priority) {
-      case 'High': return 'bg-red-500/20 text-red-300 border border-red-500/30';
-      case 'Medium': return 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30';
-      case 'Low': return 'bg-green-500/20 text-green-300 border border-green-500/30';
-      default: return 'bg-slate-700/20 text-slate-300 border border-slate-700/30';
+      case 'High': return 'priority-high';
+      case 'Medium': return 'priority-medium';
+      case 'Low': return 'priority-low';
+      default: return 'priority-low';
     }
   };
 
   const getTypeClass = (type: string) => {
     switch (type) {
-      case 'Testnet': return 'bg-purple-500/20 text-purple-300 border border-purple-500/30';
-      case 'Mainnet': return 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30';
-      case 'Telegram': return 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30';
-      case 'Web3': return 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
-      case 'Social': return 'bg-pink-500/20 text-pink-300 border border-pink-500/30';
-      default: return 'bg-slate-700/20 text-slate-300 border border-slate-700/30';
+      case 'Testnet': return 'bg-purple-600/15 text-purple-300 border border-purple-600/30';
+      case 'Mainnet': return 'bg-violet-600/15 text-violet-300 border border-violet-600/30';
+      case 'Telegram': return 'bg-cyan-600/15 text-cyan-300 border border-cyan-600/30';
+      case 'Web3': return 'bg-emerald-600/15 text-emerald-300 border border-emerald-600/30';
+      case 'Social': return 'bg-pink-600/15 text-pink-300 border border-pink-600/30';
+      default: return 'bg-gray-600/15 text-gray-300 border border-gray-600/30';
     }
   };
 
@@ -260,20 +260,20 @@ const Airdrops = () => {
   };
 
   return (
-    <div className="bg-black min-h-screen">
+    <div className="bg-gray-950 min-h-screen">
       <Sidebar />
-      <main className="ml-64 text-slate-300">
+      <main className="ml-64 text-gray-200">
         <div className="relative p-8 max-w-7xl mx-auto">
           {/* Background Effects */}
-          <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(99,102,241,0.06)_0%,rgba(139,92,246,0.03)_50%,transparent_70%)] -z-10 filter blur-[100px]"></div>
+          <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(124,58,237,0.04)_0%,rgba(168,85,247,0.02)_50%,transparent_70%)] -z-10 filter blur-[100px]"></div>
 
           {/* Header */}
           <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-6">
             <div>
-              <h1 className="text-3xl font-semibold text-slate-50 mb-2">All Airdrops</h1>
-              <p className="text-slate-400">Manage and track all your airdrop opportunities</p>
+              <h1 className="text-3xl font-semibold text-gray-100 mb-2">All Airdrops</h1>
+              <p className="text-gray-400">Manage and track all your airdrop opportunities</p>
             </div>
-            <button className="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-6 py-2.5 rounded-lg transition-colors">
+            <button className="btn-primary">
               Add New Airdrop
             </button>
           </header>
@@ -285,23 +285,23 @@ const Airdrops = () => {
                 {/* Search and Main Filters */}
                 <div className="flex flex-col lg:flex-row gap-4">
                   <div className="flex-1">
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Search Airdrops</label>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">Search Airdrops</label>
                     <input
                       type="text"
                       placeholder="Search by name or description..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full bg-slate-800/50 border border-slate-700/50 rounded-lg px-4 py-2.5 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-colors"
+                      className="form-input w-full"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:w-auto">
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Status</label>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Status</label>
                       <select
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
-                        className="w-full bg-slate-800/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-colors"
+                        className="form-input w-full"
                       >
                         <option value="All">All Status</option>
                         <option value="Farming">Farming</option>
@@ -312,11 +312,11 @@ const Airdrops = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Ecosystem</label>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Ecosystem</label>
                       <select
                         value={ecosystemFilter}
                         onChange={(e) => setEcosystemFilter(e.target.value)}
-                        className="w-full bg-slate-800/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-colors"
+                        className="form-input w-full"
                       >
                         <option value="All">All Ecosystems</option>
                         {allEcosystems.map(ecosystem => (
@@ -326,11 +326,11 @@ const Airdrops = () => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Type</label>
+                      <label className="block text-sm font-medium text-gray-300 mb-2">Type</label>
                       <select
                         value={typeFilter}
                         onChange={(e) => setTypeFilter(e.target.value)}
-                        className="w-full bg-slate-800/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-colors"
+                        className="form-input w-full"
                       >
                         <option value="All">All Types</option>
                         {allTypes.map(type => (
@@ -343,7 +343,7 @@ const Airdrops = () => {
 
                 {/* Tags Filter */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-3">Filter by Tags</label>
+                  <label className="block text-sm font-medium text-gray-300 mb-3">Filter by Tags</label>
                   <div className="flex flex-wrap gap-2">
                     {allTags.map(tag => (
                       <button
@@ -351,8 +351,8 @@ const Airdrops = () => {
                         onClick={() => toggleTag(tag)}
                         className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                           selectedTags.includes(tag)
-                            ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/50'
-                            : 'bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-700/50'
+                            ? 'tag-active'
+                            : 'tag hover:bg-gray-700/50'
                         }`}
                       >
                         {tag}
@@ -362,7 +362,7 @@ const Airdrops = () => {
                   {selectedTags.length > 0 && (
                     <button
                       onClick={() => setSelectedTags([])}
-                      className="mt-3 text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+                      className="mt-3 text-sm text-violet-400 hover:text-violet-300 transition-colors"
                     >
                       Clear all tags
                     </button>
@@ -374,7 +374,7 @@ const Airdrops = () => {
 
           {/* Results Count */}
           <div className="mb-6">
-            <p className="text-slate-400">
+            <p className="text-gray-400">
               Showing {filteredAirdrops.length} of {airdrops.length} airdrops
             </p>
           </div>
@@ -382,7 +382,7 @@ const Airdrops = () => {
           {/* Airdrops Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {filteredAirdrops.map(airdrop => (
-              <Card key={airdrop.id} className="hover:border-indigo-500/30 transition-all duration-200">
+              <Card key={airdrop.id} className="hover:border-violet-600/30 transition-all duration-200">
                 <div className="p-6">
                   {/* Header with Logo */}
                   <div className="flex items-start gap-4 mb-4">
@@ -392,31 +392,31 @@ const Airdrops = () => {
                       className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-xl font-semibold text-slate-100 mb-1 truncate">{airdrop.name}</h3>
-                      <p className="text-sm text-slate-400">{airdrop.ecosystem} • {airdrop.category}</p>
+                      <h3 className="text-xl font-semibold text-gray-100 mb-1 truncate">{airdrop.name}</h3>
+                      <p className="text-sm text-gray-400">{airdrop.ecosystem} • {airdrop.category}</p>
                     </div>
                     <div className="flex flex-col items-end gap-2">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusClass(airdrop.status)}`}>
+                      <span className={`px-2 py-1 text-xs font-medium rounded-lg ${getStatusClass(airdrop.status)}`}>
                         {airdrop.status}
                       </span>
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${getTypeClass(airdrop.type)}`}>
+                      <span className={`px-2 py-1 text-xs font-medium rounded-lg ${getTypeClass(airdrop.type)}`}>
                         {airdrop.type}
                       </span>
                     </div>
                   </div>
 
                   {/* Description */}
-                  <p className="text-slate-300 text-sm mb-4 line-clamp-3">{airdrop.description}</p>
+                  <p className="text-gray-300 text-sm mb-4 line-clamp-3">{airdrop.description}</p>
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-1 mb-4">
                     {airdrop.tags.slice(0, 4).map(tag => (
-                      <span key={tag} className="px-2 py-1 bg-slate-800/50 text-slate-400 text-xs rounded-md">
+                      <span key={tag} className="tag text-xs">
                         {tag}
                       </span>
                     ))}
                     {airdrop.tags.length > 4 && (
-                      <span className="px-2 py-1 bg-slate-800/50 text-slate-400 text-xs rounded-md">
+                      <span className="tag text-xs">
                         +{airdrop.tags.length - 4}
                       </span>
                     )}
@@ -425,12 +425,12 @@ const Airdrops = () => {
                   {/* Progress */}
                   <div className="mb-4">
                     <div className="flex justify-between text-sm mb-2">
-                      <span className="text-slate-400">Progress</span>
-                      <span className="text-slate-300">{airdrop.tasksCompleted}/{airdrop.totalTasks}</span>
+                      <span className="text-gray-400">Progress</span>
+                      <span className="text-gray-300">{airdrop.tasksCompleted}/{airdrop.totalTasks}</span>
                     </div>
-                    <div className="w-full bg-slate-800/50 rounded-full h-2">
+                    <div className="w-full bg-gray-800/50 rounded-full h-2">
                       <div 
-                        className="bg-indigo-500 h-2 rounded-full transition-all duration-300"
+                        className="bg-violet-500 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${(airdrop.tasksCompleted / airdrop.totalTasks) * 100}%` }}
                       ></div>
                     </div>
@@ -439,14 +439,14 @@ const Airdrops = () => {
                   {/* Footer Info */}
                   <div className="flex justify-between items-center text-sm mb-4">
                     <div>
-                      <p className="text-slate-400">Est. Value</p>
-                      <p className="text-slate-200 font-medium">{airdrop.estimatedValue}</p>
+                      <p className="text-gray-400">Est. Value</p>
+                      <p className="text-gray-200 font-medium">{airdrop.estimatedValue}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-slate-400">Deadline</p>
-                      <p className="text-slate-200 font-medium">{airdrop.deadline}</p>
+                      <p className="text-gray-400">Deadline</p>
+                      <p className="text-gray-200 font-medium">{airdrop.deadline}</p>
                     </div>
-                    <span className={`px-2 py-1 text-xs font-medium rounded-full ${getPriorityClass(airdrop.priority)}`}>
+                    <span className={`px-2 py-1 text-xs font-medium rounded-lg ${getPriorityClass(airdrop.priority)}`}>
                       {airdrop.priority}
                     </span>
                   </div>
@@ -456,7 +456,7 @@ const Airdrops = () => {
                     <div className="flex gap-2">
                       <Link 
                         to={`/airdrops/${airdrop.id}`}
-                        className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white text-center py-2.5 px-3 rounded-lg text-sm font-medium transition-colors"
+                        className="flex-1 btn-primary text-center"
                       >
                         View Details
                       </Link>
@@ -464,7 +464,7 @@ const Airdrops = () => {
                         href={airdrop.officialLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 bg-slate-700/50 hover:bg-slate-600/50 text-slate-200 text-center py-2.5 px-3 rounded-lg text-sm font-medium transition-colors"
+                        className="flex-1 btn-secondary text-center"
                       >
                         Visit Site
                       </a>
@@ -474,7 +474,7 @@ const Airdrops = () => {
                     <div className="flex gap-2">
                       <button
                         onClick={() => copyToClipboard(airdrop.officialLink, `${airdrop.name}-official`)}
-                        className="flex-1 bg-slate-800/50 hover:bg-slate-700/50 text-slate-300 py-2 px-3 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1"
+                        className="flex-1 btn-ghost text-xs flex items-center justify-center gap-1"
                       >
                         {copiedLink === `${airdrop.name}-official` ? (
                           <>
@@ -496,7 +496,7 @@ const Airdrops = () => {
                       {airdrop.referralLink && (
                         <button
                           onClick={() => copyToClipboard(airdrop.referralLink!, `${airdrop.name}-referral`)}
-                          className="flex-1 bg-green-800/30 hover:bg-green-700/30 text-green-300 py-2 px-3 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1"
+                          className="flex-1 bg-emerald-800/30 hover:bg-emerald-700/30 text-emerald-300 py-2 px-3 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1"
                         >
                           {copiedLink === `${airdrop.name}-referral` ? (
                             <>
@@ -519,8 +519,8 @@ const Airdrops = () => {
                   </div>
 
                   {/* Last Updated */}
-                  <div className="mt-4 pt-4 border-t border-slate-800/30">
-                    <p className="text-xs text-slate-500">Updated {airdrop.lastUpdated}</p>
+                  <div className="mt-4 pt-4 border-t border-gray-800/30">
+                    <p className="text-xs text-gray-500">Updated {airdrop.lastUpdated}</p>
                   </div>
                 </div>
               </Card>
@@ -530,11 +530,11 @@ const Airdrops = () => {
           {/* Empty State */}
           {filteredAirdrops.length === 0 && (
             <Card className="text-center py-12">
-              <div className="text-slate-400">
+              <div className="text-gray-400">
                 <svg className="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                <h3 className="text-lg font-medium text-slate-300 mb-2">No airdrops found</h3>
+                <h3 className="text-lg font-medium text-gray-300 mb-2">No airdrops found</h3>
                 <p>Try adjusting your search or filter criteria</p>
               </div>
             </Card>

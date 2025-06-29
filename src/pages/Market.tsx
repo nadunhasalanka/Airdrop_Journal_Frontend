@@ -268,47 +268,47 @@ const Market = () => {
   };
 
   const getChangeClass = (change: number) => {
-    return change >= 0 ? 'text-green-400' : 'text-red-400';
+    return change >= 0 ? 'text-emerald-400' : 'text-red-400';
   };
 
   const getImpactClass = (impact: string) => {
     switch (impact) {
-      case 'Bullish': return 'bg-green-500/20 text-green-300 border border-green-500/30';
-      case 'Bearish': return 'bg-red-500/20 text-red-300 border border-red-500/30';
-      case 'Neutral': return 'bg-slate-500/20 text-slate-300 border border-slate-500/30';
-      default: return 'bg-slate-700/20 text-slate-300 border border-slate-700/30';
+      case 'Bullish': return 'bg-emerald-600/15 text-emerald-300 border border-emerald-600/30';
+      case 'Bearish': return 'bg-red-600/15 text-red-300 border border-red-600/30';
+      case 'Neutral': return 'bg-gray-600/15 text-gray-300 border border-gray-600/30';
+      default: return 'tag';
     }
   };
 
   const getCategoryClass = (category: string) => {
     switch (category) {
-      case 'Bitcoin': return 'bg-orange-500/20 text-orange-300 border border-orange-500/30';
-      case 'Ethereum': return 'bg-blue-500/20 text-blue-300 border border-blue-500/30';
-      case 'Layer1': return 'bg-purple-500/20 text-purple-300 border border-purple-500/30';
-      case 'Layer2': return 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30';
-      case 'DeFi': return 'bg-green-500/20 text-green-300 border border-green-500/30';
-      case 'Meme': return 'bg-pink-500/20 text-pink-300 border border-pink-500/30';
-      case 'AI': return 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30';
-      case 'Gaming': return 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
-      default: return 'bg-slate-700/20 text-slate-300 border border-slate-700/30';
+      case 'Bitcoin': return 'bg-orange-600/15 text-orange-300 border border-orange-600/30';
+      case 'Ethereum': return 'bg-blue-600/15 text-blue-300 border border-blue-600/30';
+      case 'Layer1': return 'bg-purple-600/15 text-purple-300 border border-purple-600/30';
+      case 'Layer2': return 'bg-violet-600/15 text-violet-300 border border-violet-600/30';
+      case 'DeFi': return 'bg-emerald-600/15 text-emerald-300 border border-emerald-600/30';
+      case 'Meme': return 'bg-pink-600/15 text-pink-300 border border-pink-600/30';
+      case 'AI': return 'bg-cyan-600/15 text-cyan-300 border border-cyan-600/30';
+      case 'Gaming': return 'bg-green-600/15 text-green-300 border border-green-600/30';
+      default: return 'tag';
     }
   };
 
   return (
-    <div className="bg-black min-h-screen">
+    <div className="bg-gray-950 min-h-screen">
       <Sidebar />
-      <main className="ml-64 text-slate-300">
+      <main className="ml-64 text-gray-200">
         <div className="relative p-8 max-w-7xl mx-auto">
           {/* Background Effects */}
-          <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(99,102,241,0.06)_0%,rgba(139,92,246,0.03)_50%,transparent_70%)] -z-10 filter blur-[100px]"></div>
+          <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(124,58,237,0.04)_0%,rgba(168,85,247,0.02)_50%,transparent_70%)] -z-10 filter blur-[100px]"></div>
 
           {/* Header */}
           <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-6">
             <div>
-              <h1 className="text-3xl font-semibold text-slate-50 mb-2">Market & Analysis</h1>
-              <p className="text-slate-400">Track Bitcoin, altcoins, and market trends</p>
+              <h1 className="text-3xl font-semibold text-gray-100 mb-2">Market & Analysis</h1>
+              <p className="text-gray-400">Track Bitcoin, altcoins, and market trends</p>
             </div>
-            <button className="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-6 py-2.5 rounded-lg transition-colors">
+            <button className="btn-primary">
               Refresh Data
             </button>
           </header>
@@ -316,7 +316,7 @@ const Market = () => {
           {/* Trending Topics */}
           <Card className="mb-8">
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-slate-100 mb-6 flex items-center gap-2">
+              <h2 className="text-xl font-semibold text-gray-100 mb-6 flex items-center gap-2">
                 <svg className="w-5 h-5 text-orange-400" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M13.5 2c-5.621 0-10.211 4.443-10.475 10H3c-.552 0-1 .449-1 1 0 .551.448 1 1 1h.025C3.289 19.557 7.879 24 13.5 24 19.299 24 24 19.299 24 13.5S19.299 2 13.5 2zM13.5 22C8.813 22 5 18.187 5 13.5S8.813 5 13.5 5 22 8.813 22 13.5 18.187 22 13.5 22z"/>
                 </svg>
@@ -326,27 +326,27 @@ const Market = () => {
               {loading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {[1, 2, 3, 4].map(i => (
-                    <div key={i} className="animate-pulse bg-slate-800/40 rounded-lg p-4">
-                      <div className="h-4 bg-slate-700 rounded w-3/4 mb-2"></div>
-                      <div className="h-3 bg-slate-800 rounded w-full mb-3"></div>
-                      <div className="h-6 w-12 bg-slate-700 rounded"></div>
+                    <div key={i} className="animate-pulse bg-gray-800/40 rounded-lg p-4">
+                      <div className="h-4 bg-gray-700 rounded w-3/4 mb-2"></div>
+                      <div className="h-3 bg-gray-800 rounded w-full mb-3"></div>
+                      <div className="h-6 w-12 bg-gray-700 rounded"></div>
                     </div>
                   ))}
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   {trendingTopics.map(topic => (
-                    <div key={topic.id} className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50 hover:border-indigo-500/30 transition-colors cursor-pointer">
+                    <div key={topic.id} className="bg-gray-800/30 rounded-lg p-4 border border-gray-700/50 hover:border-violet-600/30 transition-colors cursor-pointer">
                       <div className="flex justify-between items-start mb-3">
-                        <h3 className="font-medium text-slate-100">{topic.name}</h3>
-                        <span className="text-xs bg-orange-500/20 text-orange-300 px-2 py-1 rounded-full border border-orange-500/30">
+                        <h3 className="font-medium text-gray-100">{topic.name}</h3>
+                        <span className="text-xs bg-orange-600/15 text-orange-300 px-2 py-1 rounded-lg border border-orange-600/30">
                           {topic.trendingScore}
                         </span>
                       </div>
-                      <p className="text-sm text-slate-400 mb-3">{topic.description}</p>
+                      <p className="text-sm text-gray-400 mb-3">{topic.description}</p>
                       <div className="flex flex-wrap gap-1">
                         {topic.relatedCoins.slice(0, 3).map(coin => (
-                          <span key={coin} className="text-xs bg-slate-700/50 text-slate-300 px-2 py-1 rounded">
+                          <span key={coin} className="tag text-xs">
                             {coin}
                           </span>
                         ))}
@@ -363,11 +363,11 @@ const Market = () => {
             <div className="p-6">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Category</label>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">Category</label>
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full bg-slate-800/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-colors"
+                    className="form-input w-full"
                   >
                     {categories.map(category => (
                       <option key={category} value={category}>{category}</option>
@@ -376,11 +376,11 @@ const Market = () => {
                 </div>
                 
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Sort By</label>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">Sort By</label>
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as any)}
-                    className="w-full bg-slate-800/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-colors"
+                    className="form-input w-full"
                   >
                     <option value="marketCap">Market Cap</option>
                     <option value="price">Price</option>
@@ -390,11 +390,11 @@ const Market = () => {
                 </div>
 
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Order</label>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">Order</label>
                   <select
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value as any)}
-                    className="w-full bg-slate-800/50 border border-slate-700/50 rounded-lg px-3 py-2.5 text-slate-100 focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50 transition-colors"
+                    className="form-input w-full"
                   >
                     <option value="desc">Highest First</option>
                     <option value="asc">Lowest First</option>
@@ -407,20 +407,20 @@ const Market = () => {
           {/* Cryptocurrency Table */}
           <Card className="mb-8">
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-slate-100 mb-6">Cryptocurrency Prices</h2>
+              <h2 className="text-xl font-semibold text-gray-100 mb-6">Cryptocurrency Prices</h2>
               
               {loading ? (
                 <div className="space-y-4">
                   {[1, 2, 3, 4, 5].map(i => (
-                    <div key={i} className="animate-pulse flex items-center gap-4 p-4 bg-slate-800/40 rounded-lg">
-                      <div className="w-10 h-10 bg-slate-700 rounded-full"></div>
+                    <div key={i} className="animate-pulse flex items-center gap-4 p-4 bg-gray-800/40 rounded-lg">
+                      <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
                       <div className="flex-1">
-                        <div className="h-4 bg-slate-700 rounded w-1/4 mb-2"></div>
-                        <div className="h-3 bg-slate-800 rounded w-1/6"></div>
+                        <div className="h-4 bg-gray-700 rounded w-1/4 mb-2"></div>
+                        <div className="h-3 bg-gray-800 rounded w-1/6"></div>
                       </div>
                       <div className="text-right">
-                        <div className="h-4 bg-slate-700 rounded w-20 mb-2"></div>
-                        <div className="h-3 bg-slate-800 rounded w-16"></div>
+                        <div className="h-4 bg-gray-700 rounded w-20 mb-2"></div>
+                        <div className="h-3 bg-gray-800 rounded w-16"></div>
                       </div>
                     </div>
                   ))}
@@ -428,18 +428,18 @@ const Market = () => {
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
-                    <thead className="border-b border-slate-800/50">
+                    <thead className="border-b border-gray-800/40">
                       <tr>
-                        <th className="text-left p-4 font-medium text-slate-400">Coin</th>
-                        <th className="text-right p-4 font-medium text-slate-400">Price</th>
-                        <th className="text-right p-4 font-medium text-slate-400">24h Change</th>
-                        <th className="text-right p-4 font-medium text-slate-400">Market Cap</th>
-                        <th className="text-right p-4 font-medium text-slate-400">Volume</th>
+                        <th className="text-left p-4 font-medium text-gray-400">Coin</th>
+                        <th className="text-right p-4 font-medium text-gray-400">Price</th>
+                        <th className="text-right p-4 font-medium text-gray-400">24h Change</th>
+                        <th className="text-right p-4 font-medium text-gray-400">Market Cap</th>
+                        <th className="text-right p-4 font-medium text-gray-400">Volume</th>
                       </tr>
                     </thead>
                     <tbody>
                       {filteredCoins.map(coin => (
-                        <tr key={coin.id} className="border-b border-slate-800/30 hover:bg-slate-800/20 transition-colors cursor-pointer">
+                        <tr key={coin.id} className="table-row cursor-pointer">
                           <td className="p-4">
                             <div className="flex items-center gap-3">
                               <img 
@@ -449,25 +449,25 @@ const Market = () => {
                               />
                               <div>
                                 <div className="flex items-center gap-2">
-                                  <span className="font-medium text-slate-100">{coin.name}</span>
-                                  <span className={`px-2 py-1 text-xs font-medium rounded-full ${getCategoryClass(coin.category)}`}>
+                                  <span className="font-medium text-gray-100">{coin.name}</span>
+                                  <span className={`px-2 py-1 text-xs font-medium rounded-lg ${getCategoryClass(coin.category)}`}>
                                     {coin.category}
                                   </span>
                                 </div>
-                                <span className="text-slate-400 text-sm">{coin.symbol}</span>
+                                <span className="text-gray-400 text-sm">{coin.symbol}</span>
                               </div>
                             </div>
                           </td>
-                          <td className="p-4 text-right font-medium text-slate-100">
+                          <td className="p-4 text-right font-medium text-gray-100">
                             {formatPrice(coin.price)}
                           </td>
                           <td className={`p-4 text-right font-medium ${getChangeClass(coin.change24h)}`}>
                             {coin.change24h >= 0 ? '+' : ''}{coin.change24h.toFixed(2)}%
                           </td>
-                          <td className="p-4 text-right text-slate-300">
+                          <td className="p-4 text-right text-gray-300">
                             {formatMarketCap(coin.marketCap)}
                           </td>
-                          <td className="p-4 text-right text-slate-300">
+                          <td className="p-4 text-right text-gray-300">
                             {formatMarketCap(coin.volume24h)}
                           </td>
                         </tr>
@@ -482,17 +482,17 @@ const Market = () => {
           {/* Market News */}
           <Card>
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-slate-100 mb-6">Market News</h2>
+              <h2 className="text-xl font-semibold text-gray-100 mb-6">Market News</h2>
               
               {loading ? (
                 <div className="space-y-4">
                   {[1, 2, 3, 4].map(i => (
-                    <div key={i} className="animate-pulse border-b border-slate-800/30 pb-4">
-                      <div className="h-5 bg-slate-700 rounded w-3/4 mb-2"></div>
-                      <div className="h-4 bg-slate-800 rounded w-full mb-2"></div>
+                    <div key={i} className="animate-pulse border-b border-gray-800/30 pb-4">
+                      <div className="h-5 bg-gray-700 rounded w-3/4 mb-2"></div>
+                      <div className="h-4 bg-gray-800 rounded w-full mb-2"></div>
                       <div className="flex gap-2">
-                        <div className="h-6 w-16 bg-slate-700 rounded"></div>
-                        <div className="h-6 w-20 bg-slate-700 rounded"></div>
+                        <div className="h-6 w-16 bg-gray-700 rounded"></div>
+                        <div className="h-6 w-20 bg-gray-700 rounded"></div>
                       </div>
                     </div>
                   ))}
@@ -500,25 +500,25 @@ const Market = () => {
               ) : (
                 <div className="space-y-4">
                   {marketNews.map(article => (
-                    <div key={article.id} className="border-b border-slate-800/30 pb-4 last:border-b-0 last:pb-0">
+                    <div key={article.id} className="border-b border-gray-800/30 pb-4 last:border-b-0 last:pb-0">
                       <div className="flex justify-between items-start gap-3 mb-2">
-                        <h3 className="font-medium text-slate-200 hover:text-indigo-400 transition-colors cursor-pointer">
+                        <h3 className="font-medium text-gray-200 hover:text-violet-400 transition-colors cursor-pointer">
                           <a href={article.url} target="_blank" rel="noopener noreferrer">
                             {article.title}
                           </a>
                         </h3>
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full flex-shrink-0 ${getImpactClass(article.impact)}`}>
+                        <span className={`px-2 py-1 text-xs font-medium rounded-lg flex-shrink-0 ${getImpactClass(article.impact)}`}>
                           {article.impact}
                         </span>
                       </div>
-                      <p className="text-sm text-slate-400 mb-3">{article.summary}</p>
+                      <p className="text-sm text-gray-400 mb-3">{article.summary}</p>
                       <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-4 text-xs text-slate-500">
+                        <div className="flex items-center gap-4 text-xs text-gray-500">
                           <span>{article.source}</span>
                           <span>{article.publishedAt}</span>
                           <div className="flex gap-1">
                             {article.coins.map(coin => (
-                              <span key={coin} className="bg-slate-700/50 text-slate-300 px-2 py-1 rounded">
+                              <span key={coin} className="tag text-xs">
                                 {coin}
                               </span>
                             ))}

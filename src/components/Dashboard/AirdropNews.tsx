@@ -12,15 +12,15 @@ const AirdropNews = () => {
     return (
         <Card>
             <div className="p-6">
-                <h2 className="text-xl font-semibold text-slate-100 mb-6">Airdrop News</h2>
+                <h2 className="text-xl font-semibold text-gray-100 mb-6">Airdrop News</h2>
                 <div className="space-y-4">
                     {newsItems.map((item, index) => (
-                        <div key={index} className="border-b border-slate-800/30 pb-4 last:border-b-0 last:pb-0">
+                        <div key={index} className="border-b border-gray-800/30 pb-4 last:border-b-0 last:pb-0">
                             <a href="/news" className="group block">
-                                <h3 className="font-medium text-slate-200 group-hover:text-indigo-400 transition-colors mb-2">
+                                <h3 className="font-medium text-gray-200 group-hover:text-violet-400 transition-colors mb-2">
                                     {item.title}
                                 </h3>
-                                <div className="flex justify-between text-xs text-slate-500">
+                                <div className="flex justify-between text-xs text-gray-500">
                                     <span>{item.source}</span>
                                     <span>{item.time}</span>
                                 </div>

@@ -94,20 +94,20 @@ const Tasks = () => {
   const completionPercentage = (completedCount / totalCount) * 100;
 
   return (
-    <div className="bg-black min-h-screen">
+    <div className="bg-gray-950 min-h-screen">
       <Sidebar />
-      <main className="ml-64 text-slate-300">
+      <main className="ml-64 text-gray-200">
         <div className="relative p-8 max-w-6xl mx-auto">
           {/* Background Effects */}
-          <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(99,102,241,0.06)_0%,rgba(139,92,246,0.03)_50%,transparent_70%)] -z-10 filter blur-[100px]"></div>
+          <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(124,58,237,0.04)_0%,rgba(168,85,247,0.02)_50%,transparent_70%)] -z-10 filter blur-[100px]"></div>
 
           {/* Header */}
           <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-6">
             <div>
-              <h1 className="text-3xl font-semibold text-slate-50 mb-2">Today's Tasks</h1>
-              <p className="text-slate-400">Complete your daily airdrop activities</p>
+              <h1 className="text-3xl font-semibold text-gray-100 mb-2">Today's Tasks</h1>
+              <p className="text-gray-400">Complete your daily airdrop activities</p>
             </div>
-            <button className="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-6 py-2.5 rounded-lg transition-colors">
+            <button className="btn-primary">
               Add New Task
             </button>
           </header>
@@ -117,13 +117,13 @@ const Tasks = () => {
             <div className="p-6">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
-                  <h2 className="text-xl font-semibold text-slate-100 mb-2">Overall Progress</h2>
-                  <p className="text-slate-400">You've completed {completedCount} out of {totalCount} tasks</p>
+                  <h2 className="text-xl font-semibold text-gray-100 mb-2">Overall Progress</h2>
+                  <p className="text-gray-400">You've completed {completedCount} out of {totalCount} tasks</p>
                 </div>
                 <div className="flex items-center space-x-6">
                   <div className="text-right">
-                    <p className="text-3xl font-semibold text-indigo-400">{Math.round(completionPercentage)}%</p>
-                    <p className="text-sm text-slate-400">Complete</p>
+                    <p className="text-3xl font-semibold text-violet-400">{Math.round(completionPercentage)}%</p>
+                    <p className="text-sm text-gray-400">Complete</p>
                   </div>
                   <div className="w-20 h-20">
                     <svg className="transform -rotate-90 w-20 h-20">
@@ -134,7 +134,7 @@ const Tasks = () => {
                         stroke="currentColor"
                         strokeWidth="6"
                         fill="transparent"
-                        className="text-slate-800"
+                        className="text-gray-800"
                       />
                       <circle
                         cx="40"
@@ -145,7 +145,7 @@ const Tasks = () => {
                         fill="transparent"
                         strokeDasharray={`${2 * Math.PI * 32}`}
                         strokeDashoffset={`${2 * Math.PI * 32 * (1 - completionPercentage / 100)}`}
-                        className="text-indigo-500 transition-all duration-500"
+                        className="text-violet-500 transition-all duration-500"
                       />
                     </svg>
                   </div>
@@ -159,7 +159,7 @@ const Tasks = () => {
             <div className="p-6">
               <div className="flex gap-4">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-slate-300 mb-3">Status Filter</label>
+                  <label className="block text-sm font-medium text-gray-300 mb-3">Status Filter</label>
                   <div className="flex space-x-2">
                     {[
                       { key: 'all', label: 'All Tasks' },
@@ -171,8 +171,8 @@ const Tasks = () => {
                         onClick={() => setFilter(key as any)}
                         className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           filter === key
-                            ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/50'
-                            : 'bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-700/50'
+                            ? 'tag-active'
+                            : 'tag hover:bg-gray-700/50'
                         }`}
                       >
                         {label}
@@ -187,10 +187,10 @@ const Tasks = () => {
           {/* Daily Tasks */}
           {dailyTasks.length > 0 && (
             <div className="mb-8">
-              <h2 className="text-xl font-semibold text-slate-100 mb-6">Daily Tasks ({dailyTasks.length})</h2>
+              <h2 className="text-xl font-semibold text-gray-100 mb-6">Daily Tasks ({dailyTasks.length})</h2>
               <div className="space-y-4">
                 {dailyTasks.map(task => (
-                  <Card key={task.id} className={`transition-all ${task.completed ? 'opacity-60' : 'hover:border-indigo-500/30'}`}>
+                  <Card key={task.id} className={`transition-all ${task.completed ? 'opacity-60' : 'hover:border-violet-600/30'}`}>
                     <div className="p-6">
                       <div className="flex items-start space-x-4">
                         <div className="flex-shrink-0 mt-1">
@@ -198,19 +198,19 @@ const Tasks = () => {
                             type="checkbox"
                             checked={task.completed}
                             onChange={() => toggleTask(task.id)}
-                            className="h-4 w-4 rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-600 cursor-pointer"
+                            className="h-4 w-4 rounded bg-gray-700 border-gray-600 text-violet-500 focus:ring-violet-600 cursor-pointer"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-2">
-                            <h3 className={`text-lg font-medium ${task.completed ? 'line-through text-slate-500' : 'text-slate-100'}`}>
+                            <h3 className={`text-lg font-medium ${task.completed ? 'line-through text-gray-500' : 'text-gray-100'}`}>
                               {task.title}
                             </h3>
-                            <span className="text-sm text-slate-400 bg-slate-800/50 px-3 py-1 rounded-lg">
+                            <span className="tag">
                               {task.project}
                             </span>
                           </div>
-                          <p className={`text-sm ${task.completed ? 'text-slate-500' : 'text-slate-300'}`}>
+                          <p className={`text-sm ${task.completed ? 'text-gray-500' : 'text-gray-300'}`}>
                             {task.note}
                           </p>
                         </div>
@@ -225,10 +225,10 @@ const Tasks = () => {
           {/* Other Tasks */}
           {otherTasks.length > 0 && (
             <div>
-              <h2 className="text-xl font-semibold text-slate-100 mb-6">Other Tasks ({otherTasks.length})</h2>
+              <h2 className="text-xl font-semibold text-gray-100 mb-6">Other Tasks ({otherTasks.length})</h2>
               <div className="space-y-4">
                 {otherTasks.map(task => (
-                  <Card key={task.id} className={`transition-all ${task.completed ? 'opacity-60' : 'hover:border-indigo-500/30'}`}>
+                  <Card key={task.id} className={`transition-all ${task.completed ? 'opacity-60' : 'hover:border-violet-600/30'}`}>
                     <div className="p-6">
                       <div className="flex items-start space-x-4">
                         <div className="flex-shrink-0 mt-1">
@@ -236,19 +236,19 @@ const Tasks = () => {
                             type="checkbox"
                             checked={task.completed}
                             onChange={() => toggleTask(task.id)}
-                            className="h-4 w-4 rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-600 cursor-pointer"
+                            className="h-4 w-4 rounded bg-gray-700 border-gray-600 text-violet-500 focus:ring-violet-600 cursor-pointer"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-2">
-                            <h3 className={`text-lg font-medium ${task.completed ? 'line-through text-slate-500' : 'text-slate-100'}`}>
+                            <h3 className={`text-lg font-medium ${task.completed ? 'line-through text-gray-500' : 'text-gray-100'}`}>
                               {task.title}
                             </h3>
-                            <span className="text-sm text-slate-400 bg-slate-800/50 px-3 py-1 rounded-lg">
+                            <span className="tag">
                               {task.project}
                             </span>
                           </div>
-                          <p className={`text-sm ${task.completed ? 'text-slate-500' : 'text-slate-300'}`}>
+                          <p className={`text-sm ${task.completed ? 'text-gray-500' : 'text-gray-300'}`}>
                             {task.note}
                           </p>
                         </div>
@@ -263,11 +263,11 @@ const Tasks = () => {
           {/* Empty State */}
           {filteredTasks.length === 0 && (
             <Card className="text-center py-12">
-              <div className="text-slate-400">
+              <div className="text-gray-400">
                 <svg className="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-                <h3 className="text-lg font-medium text-slate-300 mb-2">No tasks found</h3>
+                <h3 className="text-lg font-medium text-gray-300 mb-2">No tasks found</h3>
                 <p>Try adjusting your filter criteria or add some new tasks</p>
               </div>
             </Card>
