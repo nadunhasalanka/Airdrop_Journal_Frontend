@@ -8,6 +8,8 @@ import Dashboard from './pages/Dashboard';
 import Airdrops from './pages/Airdrops';
 import AirdropDetails from './pages/AirdropDetails';
 import Tasks from './pages/Tasks';
+import News from './pages/News';
+import Market from './pages/Market';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/airdrops" element={<Airdrops />} />
           <Route path="/airdrops/:id" element={<AirdropDetails />} />
           <Route path="/tasks" element={<Tasks />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/market" element={<Market />} />
         </Routes>
       </BrowserRouter>
   </QueryClientProvider>
