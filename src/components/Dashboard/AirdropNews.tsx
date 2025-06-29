@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Card from './Card';
 
 const AirdropNews = () => {
@@ -16,7 +17,7 @@ const AirdropNews = () => {
                 <div className="space-y-4">
                     {newsItems.map((item, index) => (
                         <div key={index} className="border-b border-gray-800/30 pb-4 last:border-b-0 last:pb-0">
-                            <a href="/news" className="group block">
+                            <Link to="/news" className="group block">
                                 <h3 className="font-medium text-gray-200 group-hover:text-violet-400 transition-colors mb-2">
                                     {item.title}
                                 </h3>
@@ -24,7 +25,7 @@ const AirdropNews = () => {
                                     <span>{item.source}</span>
                                     <span>{item.time}</span>
                                 </div>
-                            </a>
+                            </Link>
                         </div>
                     ))}
                 </div>

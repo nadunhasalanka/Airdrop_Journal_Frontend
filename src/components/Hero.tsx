@@ -1,5 +1,5 @@
-// components/Hero.tsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Hero: React.FC = () => {
   return (
@@ -14,12 +14,10 @@ const Hero: React.FC = () => {
           Airdrop Journal is the ultimate tool for serious airdrop hunters. Stop juggling spreadsheets and start tracking your eligibility, tasks, and potential rewards with our streamlined platform.
         </p>
         <div className="flex justify-center space-x-4">
-          <a href="#cta"
-             className="cta-button bg-indigo-600 text-white font-bold px-8 py-4 rounded-lg text-lg shadow-indigo-500/30 shadow-xl">
+          <Link to="/signup" className="cta-button bg-indigo-600 text-white font-bold px-8 py-4 rounded-lg text-lg shadow-indigo-500/30 shadow-xl">
             Start Tracking for Free
-          </a>
-          <a href="#features"
-             className="cta-button bg-slate-800 text-slate-200 font-bold px-8 py-4 rounded-lg text-lg hover:bg-slate-700">
+          </Link>
+          <a href="#features" className="cta-button bg-slate-800 text-slate-200 font-bold px-8 py-4 rounded-lg text-lg hover:bg-slate-700">
             Learn More
           </a>
         </div>

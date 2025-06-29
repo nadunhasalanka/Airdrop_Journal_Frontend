@@ -1,5 +1,5 @@
-// components/CTA.tsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const CTA: React.FC = () => {
   return (
@@ -13,9 +13,9 @@ const CTA: React.FC = () => {
               Stop the chaos. Start your journey to organized, efficient airdrop farming today.
               It's free to get started.
             </p>
-            <a href="#" className="cta-button bg-indigo-600 text-white font-bold px-8 py-4 rounded-lg text-lg inline-block shadow-lg hover:bg-indigo-500">
+            <Link to="/signup" className="cta-button bg-indigo-600 text-white font-bold px-8 py-4 rounded-lg text-lg inline-block shadow-lg hover:bg-indigo-500">
               Sign Up Now & Track Your First Airdrop
-            </a>
+            </Link>
           </div>
         </div>
       </div>

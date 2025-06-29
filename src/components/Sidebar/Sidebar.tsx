@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import NavLink from './NavLink';
 
 // Simplified, modern icons
@@ -54,14 +54,14 @@ const Sidebar = () => {
         <aside className="fixed top-0 left-0 h-full w-64 bg-gray-950/90 backdrop-blur-xl border-r border-gray-800/40 flex flex-col z-30">
             {/* Logo Section */}
             <div className="flex items-center justify-center h-20 border-b border-gray-800/40 flex-shrink-0">
-                <div className="flex items-center space-x-3">
+                <Link to="/dashboard" className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-purple-600 rounded-lg flex items-center justify-center">
                         <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                         </svg>
                     </div>
                     <span className="text-xl font-semibold text-gray-100">Airdrop Journal</span>
-                </div>
+                </Link>
             </div>
             
             {/* Navigation Links */}
@@ -70,7 +70,7 @@ const Sidebar = () => {
                     <NavLink href="/dashboard" icon={<DashboardIcon />} isActive={location.pathname === '/dashboard'}>
                         Dashboard
                     </NavLink>
-                    <NavLink href="/airdrops" icon={<AirdropsIcon />} isActive={location.pathname === '/airdrops'}>
+                    <NavLink href="/airdrops" icon={<AirdropsIcon />} isActive={location.pathname === '/airdrops' || location.pathname.startsWith('/airdrops/')}>
                         All Airdrops
                     </NavLink>
                     <NavLink href="/tasks" icon={<TasksIcon />} isActive={location.pathname === '/tasks'}>
@@ -102,9 +102,9 @@ const Sidebar = () => {
                             <p className="text-xs text-gray-400">Pro Member</p>
                         </div>
                     </div>
-                    <button className="text-gray-500 hover:text-violet-400 transition-colors p-1 rounded-md">
+                    <Link to="/" className="text-gray-500 hover:text-violet-400 transition-colors p-1 rounded-md">
                         <LogoutIcon />
-                    </button>
+                    </Link>
                 </div>
             </div>
         </aside>

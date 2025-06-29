@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Card from "./Card";
 
 const TasksToday = () => {
@@ -16,9 +17,9 @@ const TasksToday = () => {
             <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-xl font-semibold text-gray-100">Today's Tasks</h2>
-                    <a href="/tasks" className="text-sm font-medium text-violet-400 hover:text-violet-300 transition-colors">
+                    <Link to="/tasks" className="text-sm font-medium text-violet-400 hover:text-violet-300 transition-colors">
                         View All
-                    </a>
+                    </Link>
                 </div>
                 <div className="space-y-3 max-h-80 overflow-y-auto">
                     {tasks.map((task, index) => (
@@ -34,9 +35,9 @@ const TasksToday = () => {
                                 </p>
                                 <p className="text-xs text-gray-400">{task.project}</p>
                             </div>
-                            <a href="/tasks" className="text-xs font-medium text-violet-400 hover:text-violet-300 transition-colors">
+                            <Link to="/tasks" className="text-xs font-medium text-violet-400 hover:text-violet-300 transition-colors">
                                 Go →
-                            </a>
+                            </Link>
                         </div>
                     ))}
                 </div>
