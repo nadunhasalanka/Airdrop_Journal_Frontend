@@ -1,4 +1,3 @@
-// === NEW: TODAY'S TASKS COMPONENT ===
 import React from "react";
 import Card from "./Card";
 
@@ -15,26 +14,31 @@ const TasksToday = () => {
     return (
         <Card>
             <div className="p-6">
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-lg font-bold text-slate-100">Today's Tasks</h2>
-                    <a href="#" className="text-sm font-semibold text-indigo-400 hover:text-indigo-300">View All</a>
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-semibold text-slate-100">Today's Tasks</h2>
+                    <a href="/tasks" className="text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
+                        View All
+                    </a>
                 </div>
-                {/* Scrollable container with fixed height */}
-                <div className="max-h-80 overflow-y-auto pr-2">
-                    <ul className="space-y-3">
-                        {tasks.map((task, index) => (
-                            <li key={index} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-lg">
-                                <div className="flex items-center">
-                                    <input type="checkbox" defaultChecked={task.completed} className="h-5 w-5 rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-600 cursor-pointer"/>
-                                    <div className="ml-3">
-                                        <p className={`font-semibold ${task.completed ? 'line-through text-slate-500' : 'text-slate-200'}`}>{task.description}</p>
-                                        <p className="text-xs text-slate-400">{task.project}</p>
-                                    </div>
-                                </div>
-                                <a href="#" className="text-xs font-semibold text-indigo-400 hover:text-indigo-300">Go to task &rarr;</a>
-                            </li>
-                        ))}
-                    </ul>
+                <div className="space-y-3 max-h-80 overflow-y-auto">
+                    {tasks.map((task, index) => (
+                        <div key={index} className="flex items-center p-3 bg-slate-800/30 rounded-lg hover:bg-slate-800/50 transition-colors">
+                            <input 
+                                type="checkbox" 
+                                defaultChecked={task.completed} 
+                                className="h-4 w-4 rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-600 cursor-pointer"
+                            />
+                            <div className="ml-3 flex-1">
+                                <p className={`font-medium ${task.completed ? 'line-through text-slate-500' : 'text-slate-200'}`}>
+                                    {task.description}
+                                </p>
+                                <p className="text-xs text-slate-400">{task.project}</p>
+                            </div>
+                            <a href="/tasks" className="text-xs font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
+                                Go →
+                            </a>
+                        </div>
+                    ))}
                 </div>
             </div>
         </Card>

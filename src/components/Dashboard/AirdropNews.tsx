@@ -1,7 +1,6 @@
 import React from 'react';
 import Card from './Card';
 
-
 const AirdropNews = () => {
     const newsItems = [
         { title: 'LayerZero Snapshot Rumored for End of June', source: 'CoinDesk', time: '2h ago' },
@@ -13,20 +12,22 @@ const AirdropNews = () => {
     return (
         <Card>
             <div className="p-6">
-                <h2 className="text-lg font-bold text-slate-100 mb-4">Airdrop News</h2>
-                <ul className="space-y-4">
+                <h2 className="text-xl font-semibold text-slate-100 mb-6">Airdrop News</h2>
+                <div className="space-y-4">
                     {newsItems.map((item, index) => (
-                         <li key={index} className="border-b border-slate-800 pb-4 last:border-b-0 last:pb-0">
-                            <a href="#" className="group">
-                                <h3 className="font-semibold text-slate-200 group-hover:text-indigo-400 transition">{item.title}</h3>
-                                <div className="flex justify-between text-xs text-slate-500 mt-1">
+                        <div key={index} className="border-b border-slate-800/30 pb-4 last:border-b-0 last:pb-0">
+                            <a href="/news" className="group block">
+                                <h3 className="font-medium text-slate-200 group-hover:text-indigo-400 transition-colors mb-2">
+                                    {item.title}
+                                </h3>
+                                <div className="flex justify-between text-xs text-slate-500">
                                     <span>{item.source}</span>
                                     <span>{item.time}</span>
                                 </div>
                             </a>
-                        </li>
+                        </div>
                     ))}
-                </ul>
+                </div>
             </div>
         </Card>
     );

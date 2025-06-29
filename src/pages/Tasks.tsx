@@ -94,61 +94,58 @@ const Tasks = () => {
   const completionPercentage = (completedCount / totalCount) * 100;
 
   return (
-    <div className="bg-black min-h-screen overflow-x-hidden">
+    <div className="bg-black min-h-screen">
       <Sidebar />
-      <main className="ml-64 text-slate-300 w-[calc(100vw-16rem)] overflow-hidden">
-        <div className="relative p-4 sm:p-6 lg:p-8 max-w-full ml-10 mr-10">
+      <main className="ml-64 text-slate-300">
+        <div className="relative p-8 max-w-6xl mx-auto">
           {/* Background Effects */}
-          <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-[radial-gradient(circle,rgba(99,102,241,0.2)_0%,rgba(168,85,247,0.1)_50%,rgba(10,10,10,0)_70%)] -z-10 filter blur-[80px]"></div>
-          <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-[radial-gradient(circle,rgba(99,102,241,0.2)_0%,rgba(168,85,247,0.1)_50%,rgba(10,10,10,0)_70%)] -z-10 filter blur-[80px]"></div>
+          <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(99,102,241,0.06)_0%,rgba(139,92,246,0.03)_50%,transparent_70%)] -z-10 filter blur-[100px]"></div>
 
           {/* Header */}
-          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-            <div className="min-w-0 flex-1">
-              <h1 className="text-3xl font-bold text-slate-50 truncate">Today's Tasks</h1>
+          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-6">
+            <div>
+              <h1 className="text-3xl font-semibold text-slate-50 mb-2">Today's Tasks</h1>
               <p className="text-slate-400">Complete your daily airdrop activities</p>
             </div>
-            <div className="flex items-center space-x-4 flex-shrink-0">
-              <button className="cta-button text-sm bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg shadow-lg hover:bg-indigo-500 whitespace-nowrap">
-                Add New Task
-              </button>
-            </div>
+            <button className="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-6 py-2.5 rounded-lg transition-colors">
+              Add New Task
+            </button>
           </header>
 
           {/* Progress Overview */}
           <Card className="mb-8">
             <div className="p-6">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
-                  <h2 className="text-xl font-bold text-slate-100 mb-2">Overall Progress</h2>
+                  <h2 className="text-xl font-semibold text-slate-100 mb-2">Overall Progress</h2>
                   <p className="text-slate-400">You've completed {completedCount} out of {totalCount} tasks</p>
                 </div>
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-6">
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-indigo-400">{Math.round(completionPercentage)}%</p>
+                    <p className="text-3xl font-semibold text-indigo-400">{Math.round(completionPercentage)}%</p>
                     <p className="text-sm text-slate-400">Complete</p>
                   </div>
-                  <div className="w-24 h-24">
-                    <svg className="transform -rotate-90 w-24 h-24">
+                  <div className="w-20 h-20">
+                    <svg className="transform -rotate-90 w-20 h-20">
                       <circle
-                        cx="48"
-                        cy="48"
-                        r="40"
+                        cx="40"
+                        cy="40"
+                        r="32"
                         stroke="currentColor"
-                        strokeWidth="8"
+                        strokeWidth="6"
                         fill="transparent"
                         className="text-slate-800"
                       />
                       <circle
-                        cx="48"
-                        cy="48"
-                        r="40"
+                        cx="40"
+                        cy="40"
+                        r="32"
                         stroke="currentColor"
-                        strokeWidth="8"
+                        strokeWidth="6"
                         fill="transparent"
-                        strokeDasharray={`${2 * Math.PI * 40}`}
-                        strokeDashoffset={`${2 * Math.PI * 40 * (1 - completionPercentage / 100)}`}
-                        className="text-indigo-500 transition-all duration-300"
+                        strokeDasharray={`${2 * Math.PI * 32}`}
+                        strokeDashoffset={`${2 * Math.PI * 32 * (1 - completionPercentage / 100)}`}
+                        className="text-indigo-500 transition-all duration-500"
                       />
                     </svg>
                   </div>
@@ -162,7 +159,7 @@ const Tasks = () => {
             <div className="p-6">
               <div className="flex gap-4">
                 <div className="flex-1">
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Status Filter</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-3">Status Filter</label>
                   <div className="flex space-x-2">
                     {[
                       { key: 'all', label: 'All Tasks' },
@@ -172,10 +169,10 @@ const Tasks = () => {
                       <button
                         key={key}
                         onClick={() => setFilter(key as any)}
-                        className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                        className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                           filter === key
-                            ? 'bg-indigo-500/30 text-indigo-300 border border-indigo-500/50'
-                            : 'bg-slate-800/60 text-slate-400 border border-slate-700 hover:bg-slate-700/60'
+                            ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/50'
+                            : 'bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-700/50'
                         }`}
                       >
                         {label}
@@ -190,10 +187,10 @@ const Tasks = () => {
           {/* Daily Tasks */}
           {dailyTasks.length > 0 && (
             <div className="mb-8">
-              <h2 className="text-xl font-bold text-slate-100 mb-4">Daily Tasks ({dailyTasks.length})</h2>
+              <h2 className="text-xl font-semibold text-slate-100 mb-6">Daily Tasks ({dailyTasks.length})</h2>
               <div className="space-y-4">
                 {dailyTasks.map(task => (
-                  <Card key={task.id} className={`transition-all ${task.completed ? 'opacity-60' : 'hover:border-indigo-500/50'}`}>
+                  <Card key={task.id} className={`transition-all ${task.completed ? 'opacity-60' : 'hover:border-indigo-500/30'}`}>
                     <div className="p-6">
                       <div className="flex items-start space-x-4">
                         <div className="flex-shrink-0 mt-1">
@@ -201,15 +198,15 @@ const Tasks = () => {
                             type="checkbox"
                             checked={task.completed}
                             onChange={() => toggleTask(task.id)}
-                            className="h-5 w-5 rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-600 cursor-pointer"
+                            className="h-4 w-4 rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-600 cursor-pointer"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-2">
-                            <h3 className={`text-lg font-semibold ${task.completed ? 'line-through text-slate-500' : 'text-slate-100'}`}>
+                            <h3 className={`text-lg font-medium ${task.completed ? 'line-through text-slate-500' : 'text-slate-100'}`}>
                               {task.title}
                             </h3>
-                            <span className="text-sm text-slate-400 bg-slate-800/60 px-2 py-1 rounded">
+                            <span className="text-sm text-slate-400 bg-slate-800/50 px-3 py-1 rounded-lg">
                               {task.project}
                             </span>
                           </div>
@@ -228,10 +225,10 @@ const Tasks = () => {
           {/* Other Tasks */}
           {otherTasks.length > 0 && (
             <div>
-              <h2 className="text-xl font-bold text-slate-100 mb-4">Other Tasks ({otherTasks.length})</h2>
+              <h2 className="text-xl font-semibold text-slate-100 mb-6">Other Tasks ({otherTasks.length})</h2>
               <div className="space-y-4">
                 {otherTasks.map(task => (
-                  <Card key={task.id} className={`transition-all ${task.completed ? 'opacity-60' : 'hover:border-indigo-500/50'}`}>
+                  <Card key={task.id} className={`transition-all ${task.completed ? 'opacity-60' : 'hover:border-indigo-500/30'}`}>
                     <div className="p-6">
                       <div className="flex items-start space-x-4">
                         <div className="flex-shrink-0 mt-1">
@@ -239,15 +236,15 @@ const Tasks = () => {
                             type="checkbox"
                             checked={task.completed}
                             onChange={() => toggleTask(task.id)}
-                            className="h-5 w-5 rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-600 cursor-pointer"
+                            className="h-4 w-4 rounded bg-slate-700 border-slate-600 text-indigo-500 focus:ring-indigo-600 cursor-pointer"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between mb-2">
-                            <h3 className={`text-lg font-semibold ${task.completed ? 'line-through text-slate-500' : 'text-slate-100'}`}>
+                            <h3 className={`text-lg font-medium ${task.completed ? 'line-through text-slate-500' : 'text-slate-100'}`}>
                               {task.title}
                             </h3>
-                            <span className="text-sm text-slate-400 bg-slate-800/60 px-2 py-1 rounded">
+                            <span className="text-sm text-slate-400 bg-slate-800/50 px-3 py-1 rounded-lg">
                               {task.project}
                             </span>
                           </div>
