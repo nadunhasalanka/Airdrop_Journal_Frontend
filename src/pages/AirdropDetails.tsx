@@ -40,6 +40,12 @@ interface NewsItem {
   importance: 'High' | 'Medium' | 'Low';
 }
 
+interface SocialPlatform {
+  name: string;
+  icon: string;
+  url: string;
+}
+
 const AirdropDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [copiedLink, setCopiedLink] = useState<string>('');
@@ -58,6 +64,9 @@ const AirdropDetails = () => {
   });
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loadingNews, setLoadingNews] = useState(false);
+  const [savedSections, setSavedSections] = useState<{[key: string]: boolean}>({});
+  const [newSocialPlatform, setNewSocialPlatform] = useState({ name: '', icon: 'website', url: '' });
+  const [showAddSocial, setShowAddSocial] = useState(false);
 
   // Available tag suggestions
   const availableTags = [
@@ -65,6 +74,20 @@ const AirdropDetails = () => {
     'Telegram', 'Gaming', 'P2E', 'Social', 'TON', 'Cross-chain', 'NFT', 'Staking',
     'Yield', 'DAO', 'Governance', 'High Priority', 'Medium Priority', 'Low Priority',
     'Daily Task', 'Weekly Task', 'One-time', 'Recurring'
+  ];
+
+  // Available social platform icons
+  const socialPlatformOptions = [
+    { value: 'twitter', label: 'Twitter' },
+    { value: 'telegram', label: 'Telegram' },
+    { value: 'discord', label: 'Discord' },
+    { value: 'medium', label: 'Medium' },
+    { value: 'github', label: 'GitHub' },
+    { value: 'website', label: 'Website' },
+    { value: 'youtube', label: 'YouTube' },
+    { value: 'linkedin', label: 'LinkedIn' },
+    { value: 'reddit', label: 'Reddit' },
+    { value: 'facebook', label: 'Facebook' }
   ];
 
   // Mock data - in real app, this would come from API/database
@@ -144,6 +167,15 @@ const AirdropDetails = () => {
     }
   ];
 
+  // Initialize state with airdrop data
+  useEffect(() => {
+    setNotes(airdropDetails.notes);
+    setTags(airdropDetails.tags);
+    setIsDailyTask(airdropDetails.isDailyTask);
+    setDailyTaskNote(airdropDetails.dailyTaskNote || '');
+    setSocialMedia(airdropDetails.socialMedia);
+  }, []);
+
   // Simulate fetching news
   useEffect(() => {
     const fetchNews = async () => {
@@ -166,6 +198,14 @@ const AirdropDetails = () => {
     } catch (err) {
       console.error('Failed to copy: ', err);
     }
+  };
+
+  const saveSection = (sectionName: string) => {
+    // Here you would typically save to API/database
+    setSavedSections(prev => ({ ...prev, [sectionName]: true }));
+    setTimeout(() => {
+      setSavedSections(prev => ({ ...prev, [sectionName]: false }));
+    }, 2000);
   };
 
   const getStatusClass = (status: string) => {
@@ -209,13 +249,6 @@ const AirdropDetails = () => {
     tag.toLowerCase().includes(newTag.toLowerCase()) && !tags.includes(tag)
   );
 
-  const handleSocialMediaChange = (platform: string, value: string) => {
-    setSocialMedia(prev => ({
-      ...prev,
-      [platform]: value
-    }));
-  };
-
   const getSocialIcon = (platform: string) => {
     switch (platform) {
       case 'twitter':
@@ -248,15 +281,57 @@ const AirdropDetails = () => {
             <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
           </svg>
         );
+      case 'youtube':
+        return (
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        );
+      case 'linkedin':
+        return (
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+        );
+      case 'reddit':
+        return (
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/>
+          </svg>
+        );
+      case 'facebook':
+        return (
+          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        );
       case 'website':
+      default:
         return (
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
           </svg>
         );
-      default:
-        return null;
     }
+  };
+
+  const addSocialPlatform = () => {
+    if (newSocialPlatform.name && newSocialPlatform.url) {
+      setSocialMedia(prev => ({
+        ...prev,
+        [newSocialPlatform.name.toLowerCase()]: newSocialPlatform.url
+      }));
+      setNewSocialPlatform({ name: '', icon: 'website', url: '' });
+      setShowAddSocial(false);
+    }
+  };
+
+  const removeSocialPlatform = (platform: string) => {
+    setSocialMedia(prev => {
+      const updated = { ...prev };
+      delete updated[platform as keyof typeof updated];
+      return updated;
+    });
   };
 
   return (
@@ -393,54 +468,131 @@ const AirdropDetails = () => {
               {/* Social Media Section */}
               <Card>
                 <div className="p-6">
-                  <h3 className="text-lg font-bold text-slate-100 mb-4">Social Media & Links</h3>
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-bold text-slate-100">Social Media & Links</h3>
+                    <button
+                      onClick={() => setShowAddSocial(!showAddSocial)}
+                      className="text-sm bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded-lg transition"
+                    >
+                      Add Platform
+                    </button>
+                  </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {Object.entries(socialMedia).map(([platform, url]) => (
-                      <div key={platform}>
-                        <label className="block text-sm font-medium text-slate-300 mb-2 capitalize flex items-center gap-2">
-                          {getSocialIcon(platform)}
-                          {platform === 'website' ? 'Official Website' : platform}
-                        </label>
-                        <div className="flex gap-2">
-                          <input
-                            type="url"
-                            value={url || airdropDetails.socialMedia[platform as keyof typeof airdropDetails.socialMedia] || ''}
-                            onChange={(e) => handleSocialMediaChange(platform, e.target.value)}
-                            placeholder={`${platform} URL`}
-                            className="flex-1 bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                          />
-                          {(url || airdropDetails.socialMedia[platform as keyof typeof airdropDetails.socialMedia]) && (
-                            <div className="flex gap-1">
-                              <a
-                                href={url || airdropDetails.socialMedia[platform as keyof typeof airdropDetails.socialMedia]}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-2 rounded-lg transition flex items-center"
-                              >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  {/* Add New Social Platform */}
+                  {showAddSocial && (
+                    <div className="mb-6 p-4 bg-slate-800/40 rounded-lg border border-slate-700">
+                      <h4 className="text-sm font-medium text-slate-300 mb-3">Add New Social Platform</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <input
+                          type="text"
+                          value={newSocialPlatform.name}
+                          onChange={(e) => setNewSocialPlatform(prev => ({ ...prev, name: e.target.value }))}
+                          placeholder="Platform name"
+                          className="bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        />
+                        <select
+                          value={newSocialPlatform.icon}
+                          onChange={(e) => setNewSocialPlatform(prev => ({ ...prev, icon: e.target.value }))}
+                          className="bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        >
+                          {socialPlatformOptions.map(option => (
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                          ))}
+                        </select>
+                        <input
+                          type="url"
+                          value={newSocialPlatform.url}
+                          onChange={(e) => setNewSocialPlatform(prev => ({ ...prev, url: e.target.value }))}
+                          placeholder="URL"
+                          className="bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        />
+                      </div>
+                      <div className="flex gap-2 mt-3">
+                        <button
+                          onClick={addSocialPlatform}
+                          className="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm transition"
+                        >
+                          Add Platform
+                        </button>
+                        <button
+                          onClick={() => setShowAddSocial(false)}
+                          className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2 rounded-lg text-sm transition"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Social Media List */}
+                  <div className="space-y-3">
+                    {Object.entries(socialMedia).filter(([_, url]) => url).map(([platform, url]) => (
+                      <div key={platform} className="flex items-center justify-between p-3 bg-slate-800/40 rounded-lg border border-slate-700">
+                        <div className="flex items-center gap-3">
+                          <div className="text-slate-400">
+                            {getSocialIcon(platform)}
+                          </div>
+                          <span className="text-slate-200 font-medium capitalize">
+                            {platform === 'website' ? 'Official Website' : platform}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1 rounded-lg text-sm transition flex items-center gap-1"
+                          >
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                            Visit
+                          </a>
+                          <button
+                            onClick={() => copyToClipboard(url, platform)}
+                            className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-1 rounded-lg text-sm transition flex items-center gap-1"
+                          >
+                            {copiedLink === platform ? (
+                              <>
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
-                              </a>
-                              <button
-                                onClick={() => copyToClipboard(url || airdropDetails.socialMedia[platform as keyof typeof airdropDetails.socialMedia] || '', platform)}
-                                className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-3 py-2 rounded-lg transition flex items-center"
-                              >
-                                {copiedLink === platform ? (
-                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                  </svg>
-                                ) : (
-                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                  </svg>
-                                )}
-                              </button>
-                            </div>
-                          )}
+                                Copied
+                              </>
+                            ) : (
+                              <>
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                Copy
+                              </>
+                            )}
+                          </button>
+                          <button
+                            onClick={() => removeSocialPlatform(platform)}
+                            className="bg-red-600/20 hover:bg-red-600/30 text-red-400 px-2 py-1 rounded-lg text-sm transition"
+                          >
+                            ×
+                          </button>
                         </div>
                       </div>
                     ))}
+                  </div>
+
+                  {Object.values(socialMedia).filter(url => url).length === 0 && (
+                    <div className="text-center py-8 text-slate-400">
+                      <p>No social media links added yet</p>
+                    </div>
+                  )}
+
+                  {/* Save Button for Social Media */}
+                  <div className="mt-6 pt-4 border-t border-slate-800">
+                    <button 
+                      onClick={() => saveSection('social')}
+                      className="w-full bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded-lg font-medium transition"
+                    >
+                      {savedSections.social ? 'Saved!' : 'Save Social Media'}
+                    </button>
                   </div>
                 </div>
               </Card>
@@ -450,11 +602,21 @@ const AirdropDetails = () => {
                 <div className="p-6">
                   <h3 className="text-lg font-bold text-slate-100 mb-4">Notes</h3>
                   <textarea
-                    value={notes || airdropDetails.notes}
+                    value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     placeholder="Add your notes about this airdrop..."
                     className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-3 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 min-h-[120px] resize-vertical"
                   />
+                  
+                  {/* Save Button for Notes */}
+                  <div className="mt-4">
+                    <button 
+                      onClick={() => saveSection('notes')}
+                      className="bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded-lg font-medium transition"
+                    >
+                      {savedSections.notes ? 'Saved!' : 'Save Notes'}
+                    </button>
+                  </div>
                 </div>
               </Card>
 
@@ -526,7 +688,7 @@ const AirdropDetails = () => {
                   
                   {/* Current Tags */}
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {(tags.length > 0 ? tags : airdropDetails.tags).map(tag => (
+                    {tags.map(tag => (
                       <span key={tag} className="px-3 py-1 bg-indigo-500/20 text-indigo-300 text-sm rounded-lg flex items-center gap-2">
                         {tag}
                         <button
@@ -573,6 +735,16 @@ const AirdropDetails = () => {
                   >
                     Add Tag
                   </button>
+
+                  {/* Save Button for Tags */}
+                  <div className="mt-4 pt-4 border-t border-slate-800">
+                    <button 
+                      onClick={() => saveSection('tags')}
+                      className="w-full bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded-lg font-medium transition"
+                    >
+                      {savedSections.tags ? 'Saved!' : 'Save Tags'}
+                    </button>
+                  </div>
                 </div>
               </Card>
 
@@ -610,13 +782,18 @@ const AirdropDetails = () => {
                       </p>
                     </div>
                   )}
+
+                  {/* Save Button for Daily Task */}
+                  <div className="mt-4 pt-4 border-t border-slate-800">
+                    <button 
+                      onClick={() => saveSection('dailyTask')}
+                      className="w-full bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded-lg font-medium transition"
+                    >
+                      {savedSections.dailyTask ? 'Saved!' : 'Save Daily Task'}
+                    </button>
+                  </div>
                 </div>
               </Card>
-
-              {/* Save Button */}
-              <button className="w-full bg-green-600 hover:bg-green-500 text-white py-3 px-4 rounded-lg font-medium transition">
-                Save Changes
-              </button>
             </div>
           </div>
         </div>
