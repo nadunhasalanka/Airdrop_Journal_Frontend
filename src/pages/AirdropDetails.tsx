@@ -65,7 +65,7 @@ const AirdropDetails = () => {
   const [news, setNews] = useState<NewsItem[]>([]);
   const [loadingNews, setLoadingNews] = useState(false);
   const [savedSections, setSavedSections] = useState<{[key: string]: boolean}>({});
-  const [newSocialPlatform, setNewSocialPlatform] = useState({ name: '', icon: 'website', url: '' });
+  const [newSocialPlatform, setNewSocialPlatform] = useState({ platform: 'twitter', url: '' });
   const [showAddSocial, setShowAddSocial] = useState(false);
 
   // Available tag suggestions
@@ -76,7 +76,7 @@ const AirdropDetails = () => {
     'Daily Task', 'Weekly Task', 'One-time', 'Recurring'
   ];
 
-  // Available social platform icons
+  // Available social platform options
   const socialPlatformOptions = [
     { value: 'twitter', label: 'Twitter' },
     { value: 'telegram', label: 'Telegram' },
@@ -230,12 +230,26 @@ const AirdropDetails = () => {
   const addTag = (tag: string) => {
     if (tag && !tags.includes(tag)) {
       setTags([...tags, tag]);
+      // Auto-save when adding a tag
+      setTimeout(() => {
+        setSavedSections(prev => ({ ...prev, tags: true }));
+        setTimeout(() => {
+          setSavedSections(prev => ({ ...prev, tags: false }));
+        }, 1500);
+      }, 100);
     }
     setNewTag('');
   };
 
   const removeTag = (tagToRemove: string) => {
     setTags(tags.filter(tag => tag !== tagToRemove));
+    // Auto-save when removing a tag
+    setTimeout(() => {
+      setSavedSections(prev => ({ ...prev, tags: true }));
+      setTimeout(() => {
+        setSavedSections(prev => ({ ...prev, tags: false }));
+      }, 1500);
+    }, 100);
   };
 
   const handleTagInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -316,12 +330,12 @@ const AirdropDetails = () => {
   };
 
   const addSocialPlatform = () => {
-    if (newSocialPlatform.name && newSocialPlatform.url) {
+    if (newSocialPlatform.platform && newSocialPlatform.url) {
       setSocialMedia(prev => ({
         ...prev,
-        [newSocialPlatform.name.toLowerCase()]: newSocialPlatform.url
+        [newSocialPlatform.platform]: newSocialPlatform.url
       }));
-      setNewSocialPlatform({ name: '', icon: 'website', url: '' });
+      setNewSocialPlatform({ platform: 'twitter', url: '' });
       setShowAddSocial(false);
     }
   };
@@ -332,6 +346,11 @@ const AirdropDetails = () => {
       delete updated[platform as keyof typeof updated];
       return updated;
     });
+  };
+
+  const getPlatformLabel = (platform: string) => {
+    const option = socialPlatformOptions.find(opt => opt.value === platform);
+    return option ? option.label : platform.charAt(0).toUpperCase() + platform.slice(1);
   };
 
   return (
@@ -482,17 +501,10 @@ const AirdropDetails = () => {
                   {showAddSocial && (
                     <div className="mb-6 p-4 bg-slate-800/40 rounded-lg border border-slate-700">
                       <h4 className="text-sm font-medium text-slate-300 mb-3">Add New Social Platform</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <input
-                          type="text"
-                          value={newSocialPlatform.name}
-                          onChange={(e) => setNewSocialPlatform(prev => ({ ...prev, name: e.target.value }))}
-                          placeholder="Platform name"
-                          className="bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                        />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <select
-                          value={newSocialPlatform.icon}
-                          onChange={(e) => setNewSocialPlatform(prev => ({ ...prev, icon: e.target.value }))}
+                          value={newSocialPlatform.platform}
+                          onChange={(e) => setNewSocialPlatform(prev => ({ ...prev, platform: e.target.value }))}
                           className="bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         >
                           {socialPlatformOptions.map(option => (
@@ -532,8 +544,8 @@ const AirdropDetails = () => {
                           <div className="text-slate-400">
                             {getSocialIcon(platform)}
                           </div>
-                          <span className="text-slate-200 font-medium capitalize">
-                            {platform === 'website' ? 'Official Website' : platform}
+                          <span className="text-slate-200 font-medium">
+                            {getPlatformLabel(platform)}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
@@ -733,18 +745,8 @@ const AirdropDetails = () => {
                     disabled={!newTag}
                     className="mt-2 w-full bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-700 disabled:text-slate-500 text-white py-2 px-4 rounded-lg font-medium transition"
                   >
-                    Add Tag
+                    {savedSections.tags ? 'Tag Added & Saved!' : 'Add Tag'}
                   </button>
-
-                  {/* Save Button for Tags */}
-                  <div className="mt-4 pt-4 border-t border-slate-800">
-                    <button 
-                      onClick={() => saveSection('tags')}
-                      className="w-full bg-green-600 hover:bg-green-500 text-white py-2 px-4 rounded-lg font-medium transition"
-                    >
-                      {savedSections.tags ? 'Saved!' : 'Save Tags'}
-                    </button>
-                  </div>
                 </div>
               </Card>
 
