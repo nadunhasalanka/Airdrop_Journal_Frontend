@@ -10,6 +10,7 @@ import AirdropDetails from './pages/AirdropDetails';
 import Tasks from './pages/Tasks';
 import News from './pages/News';
 import Market from './pages/Market';
+import Settings from './pages/Settings';
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/news" element={<News />} />
           <Route path="/market" element={<Market />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </BrowserRouter>
   </QueryClientProvider>
