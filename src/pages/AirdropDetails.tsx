@@ -590,7 +590,7 @@ const AirdropDetails = () => {
                           <div className="text-gray-400">
                             {getSocialIcon(platform)}
                           </div>
-                          <span className="text-gray-200 font-medium">
+                          <span className="text-gray-200 font-medium hidden sm:block">
                             {getPlatformLabel(platform)}
                           </span>
                         </div>

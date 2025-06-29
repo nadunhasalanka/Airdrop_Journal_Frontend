@@ -7,6 +7,7 @@ import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
 import Airdrops from './pages/Airdrops';
 import AirdropDetails from './pages/AirdropDetails';
+import AddAirdrop from './pages/AddAirdrop';
 import Tasks from './pages/Tasks';
 import News from './pages/News';
 import Market from './pages/Market';
@@ -24,6 +25,7 @@ const App = () => (
           <Route path="/signin" element={<SignIn/>} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/airdrops" element={<Airdrops />} />
+          <Route path="/airdrops/add" element={<AddAirdrop />} />
           <Route path="/airdrops/:id" element={<AirdropDetails />} />
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/news" element={<News />} />

@@ -273,9 +273,9 @@ const Airdrops = () => {
               <h1 className="text-2xl lg:text-3xl font-semibold text-gray-100 mb-2">All Airdrops</h1>
               <p className="text-gray-400">Manage and track all your airdrop opportunities</p>
             </div>
-            <button className="btn-primary text-sm lg:text-base">
+            <Link to="/airdrops/add" className="btn-primary text-sm lg:text-base">
               Add New Airdrop
-            </button>
+            </Link>
           </header>
 
           {/* Filters Section */}

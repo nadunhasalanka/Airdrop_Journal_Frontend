@@ -73,13 +73,15 @@ const Sidebar = () => {
 
     return (
         <>
-            {/* Mobile Menu Button */}
-            <button
-                onClick={toggleMobileMenu}
-                className="lg:hidden fixed top-4 left-4 z-50 bg-slate-800 text-gray-200 p-2 rounded-lg shadow-lg hover:bg-slate-700 transition-colors"
-            >
-                {isMobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
-            </button>
+            {/* Mobile Menu Button - Fixed position */}
+            <div className="lg:hidden fixed top-4 left-4 z-50">
+                <button
+                    onClick={toggleMobileMenu}
+                    className="bg-slate-800 text-gray-200 p-2 rounded-lg shadow-lg hover:bg-slate-700 transition-colors"
+                >
+                    {isMobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+                </button>
+            </div>
 
             {/* Mobile Overlay */}
             {isMobileMenuOpen && (
