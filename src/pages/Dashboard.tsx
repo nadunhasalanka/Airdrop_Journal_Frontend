@@ -24,19 +24,19 @@ const Dashboard = () => {
     return (
         <div className="bg-gray-950 min-h-screen">
             <Sidebar />
-            <main className="ml-64 text-gray-200">
-                <div className="relative p-8 max-w-7xl mx-auto">
+            <main className="lg:ml-64 text-gray-200">
+                <div className="relative p-4 lg:p-8 max-w-7xl mx-auto">
                     {/* Subtle background effects */}
                     <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(124,58,237,0.04)_0%,rgba(168,85,247,0.02)_50%,transparent_70%)] -z-10 filter blur-[100px]"></div>
 
                     {/* Header */}
-                    <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-6">
+                    <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 lg:mb-12 gap-6 pt-16 lg:pt-0">
                         <div>
-                            <h1 className="text-3xl font-semibold text-gray-100 mb-2">Dashboard</h1>
+                            <h1 className="text-2xl lg:text-3xl font-semibold text-gray-100 mb-2">Dashboard</h1>
                             <p className="text-gray-400">Welcome back, Airdrop Hunter!</p>
                         </div>
                         <div className="flex items-center space-x-4">
-                            <button className="btn-primary">
+                            <button className="btn-primary text-sm lg:text-base">
                                 Add New Airdrop
                             </button>
                             <button className="btn-ghost p-2.5">
@@ -48,7 +48,7 @@ const Dashboard = () => {
                     </header>
 
                     {/* Main Content Grid */}
-                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-8">
+                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8 mb-6 lg:mb-8">
                         {/* Tasks Section */}
                         <div className="xl:col-span-1">
                             <TasksToday />
@@ -57,29 +57,29 @@ const Dashboard = () => {
                         {/* Airdrops Table */}
                         <div className="xl:col-span-2">
                             <Card>
-                                <div className="p-6">
-                                    <h2 className="text-xl font-semibold text-gray-100 mb-6">Your Tracked Airdrops</h2>
+                                <div className="p-4 lg:p-6">
+                                    <h2 className="text-lg lg:text-xl font-semibold text-gray-100 mb-4 lg:mb-6">Your Tracked Airdrops</h2>
                                     <div className="overflow-x-auto">
                                         <table className="w-full">
                                             <thead className="border-b border-gray-800/40">
                                                 <tr>
-                                                    <th className="text-left p-4 font-medium text-gray-400">Project</th>
-                                                    <th className="text-left p-4 font-medium text-gray-400">Status</th>
-                                                    <th className="text-left p-4 font-medium text-gray-400">Tasks</th>
-                                                    <th className="text-left p-4 font-medium text-gray-400">Deadline</th>
+                                                    <th className="text-left p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">Project</th>
+                                                    <th className="text-left p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">Status</th>
+                                                    <th className="text-left p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">Tasks</th>
+                                                    <th className="text-left p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">Deadline</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {airdrops.map((airdrop, index) => (
                                                     <tr key={index} className="table-row cursor-pointer">
-                                                        <td className="p-4 font-medium text-gray-200">{airdrop.name}</td>
-                                                        <td className="p-4">
-                                                            <span className={`px-3 py-1.5 text-xs font-medium rounded-lg ${getStatusClass(airdrop.status)}`}>
+                                                        <td className="p-2 lg:p-4 font-medium text-gray-200 text-sm lg:text-base">{airdrop.name}</td>
+                                                        <td className="p-2 lg:p-4">
+                                                            <span className={`px-2 lg:px-3 py-1 lg:py-1.5 text-xs font-medium rounded-lg ${getStatusClass(airdrop.status)}`}>
                                                                 {airdrop.status}
                                                             </span>
                                                         </td>
-                                                        <td className="p-4 text-gray-300">{airdrop.tasks}</td>
-                                                        <td className="p-4 text-gray-300">{airdrop.deadline}</td>
+                                                        <td className="p-2 lg:p-4 text-gray-300 text-sm lg:text-base">{airdrop.tasks}</td>
+                                                        <td className="p-2 lg:p-4 text-gray-300 text-sm lg:text-base">{airdrop.deadline}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>

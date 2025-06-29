@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import NavLink from './NavLink';
 
@@ -47,67 +47,144 @@ const LogoutIcon = () => (
     </svg>
 );
 
+const MenuIcon = () => (
+    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+);
+
+const CloseIcon = () => (
+    <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+);
+
 const Sidebar = () => {
     const location = useLocation();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     
-    return (
-        <aside className="fixed top-0 left-0 h-full w-64 bg-gray-950/90 backdrop-blur-xl border-r border-gray-800/40 flex flex-col z-30">
-            {/* Logo Section */}
-            <div className="flex items-center justify-center h-20 border-b border-gray-800/40 flex-shrink-0">
-                <Link to="/dashboard" className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-purple-600 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
-                    <span className="text-xl font-semibold text-gray-100">Airdrop Journal</span>
-                </Link>
-            </div>
-            
-            {/* Navigation Links */}
-            <nav className="flex-grow p-6">
-                <ul className="space-y-2">
-                    <NavLink href="/dashboard" icon={<DashboardIcon />} isActive={location.pathname === '/dashboard'}>
-                        Dashboard
-                    </NavLink>
-                    <NavLink href="/airdrops" icon={<AirdropsIcon />} isActive={location.pathname === '/airdrops' || location.pathname.startsWith('/airdrops/')}>
-                        All Airdrops
-                    </NavLink>
-                    <NavLink href="/tasks" icon={<TasksIcon />} isActive={location.pathname === '/tasks'}>
-                        Today's Tasks
-                    </NavLink>
-                    <NavLink href="/news" icon={<NewsIcon />} isActive={location.pathname === '/news'}>
-                        Airdrop News
-                    </NavLink>
-                    <NavLink href="/market" icon={<MarketIcon />} isActive={location.pathname === '/market'}>
-                        Market & Analysis
-                    </NavLink>
-                    <NavLink href="/settings" icon={<SettingsIcon />} isActive={location.pathname === '/settings'}>
-                        Settings
-                    </NavLink>
-                </ul>
-            </nav>
+    const toggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
 
-            {/* User Profile */}
-            <div className="p-6 border-t border-gray-800/40 flex-shrink-0">
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                        <img 
-                            src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&fit=crop" 
-                            alt="User Avatar" 
-                            className="w-10 h-10 rounded-full object-cover"
-                        />
-                        <div>
-                            <p className="text-sm font-medium text-gray-100">A. Hunter</p>
-                            <p className="text-xs text-gray-400">Pro Member</p>
+    const closeMobileMenu = () => {
+        setIsMobileMenuOpen(false);
+    };
+
+    return (
+        <>
+            {/* Mobile Menu Button */}
+            <button
+                onClick={toggleMobileMenu}
+                className="lg:hidden fixed top-4 left-4 z-50 bg-slate-800 text-gray-200 p-2 rounded-lg shadow-lg hover:bg-slate-700 transition-colors"
+            >
+                {isMobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+            </button>
+
+            {/* Mobile Overlay */}
+            {isMobileMenuOpen && (
+                <div 
+                    className="lg:hidden fixed inset-0 bg-black/50 z-40"
+                    onClick={closeMobileMenu}
+                />
+            )}
+
+            {/* Sidebar */}
+            <aside className={`
+                fixed top-0 left-0 h-full w-64 bg-slate-900 border-r border-slate-700 flex flex-col z-40 transition-transform duration-300 ease-in-out
+                ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+            `}>
+                {/* Logo Section */}
+                <div className="flex items-center justify-center h-20 border-b border-slate-700 flex-shrink-0 px-6">
+                    <Link to="/dashboard" className="flex items-center space-x-3" onClick={closeMobileMenu}>
+                        <div className="w-8 h-8 bg-gradient-to-br from-violet-600 to-purple-600 rounded-lg flex items-center justify-center">
+                            <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                            </svg>
                         </div>
-                    </div>
-                    <Link to="/" className="text-gray-500 hover:text-violet-400 transition-colors p-1 rounded-md">
-                        <LogoutIcon />
+                        <span className="text-xl font-semibold text-gray-100">Airdrop Journal</span>
                     </Link>
                 </div>
-            </div>
-        </aside>
+                
+                {/* Navigation Links */}
+                <nav className="flex-grow p-6">
+                    <ul className="space-y-2">
+                        <NavLink 
+                            href="/dashboard" 
+                            icon={<DashboardIcon />} 
+                            isActive={location.pathname === '/dashboard'}
+                            onClick={closeMobileMenu}
+                        >
+                            Dashboard
+                        </NavLink>
+                        <NavLink 
+                            href="/airdrops" 
+                            icon={<AirdropsIcon />} 
+                            isActive={location.pathname === '/airdrops' || location.pathname.startsWith('/airdrops/')}
+                            onClick={closeMobileMenu}
+                        >
+                            All Airdrops
+                        </NavLink>
+                        <NavLink 
+                            href="/tasks" 
+                            icon={<TasksIcon />} 
+                            isActive={location.pathname === '/tasks'}
+                            onClick={closeMobileMenu}
+                        >
+                            Today's Tasks
+                        </NavLink>
+                        <NavLink 
+                            href="/news" 
+                            icon={<NewsIcon />} 
+                            isActive={location.pathname === '/news'}
+                            onClick={closeMobileMenu}
+                        >
+                            Airdrop News
+                        </NavLink>
+                        <NavLink 
+                            href="/market" 
+                            icon={<MarketIcon />} 
+                            isActive={location.pathname === '/market'}
+                            onClick={closeMobileMenu}
+                        >
+                            Market & Analysis
+                        </NavLink>
+                        <NavLink 
+                            href="/settings" 
+                            icon={<SettingsIcon />} 
+                            isActive={location.pathname === '/settings'}
+                            onClick={closeMobileMenu}
+                        >
+                            Settings
+                        </NavLink>
+                    </ul>
+                </nav>
+
+                {/* User Profile */}
+                <div className="p-6 border-t border-slate-700 flex-shrink-0">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3">
+                            <img 
+                                src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&fit=crop" 
+                                alt="User Avatar" 
+                                className="w-10 h-10 rounded-full object-cover"
+                            />
+                            <div>
+                                <p className="text-sm font-medium text-gray-100">A. Hunter</p>
+                                <p className="text-xs text-gray-400">Pro Member</p>
+                            </div>
+                        </div>
+                        <Link 
+                            to="/" 
+                            className="text-gray-500 hover:text-violet-400 transition-colors p-1 rounded-md"
+                            onClick={closeMobileMenu}
+                        >
+                            <LogoutIcon />
+                        </Link>
+                    </div>
+                </div>
+            </aside>
+        </>
     );
 };
 

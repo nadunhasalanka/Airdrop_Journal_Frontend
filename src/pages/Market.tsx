@@ -297,26 +297,26 @@ const Market = () => {
   return (
     <div className="bg-gray-950 min-h-screen">
       <Sidebar />
-      <main className="ml-64 text-gray-200">
-        <div className="relative p-8 max-w-7xl mx-auto">
+      <main className="lg:ml-64 text-gray-200">
+        <div className="relative p-4 lg:p-8 max-w-7xl mx-auto">
           {/* Background Effects */}
           <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(124,58,237,0.04)_0%,rgba(168,85,247,0.02)_50%,transparent_70%)] -z-10 filter blur-[100px]"></div>
 
           {/* Header */}
-          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-6">
+          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 lg:mb-12 gap-6 pt-16 lg:pt-0">
             <div>
-              <h1 className="text-3xl font-semibold text-gray-100 mb-2">Market & Analysis</h1>
+              <h1 className="text-2xl lg:text-3xl font-semibold text-gray-100 mb-2">Market & Analysis</h1>
               <p className="text-gray-400">Track Bitcoin, altcoins, and market trends</p>
             </div>
-            <button className="btn-primary">
+            <button className="btn-primary text-sm lg:text-base">
               Refresh Data
             </button>
           </header>
 
           {/* Trending Topics */}
-          <Card className="mb-8">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-100 mb-6 flex items-center gap-2">
+          <Card className="mb-6 lg:mb-8">
+            <div className="p-4 lg:p-6">
+              <h2 className="text-lg lg:text-xl font-semibold text-gray-100 mb-4 lg:mb-6 flex items-center gap-2">
                 <svg className="w-5 h-5 text-orange-400" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M13.5 2c-5.621 0-10.211 4.443-10.475 10H3c-.552 0-1 .449-1 1 0 .551.448 1 1 1h.025C3.289 19.557 7.879 24 13.5 24 19.299 24 24 19.299 24 13.5S19.299 2 13.5 2zM13.5 22C8.813 22 5 18.187 5 13.5S8.813 5 13.5 5 22 8.813 22 13.5 18.187 22 13.5 22z"/>
                 </svg>
@@ -359,8 +359,8 @@ const Market = () => {
           </Card>
 
           {/* Market Data Filters */}
-          <Card className="mb-8">
-            <div className="p-6">
+          <Card className="mb-6 lg:mb-8">
+            <div className="p-4 lg:p-6">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
                   <label className="block text-sm font-medium text-gray-300 mb-2">Category</label>
@@ -405,9 +405,9 @@ const Market = () => {
           </Card>
 
           {/* Cryptocurrency Table */}
-          <Card className="mb-8">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-100 mb-6">Cryptocurrency Prices</h2>
+          <Card className="mb-6 lg:mb-8">
+            <div className="p-4 lg:p-6">
+              <h2 className="text-lg lg:text-xl font-semibold text-gray-100 mb-4 lg:mb-6">Cryptocurrency Prices</h2>
               
               {loading ? (
                 <div className="space-y-4">
@@ -430,44 +430,44 @@ const Market = () => {
                   <table className="w-full">
                     <thead className="border-b border-gray-800/40">
                       <tr>
-                        <th className="text-left p-4 font-medium text-gray-400">Coin</th>
-                        <th className="text-right p-4 font-medium text-gray-400">Price</th>
-                        <th className="text-right p-4 font-medium text-gray-400">24h Change</th>
-                        <th className="text-right p-4 font-medium text-gray-400">Market Cap</th>
-                        <th className="text-right p-4 font-medium text-gray-400">Volume</th>
+                        <th className="text-left p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">Coin</th>
+                        <th className="text-right p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">Price</th>
+                        <th className="text-right p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">24h Change</th>
+                        <th className="text-right p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">Market Cap</th>
+                        <th className="text-right p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">Volume</th>
                       </tr>
                     </thead>
                     <tbody>
                       {filteredCoins.map(coin => (
                         <tr key={coin.id} className="table-row cursor-pointer">
-                          <td className="p-4">
+                          <td className="p-2 lg:p-4">
                             <div className="flex items-center gap-3">
                               <img 
                                 src={coin.logoUrl} 
                                 alt={`${coin.name} logo`}
-                                className="w-10 h-10 rounded-full object-cover"
+                                className="w-8 h-8 lg:w-10 lg:h-10 rounded-full object-cover"
                               />
                               <div>
                                 <div className="flex items-center gap-2">
-                                  <span className="font-medium text-gray-100">{coin.name}</span>
+                                  <span className="font-medium text-gray-100 text-sm lg:text-base">{coin.name}</span>
                                   <span className={`px-2 py-1 text-xs font-medium rounded-lg ${getCategoryClass(coin.category)}`}>
                                     {coin.category}
                                   </span>
                                 </div>
-                                <span className="text-gray-400 text-sm">{coin.symbol}</span>
+                                <span className="text-gray-400 text-xs lg:text-sm">{coin.symbol}</span>
                               </div>
                             </div>
                           </td>
-                          <td className="p-4 text-right font-medium text-gray-100">
+                          <td className="p-2 lg:p-4 text-right font-medium text-gray-100 text-sm lg:text-base">
                             {formatPrice(coin.price)}
                           </td>
-                          <td className={`p-4 text-right font-medium ${getChangeClass(coin.change24h)}`}>
+                          <td className={`p-2 lg:p-4 text-right font-medium text-sm lg:text-base ${getChangeClass(coin.change24h)}`}>
                             {coin.change24h >= 0 ? '+' : ''}{coin.change24h.toFixed(2)}%
                           </td>
-                          <td className="p-4 text-right text-gray-300">
+                          <td className="p-2 lg:p-4 text-right text-gray-300 text-sm lg:text-base">
                             {formatMarketCap(coin.marketCap)}
                           </td>
-                          <td className="p-4 text-right text-gray-300">
+                          <td className="p-2 lg:p-4 text-right text-gray-300 text-sm lg:text-base">
                             {formatMarketCap(coin.volume24h)}
                           </td>
                         </tr>
@@ -481,8 +481,8 @@ const Market = () => {
 
           {/* Market News */}
           <Card>
-            <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-100 mb-6">Market News</h2>
+            <div className="p-4 lg:p-6">
+              <h2 className="text-lg lg:text-xl font-semibold text-gray-100 mb-4 lg:mb-6">Market News</h2>
               
               {loading ? (
                 <div className="space-y-4">
@@ -501,7 +501,7 @@ const Market = () => {
                 <div className="space-y-4">
                   {marketNews.map(article => (
                     <div key={article.id} className="border-b border-gray-800/30 pb-4 last:border-b-0 last:pb-0">
-                      <div className="flex justify-between items-start gap-3 mb-2">
+                      <div className="flex flex-col lg:flex-row justify-between items-start gap-3 mb-2">
                         <h3 className="font-medium text-gray-200 hover:text-violet-400 transition-colors cursor-pointer">
                           <a href={article.url} target="_blank" rel="noopener noreferrer">
                             {article.title}

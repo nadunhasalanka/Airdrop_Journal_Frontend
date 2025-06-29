@@ -55,19 +55,19 @@ const Settings = () => {
   return (
     <div className="bg-gray-950 min-h-screen">
       <Sidebar />
-      <main className="ml-64 text-gray-200">
-        <div className="max-w-4xl mx-auto p-8">
+      <main className="lg:ml-64 text-gray-200">
+        <div className="max-w-4xl mx-auto p-4 lg:p-8">
           {/* Background Effects */}
           <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(124,58,237,0.04)_0%,rgba(168,85,247,0.02)_50%,transparent_70%)] -z-10 filter blur-[100px]"></div>
 
           {/* Header */}
-          <div className="mb-12">
-            <h1 className="text-3xl font-semibold text-gray-100 mb-2">Settings</h1>
+          <div className="mb-8 lg:mb-12 pt-16 lg:pt-0">
+            <h1 className="text-2xl lg:text-3xl font-semibold text-gray-100 mb-2">Settings</h1>
             <p className="text-gray-400">Manage your profile and account preferences</p>
           </div>
 
           {/* Tab Navigation */}
-          <div className="flex space-x-1 mb-8 bg-gray-900/30 p-1 rounded-xl w-fit">
+          <div className="flex space-x-1 mb-6 lg:mb-8 bg-gray-900/30 p-1 rounded-xl w-fit">
             {[
               { id: 'profile', label: 'Profile' },
               { id: 'security', label: 'Security' }
@@ -75,7 +75,7 @@ const Settings = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                className={`px-4 lg:px-6 py-3 rounded-lg font-medium transition-all text-sm lg:text-base ${
                   activeTab === tab.id
                     ? 'bg-gray-800 text-gray-100 shadow-lg'
                     : 'text-gray-400 hover:text-gray-200'
@@ -88,21 +88,21 @@ const Settings = () => {
 
           {/* Profile Tab */}
           {activeTab === 'profile' && (
-            <div className="space-y-8">
+            <div className="space-y-6 lg:space-y-8">
               {/* Profile Picture Section */}
               <Card>
-                <div className="p-8">
-                  <h2 className="text-xl font-semibold text-gray-100 mb-6">Profile Picture</h2>
-                  <div className="flex items-center space-x-8">
+                <div className="p-4 lg:p-8">
+                  <h2 className="text-lg lg:text-xl font-semibold text-gray-100 mb-4 lg:mb-6">Profile Picture</h2>
+                  <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-8">
                     <div className="relative">
                       <img 
                         src={profile.avatar} 
                         alt="Profile"
-                        className="w-20 h-20 rounded-full object-cover"
+                        className="w-16 h-16 lg:w-20 lg:h-20 rounded-full object-cover"
                       />
-                      <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-gray-900"></div>
+                      <div className="absolute -bottom-1 -right-1 w-5 h-5 lg:w-6 lg:h-6 bg-emerald-500 rounded-full border-2 border-gray-900"></div>
                     </div>
-                    <div className="flex-1">
+                    <div className="flex-1 text-center sm:text-left">
                       <input
                         type="file"
                         id="avatar-upload"
@@ -112,7 +112,7 @@ const Settings = () => {
                       />
                       <label
                         htmlFor="avatar-upload"
-                        className="btn-secondary cursor-pointer inline-block"
+                        className="btn-secondary cursor-pointer inline-block text-sm lg:text-base"
                       >
                         Change Photo
                       </label>
@@ -124,10 +124,10 @@ const Settings = () => {
 
               {/* Personal Information */}
               <Card>
-                <div className="p-8">
-                  <h2 className="text-xl font-semibold text-gray-100 mb-6">Personal Information</h2>
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-4 lg:p-8">
+                  <h2 className="text-lg lg:text-xl font-semibold text-gray-100 mb-4 lg:mb-6">Personal Information</h2>
+                  <div className="space-y-4 lg:space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2">First Name</label>
                         <input
@@ -148,7 +148,7 @@ const Settings = () => {
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-300 mb-2">Username</label>
                         <input
@@ -181,10 +181,10 @@ const Settings = () => {
                     </div>
                   </div>
                   
-                  <div className="flex justify-end mt-8">
+                  <div className="flex justify-end mt-6 lg:mt-8">
                     <button 
                       onClick={() => saveSection('profile')}
-                      className="btn-primary"
+                      className="btn-primary text-sm lg:text-base"
                     >
                       {savedSections.profile ? 'Saved!' : 'Save Changes'}
                     </button>
@@ -194,8 +194,8 @@ const Settings = () => {
 
               {/* Account Details */}
               <Card>
-                <div className="p-8">
-                  <h2 className="text-xl font-semibold text-gray-100 mb-6">Account Details</h2>
+                <div className="p-4 lg:p-8">
+                  <h2 className="text-lg lg:text-xl font-semibold text-gray-100 mb-4 lg:mb-6">Account Details</h2>
                   <div className="space-y-4">
                     <div className="flex justify-between items-center py-3">
                       <div>
@@ -219,12 +219,12 @@ const Settings = () => {
 
           {/* Security Tab */}
           {activeTab === 'security' && (
-            <div className="space-y-8">
+            <div className="space-y-6 lg:space-y-8">
               {/* Change Password */}
               <Card>
-                <div className="p-8">
-                  <h2 className="text-xl font-semibold text-gray-100 mb-6">Change Password</h2>
-                  <div className="space-y-6 max-w-md">
+                <div className="p-4 lg:p-8">
+                  <h2 className="text-lg lg:text-xl font-semibold text-gray-100 mb-4 lg:mb-6">Change Password</h2>
+                  <div className="space-y-4 lg:space-y-6 max-w-md">
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">Current Password</label>
                       <input
@@ -260,11 +260,11 @@ const Settings = () => {
                     )}
                   </div>
                   
-                  <div className="flex justify-end mt-8">
+                  <div className="flex justify-end mt-6 lg:mt-8">
                     <button 
                       onClick={() => saveSection('password')}
                       disabled={!passwordData.currentPassword || !passwordData.newPassword || passwordData.newPassword !== passwordData.confirmPassword}
-                      className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base"
                     >
                       {savedSections.password ? 'Password Updated!' : 'Update Password'}
                     </button>
@@ -274,8 +274,8 @@ const Settings = () => {
 
               {/* Security Overview */}
               <Card>
-                <div className="p-8">
-                  <h2 className="text-xl font-semibold text-gray-100 mb-6">Security Overview</h2>
+                <div className="p-4 lg:p-8">
+                  <h2 className="text-lg lg:text-xl font-semibold text-gray-100 mb-4 lg:mb-6">Security Overview</h2>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between py-4">
                       <div className="flex items-center space-x-3">

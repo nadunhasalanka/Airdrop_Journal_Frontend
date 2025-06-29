@@ -24,7 +24,7 @@ body {
 .cta-button {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     font-weight: 500;
-    border-radius: 8px;
+    border-radius: 12px;
 }
 
 .cta-button:hover {
@@ -140,7 +140,7 @@ input:focus, textarea:focus, select:focus, button:focus {
 .btn-primary {
     background-color: #7C3AED;
     color: white;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 0.625rem 1.5rem;
     font-weight: 500;
     transition: all 0.2s ease;
@@ -156,7 +156,7 @@ input:focus, textarea:focus, select:focus, button:focus {
 .btn-secondary {
     background-color: rgba(55, 65, 81, 0.6);
     color: #D1D5DB;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 0.625rem 1.5rem;
     font-weight: 500;
     transition: all 0.2s ease;
@@ -171,7 +171,7 @@ input:focus, textarea:focus, select:focus, button:focus {
 .btn-ghost {
     background-color: transparent;
     color: #9CA3AF;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 0.625rem 1.5rem;
     font-weight: 500;
     transition: all 0.2s ease;
@@ -187,7 +187,7 @@ input:focus, textarea:focus, select:focus, button:focus {
 .form-input {
     background-color: rgba(31, 41, 55, 0.6);
     border: 1px solid rgba(75, 85, 99, 0.4);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 0.75rem 1rem;
     color: #E8E8E8;
     transition: all 0.2s ease;
@@ -251,7 +251,7 @@ input:focus, textarea:focus, select:focus, button:focus {
     background-color: rgba(31, 41, 55, 0.4);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(75, 85, 99, 0.3);
-    border-radius: 12px;
+    border-radius: 16px;
     transition: all 0.2s ease;
 }
 
@@ -274,7 +274,7 @@ input:focus, textarea:focus, select:focus, button:focus {
 .tag {
     background-color: rgba(55, 65, 81, 0.5);
     color: #D1D5DB;
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 0.25rem 0.5rem;
     font-size: 0.75rem;
     font-weight: 500;

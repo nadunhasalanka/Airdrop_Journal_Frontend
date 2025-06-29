@@ -328,18 +328,18 @@ const AirdropDetails = () => {
   return (
     <div className="bg-gray-950 min-h-screen">
       <Sidebar />
-      <main className="ml-64 text-gray-200">
-        <div className="relative p-8 max-w-7xl mx-auto">
+      <main className="lg:ml-64 text-gray-200">
+        <div className="relative p-4 lg:p-8 max-w-7xl mx-auto">
           {/* Background Effects */}
           <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(124,58,237,0.04)_0%,rgba(168,85,247,0.02)_50%,transparent_70%)] -z-10 filter blur-[100px]"></div>
 
           {/* Header */}
-          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-6">
+          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 lg:mb-12 gap-6 pt-16 lg:pt-0">
             <div className="min-w-0 flex-1">
               <Link to="/airdrops" className="text-violet-400 hover:text-violet-300 text-sm mb-2 inline-block transition-colors">
                 ← Back to All Airdrops
               </Link>
-              <h1 className="text-3xl font-semibold text-gray-100 mb-2">{airdropDetails.name}</h1>
+              <h1 className="text-2xl lg:text-3xl font-semibold text-gray-100 mb-2">{airdropDetails.name}</h1>
               <p className="text-gray-400">{airdropDetails.ecosystem} • {airdropDetails.type}</p>
             </div>
             <div className="flex items-center space-x-4 flex-shrink-0">
@@ -350,22 +350,22 @@ const AirdropDetails = () => {
           </header>
 
           {/* Main Content */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Left Column - Main Info */}
-            <div className="lg:col-span-2 space-y-8">
+            <div className="lg:col-span-2 space-y-6 lg:space-y-8">
               {/* Banner and Overview */}
               <Card>
                 <div className="relative">
                   <img 
                     src={airdropDetails.bannerUrl} 
                     alt={`${airdropDetails.name} banner`}
-                    className="w-full h-48 object-cover rounded-t-xl"
+                    className="w-full h-32 lg:h-48 object-cover rounded-t-xl"
                   />
                   <div className="absolute top-4 left-4">
                     <img 
                       src={airdropDetails.logoUrl} 
                       alt={`${airdropDetails.name} logo`}
-                      className="w-16 h-16 rounded-xl border-4 border-gray-900 bg-gray-900"
+                      className="w-12 h-12 lg:w-16 lg:h-16 rounded-xl border-4 border-gray-900 bg-gray-900"
                     />
                   </div>
                   {isEnded && (
@@ -376,19 +376,19 @@ const AirdropDetails = () => {
                     </div>
                   )}
                 </div>
-                <div className="p-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="p-4 lg:p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 mb-4 lg:mb-6">
                     <div>
                       <p className="text-gray-400 text-sm">Estimated Value</p>
-                      <p className="text-2xl font-semibold text-emerald-400">{airdropDetails.estimatedValue}</p>
+                      <p className="text-xl lg:text-2xl font-semibold text-emerald-400">{airdropDetails.estimatedValue}</p>
                     </div>
                     <div>
                       <p className="text-gray-400 text-sm">Deadline</p>
-                      <p className="text-2xl font-semibold text-gray-200">{airdropDetails.deadline}</p>
+                      <p className="text-xl lg:text-2xl font-semibold text-gray-200">{airdropDetails.deadline}</p>
                     </div>
                   </div>
 
-                  <div className="mb-6">
+                  <div className="mb-4 lg:mb-6">
                     <h3 className="text-lg font-semibold text-gray-100 mb-3">Description</h3>
                     <p className="text-gray-300 leading-relaxed">{airdropDetails.description}</p>
                   </div>
@@ -400,13 +400,13 @@ const AirdropDetails = () => {
                         href={airdropDetails.officialLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full btn-primary text-center block"
+                        className="w-full btn-primary text-center block text-sm lg:text-base"
                       >
                         Visit Official Site
                       </a>
                       <button
                         onClick={() => copyToClipboard(airdropDetails.officialLink, 'official')}
-                        className="w-full btn-secondary flex items-center justify-center gap-2"
+                        className="w-full btn-secondary flex items-center justify-center gap-2 text-sm lg:text-base"
                       >
                         {copiedLink === 'official' ? (
                           <>
@@ -432,13 +432,13 @@ const AirdropDetails = () => {
                           href={airdropDetails.referralLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-center py-3 px-4 rounded-lg font-medium transition block"
+                          className="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-center py-3 px-4 rounded-lg font-medium transition block text-sm lg:text-base"
                         >
                           Use Referral Link
                         </a>
                         <button
                           onClick={() => copyToClipboard(airdropDetails.referralLink!, 'referral')}
-                          className="w-full bg-emerald-800/30 hover:bg-emerald-700/30 text-emerald-300 py-2 px-4 rounded-lg font-medium transition flex items-center justify-center gap-2"
+                          className="w-full bg-emerald-800/30 hover:bg-emerald-700/30 text-emerald-300 py-2 px-4 rounded-lg font-medium transition flex items-center justify-center gap-2 text-sm lg:text-base"
                         >
                           {copiedLink === 'referral' ? (
                             <>
@@ -464,13 +464,13 @@ const AirdropDetails = () => {
 
               {/* Mark as Ended Section */}
               <Card>
-                <div className="p-6">
+                <div className="p-4 lg:p-6">
                   <div className="flex justify-between items-center mb-6">
                     <h3 className="text-lg font-semibold text-gray-100">Airdrop Status</h3>
                     {!isEnded ? (
                       <button
                         onClick={handleMarkAsEnded}
-                        className="bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                        className="bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm lg:text-base"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -480,7 +480,7 @@ const AirdropDetails = () => {
                     ) : (
                       <button
                         onClick={handleUnmarkAsEnded}
-                        className="bg-violet-600/20 hover:bg-violet-600/30 text-violet-300 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                        className="bg-violet-600/20 hover:bg-violet-600/30 text-violet-300 px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 text-sm lg:text-base"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -521,7 +521,7 @@ const AirdropDetails = () => {
                       
                       <button 
                         onClick={() => saveSection('endedStatus')}
-                        className="btn-primary"
+                        className="btn-primary text-sm lg:text-base"
                       >
                         {savedSections.endedStatus ? 'Saved!' : 'Save End Notes'}
                       </button>
@@ -532,7 +532,7 @@ const AirdropDetails = () => {
 
               {/* Social Media Section */}
               <Card>
-                <div className="p-6">
+                <div className="p-4 lg:p-6">
                   <div className="flex justify-between items-center mb-6">
                     <h3 className="text-lg font-semibold text-gray-100">Social Media & Links</h3>
                     <button
@@ -647,7 +647,7 @@ const AirdropDetails = () => {
                   <div className="mt-6 pt-4 border-t border-gray-800/30">
                     <button 
                       onClick={() => saveSection('social')}
-                      className="btn-primary"
+                      className="btn-primary text-sm lg:text-base"
                     >
                       {savedSections.social ? 'Saved!' : 'Save Social Media'}
                     </button>
@@ -657,7 +657,7 @@ const AirdropDetails = () => {
 
               {/* Notes Section */}
               <Card>
-                <div className="p-6">
+                <div className="p-4 lg:p-6">
                   <h3 className="text-lg font-semibold text-gray-100 mb-4">Notes</h3>
                   <textarea
                     value={notes}
@@ -670,7 +670,7 @@ const AirdropDetails = () => {
                   <div className="mt-4">
                     <button 
                       onClick={() => saveSection('notes')}
-                      className="btn-primary"
+                      className="btn-primary text-sm lg:text-base"
                     >
                       {savedSections.notes ? 'Saved!' : 'Save Notes'}
                     </button>
@@ -680,7 +680,7 @@ const AirdropDetails = () => {
 
               {/* News Section */}
               <Card>
-                <div className="p-6">
+                <div className="p-4 lg:p-6">
                   <div className="flex justify-between items-center mb-6">
                     <h3 className="text-lg font-semibold text-gray-100">Latest News & Updates</h3>
                     <button 
@@ -738,10 +738,10 @@ const AirdropDetails = () => {
             </div>
 
             {/* Right Column - Tags and Daily Task */}
-            <div className="space-y-8">
+            <div className="space-y-6 lg:space-y-8">
               {/* Tag Management */}
               <Card>
-                <div className="p-6">
+                <div className="p-4 lg:p-6">
                   <h3 className="text-lg font-semibold text-gray-100 mb-4">Tags</h3>
                   
                   {/* Current Tags */}
@@ -791,7 +791,7 @@ const AirdropDetails = () => {
                   <button
                     onClick={() => addTag(newTag)}
                     disabled={!newTag}
-                    className="mt-3 w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="mt-3 w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base"
                   >
                     {savedSections.tags ? 'Tag Added & Saved!' : 'Add Tag'}
                   </button>
@@ -800,7 +800,7 @@ const AirdropDetails = () => {
 
               {/* Daily Task Configuration */}
               <Card>
-                <div className="p-6">
+                <div className="p-4 lg:p-6">
                   <h3 className="text-lg font-semibold text-gray-100 mb-4">Daily Task</h3>
                   
                   <div className="flex items-center gap-3 mb-4">
@@ -837,7 +837,7 @@ const AirdropDetails = () => {
                   <div className="mt-4 pt-4 border-t border-gray-800/30">
                     <button 
                       onClick={() => saveSection('dailyTask')}
-                      className="w-full btn-primary"
+                      className="w-full btn-primary text-sm lg:text-base"
                     >
                       {savedSections.dailyTask ? 'Saved!' : 'Save Daily Task'}
                     </button>

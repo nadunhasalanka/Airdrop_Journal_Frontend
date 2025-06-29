@@ -262,25 +262,25 @@ const Airdrops = () => {
   return (
     <div className="bg-gray-950 min-h-screen">
       <Sidebar />
-      <main className="ml-64 text-gray-200">
-        <div className="relative p-8 max-w-7xl mx-auto">
+      <main className="lg:ml-64 text-gray-200">
+        <div className="relative p-4 lg:p-8 max-w-7xl mx-auto">
           {/* Background Effects */}
           <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(124,58,237,0.04)_0%,rgba(168,85,247,0.02)_50%,transparent_70%)] -z-10 filter blur-[100px]"></div>
 
           {/* Header */}
-          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-6">
+          <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 lg:mb-12 gap-6 pt-16 lg:pt-0">
             <div>
-              <h1 className="text-3xl font-semibold text-gray-100 mb-2">All Airdrops</h1>
+              <h1 className="text-2xl lg:text-3xl font-semibold text-gray-100 mb-2">All Airdrops</h1>
               <p className="text-gray-400">Manage and track all your airdrop opportunities</p>
             </div>
-            <button className="btn-primary">
+            <button className="btn-primary text-sm lg:text-base">
               Add New Airdrop
             </button>
           </header>
 
           {/* Filters Section */}
-          <Card className="mb-8">
-            <div className="p-6">
+          <Card className="mb-6 lg:mb-8">
+            <div className="p-4 lg:p-6">
               <div className="flex flex-col gap-6">
                 {/* Search and Main Filters */}
                 <div className="flex flex-col lg:flex-row gap-4">
@@ -295,7 +295,7 @@ const Airdrops = () => {
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:w-auto">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:w-auto">
                     <div>
                       <label className="block text-sm font-medium text-gray-300 mb-2">Status</label>
                       <select
@@ -380,10 +380,10 @@ const Airdrops = () => {
           </div>
 
           {/* Airdrops Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
             {filteredAirdrops.map(airdrop => (
               <Card key={airdrop.id} className="hover:border-violet-600/30 transition-all duration-200">
-                <div className="p-6">
+                <div className="p-4 lg:p-6">
                   {/* Header with Logo */}
                   <div className="flex items-start gap-4 mb-4">
                     <img 
@@ -392,7 +392,7 @@ const Airdrops = () => {
                       className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
                     />
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-xl font-semibold text-gray-100 mb-1 truncate">{airdrop.name}</h3>
+                      <h3 className="text-lg lg:text-xl font-semibold text-gray-100 mb-1 truncate">{airdrop.name}</h3>
                       <p className="text-sm text-gray-400">{airdrop.ecosystem} • {airdrop.category}</p>
                     </div>
                     <div className="flex flex-col items-end gap-2">
@@ -456,7 +456,7 @@ const Airdrops = () => {
                     <div className="flex gap-2">
                       <Link 
                         to={`/airdrops/${airdrop.id}`}
-                        className="flex-1 btn-primary text-center"
+                        className="flex-1 btn-primary text-center text-sm"
                       >
                         View Details
                       </Link>
@@ -464,7 +464,7 @@ const Airdrops = () => {
                         href={airdrop.officialLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 btn-secondary text-center"
+                        className="flex-1 btn-secondary text-center text-sm"
                       >
                         Visit Site
                       </a>
