@@ -1,17 +1,86 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Card from '@/components/Dashboard/Card';
 import AirdropNews from '@/components/Dashboard/AirdropNews';
 import TasksToday from '@/components/Dashboard/TaskToday';
+import airdropService from '@/services/airdropService';
+import { taskService } from '@/services/taskService';
+
+interface DashboardStats {
+    totalAirdrops: number;
+    farmingAirdrops: number;
+    completedAirdrops: number;
+    claimableAirdrops: number;
+    totalTasks: number;
+    completedTasks: number;
+}
+
+interface Airdrop {
+    _id: string;
+    name: string;
+    status: string;
+    deadline: string;
+    type: string;
+    ecosystem: string;
+    isDailyTask: boolean;
+}
 
 const Dashboard = () => {
-    const airdrops = [
-        { name: 'ZkSync', status: 'Farming', tasks: '5/12', deadline: 'TBA' },
-        { name: 'LayerZero', status: 'Farming', tasks: '23/30', deadline: 'TBA' },
-        { name: 'Starknet', status: 'Claimable', tasks: 'Done', deadline: '14 days' },
-        { name: 'Wormhole', status: 'Completed', tasks: 'Done', deadline: '-' },
-    ];
+    const [airdrops, setAirdrops] = useState<Airdrop[]>([]);
+    const [stats, setStats] = useState<DashboardStats>({
+        totalAirdrops: 0,
+        farmingAirdrops: 0,
+        completedAirdrops: 0,
+        claimableAirdrops: 0,
+        totalTasks: 0,
+        completedTasks: 0
+    });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetchDashboardData();
+    }, []);
+
+    const fetchDashboardData = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            // Fetch airdrops and task stats in parallel
+            const [airdropResponse, taskStatsResponse] = await Promise.all([
+                airdropService.getAirdrops({ limit: 10, sortBy: 'updatedAt', sortOrder: 'desc' }),
+                taskService.getTaskStats()
+            ]);
+
+            if (airdropResponse.success) {
+                const airdropData = airdropResponse.data || [];
+                setAirdrops(airdropData);
+
+                // Calculate airdrop stats
+                const totalAirdrops = airdropData.length;
+                const farmingAirdrops = airdropData.filter((a: Airdrop) => a.status === 'Farming').length;
+                const completedAirdrops = airdropData.filter((a: Airdrop) => a.status === 'Completed').length;
+                const claimableAirdrops = airdropData.filter((a: Airdrop) => a.status === 'Claimable').length;
+
+                setStats(prev => ({
+                    ...prev,
+                    totalAirdrops,
+                    farmingAirdrops,
+                    completedAirdrops,
+                    claimableAirdrops,
+                    totalTasks: taskStatsResponse.total || 0,
+                    completedTasks: taskStatsResponse.completed || 0
+                }));
+            }
+        } catch (err) {
+            console.error('Error fetching dashboard data:', err);
+            setError('Failed to load dashboard data');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const getStatusClass = (status: string) => {
         switch (status) {
@@ -50,6 +119,48 @@ const Dashboard = () => {
 
                     {/* Main Content Grid */}
                     <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8 mb-6 lg:mb-8">
+                        {/* Stats Overview */}
+                        <div className="xl:col-span-3 mb-6">
+                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                                <Card>
+                                    <div className="p-4 text-center">
+                                        <div className="text-2xl font-bold text-blue-400">{stats.totalAirdrops}</div>
+                                        <div className="text-sm text-gray-400">Total Airdrops</div>
+                                    </div>
+                                </Card>
+                                <Card>
+                                    <div className="p-4 text-center">
+                                        <div className="text-2xl font-bold text-green-400">{stats.farmingAirdrops}</div>
+                                        <div className="text-sm text-gray-400">Farming</div>
+                                    </div>
+                                </Card>
+                                <Card>
+                                    <div className="p-4 text-center">
+                                        <div className="text-2xl font-bold text-yellow-400">{stats.claimableAirdrops}</div>
+                                        <div className="text-sm text-gray-400">Claimable</div>
+                                    </div>
+                                </Card>
+                                <Card>
+                                    <div className="p-4 text-center">
+                                        <div className="text-2xl font-bold text-purple-400">{stats.completedAirdrops}</div>
+                                        <div className="text-sm text-gray-400">Completed</div>
+                                    </div>
+                                </Card>
+                                <Card>
+                                    <div className="p-4 text-center">
+                                        <div className="text-2xl font-bold text-orange-400">{stats.totalTasks}</div>
+                                        <div className="text-sm text-gray-400">Total Tasks</div>
+                                    </div>
+                                </Card>
+                                <Card>
+                                    <div className="p-4 text-center">
+                                        <div className="text-2xl font-bold text-emerald-400">{stats.completedTasks}</div>
+                                        <div className="text-sm text-gray-400">Tasks Done</div>
+                                    </div>
+                                </Card>
+                            </div>
+                        </div>
+
                         {/* Tasks Section */}
                         <div className="xl:col-span-1">
                             <TasksToday />
@@ -71,18 +182,36 @@ const Dashboard = () => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {airdrops.map((airdrop, index) => (
-                                                    <tr key={index} className="table-row cursor-pointer">
-                                                        <td className="p-2 lg:p-4 font-medium text-gray-200 text-sm lg:text-base">{airdrop.name}</td>
-                                                        <td className="p-2 lg:p-4">
-                                                            <span className={`px-2 lg:px-3 py-1 lg:py-1.5 text-xs font-medium rounded-lg ${getStatusClass(airdrop.status)}`}>
-                                                                {airdrop.status}
-                                                            </span>
+                                                {loading ? (
+                                                    <tr>
+                                                        <td colSpan={4} className="p-4 text-center text-gray-400">
+                                                            Loading airdrops...
                                                         </td>
-                                                        <td className="p-2 lg:p-4 text-gray-300 text-sm lg:text-base">{airdrop.tasks}</td>
-                                                        <td className="p-2 lg:p-4 text-gray-300 text-sm lg:text-base">{airdrop.deadline}</td>
                                                     </tr>
-                                                ))}
+                                                ) : airdrops.length === 0 ? (
+                                                    <tr>
+                                                        <td colSpan={4} className="p-4 text-center text-gray-400">
+                                                            No airdrops found. <Link to="/airdrops/add" className="text-purple-400 hover:text-purple-300">Add your first airdrop</Link>
+                                                        </td>
+                                                    </tr>
+                                                ) : (
+                                                    airdrops.map((airdrop) => (
+                                                        <tr key={airdrop._id} className="table-row cursor-pointer">
+                                                            <td className="p-2 lg:p-4 font-medium text-gray-200 text-sm lg:text-base">{airdrop.name}</td>
+                                                            <td className="p-2 lg:p-4">
+                                                                <span className={`px-2 lg:px-3 py-1 lg:py-1.5 text-xs font-medium rounded-lg ${getStatusClass(airdrop.status)}`}>
+                                                                    {airdrop.status}
+                                                                </span>
+                                                            </td>
+                                                            <td className="p-2 lg:p-4 text-gray-300 text-sm lg:text-base">
+                                                                {airdrop.isDailyTask ? 'Daily Task' : airdrop.type || 'One-time'}
+                                                            </td>
+                                                            <td className="p-2 lg:p-4 text-gray-300 text-sm lg:text-base">
+                                                                {airdrop.deadline ? new Date(airdrop.deadline).toLocaleDateString() : 'TBA'}
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                )}
                                             </tbody>
                                         </table>
                                     </div>

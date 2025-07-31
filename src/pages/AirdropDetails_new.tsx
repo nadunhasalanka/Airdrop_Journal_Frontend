@@ -52,37 +52,6 @@ const AirdropDetails = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   
-  // Create default airdrop structure
-  const createDefaultAirdrop = (): Airdrop => ({
-    _id: '',
-    name: '',
-    description: '',
-    ecosystem: '',
-    type: '',
-    status: '',
-    deadline: '',
-    estimatedValue: '',
-    priority: '',
-    officialLink: '',
-    referralLink: '',
-    logoUrl: '',
-    bannerUrl: '',
-    tags: [],
-    notes: '',
-    isDailyTask: false,
-    dailyTaskNote: '',
-    tokenSymbol: '',
-    startDate: '',
-    socialMedia: {
-      twitter: '',
-      telegram: '',
-      discord: '',
-      medium: '',
-      github: '',
-      website: '',
-    },
-  });
-
   // Main state
   const [airdrop, setAirdrop] = useState<Airdrop | null>(null);
   const [loading, setLoading] = useState(true);
@@ -92,43 +61,15 @@ const AirdropDetails = () => {
   const [copiedLink, setCopiedLink] = useState<string>('');
   
   // Edit form state
-  const [editForm, setEditForm] = useState<Airdrop>(createDefaultAirdrop());
+  const [editForm, setEditForm] = useState<Airdrop | null>(null);
   const [userTags, setUserTags] = useState<UserTag[]>([]);
   const [newTag, setNewTag] = useState('');
-  
-  // Image upload states
-  const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [bannerFile, setBannerFile] = useState<File | null>(null);
-  const [logoPreview, setLogoPreview] = useState<string>('');
-  const [bannerPreview, setBannerPreview] = useState<string>('');
-  const [uploadingLogo, setUploadingLogo] = useState(false);
-  const [uploadingBanner, setUploadingBanner] = useState(false);
   
   // Available options
   const ecosystemOptions = ['Ethereum', 'Solana', 'Polygon', 'Arbitrum', 'Optimism', 'BSC', 'Avalanche', 'Multi-chain'];
   const typeOptions = ['Testnet', 'Mainnet', 'Telegram', 'Web3', 'Social'];
   const statusOptions = ['Farming', 'Claimable', 'Completed', 'Upcoming'];
   const priorityOptions = ['High', 'Medium', 'Low'];
-
-  // Normalize airdrop data to ensure all fields exist
-  const normalizeAirdropData = (data: any): Airdrop => {
-    return {
-      ...data,
-      socialMedia: {
-        twitter: '',
-        telegram: '',
-        discord: '',
-        medium: '',
-        github: '',
-        website: '',
-        ...data.socialMedia
-      },
-      tags: data.tags || [],
-      notes: data.notes || '',
-      dailyTaskNote: data.dailyTaskNote || '',
-      referralLink: data.referralLink || ''
-    };
-  };
 
   // Load airdrop details and user tags
   useEffect(() => {
@@ -143,9 +84,8 @@ const AirdropDetails = () => {
         ]);
         
         if (airdropResponse.success) {
-          const normalizedData = normalizeAirdropData(airdropResponse.data);
-          setAirdrop(normalizedData);
-          setEditForm(normalizedData);
+          setAirdrop(airdropResponse.data);
+          setEditForm(airdropResponse.data);
         } else {
           setError('Airdrop not found');
         }
@@ -177,19 +117,23 @@ const AirdropDetails = () => {
 
   // Handle edit form changes
   const handleInputChange = (field: string, value: any) => {
-    setEditForm({ ...editForm, [field]: value });
+    if (editForm) {
+      setEditForm({ ...editForm, [field]: value });
+    }
   };
 
   const handleSocialMediaChange = (platform: string, value: string) => {
-    setEditForm({
-      ...editForm,
-      socialMedia: { ...editForm.socialMedia, [platform]: value }
-    });
+    if (editForm) {
+      setEditForm({
+        ...editForm,
+        socialMedia: { ...editForm.socialMedia, [platform]: value }
+      });
+    }
   };
 
   // Add tag to edit form
   const addTag = async (tagName: string) => {
-    if (!tagName.trim()) return;
+    if (!editForm || !tagName.trim()) return;
     
     const lowerCaseTag = tagName.toLowerCase();
     if (editForm.tags.includes(lowerCaseTag)) return;
@@ -216,15 +160,17 @@ const AirdropDetails = () => {
 
   // Remove tag from edit form
   const removeTag = (tagToRemove: string) => {
-    setEditForm({
-      ...editForm,
-      tags: editForm.tags.filter(tag => tag !== tagToRemove)
-    });
+    if (editForm) {
+      setEditForm({
+        ...editForm,
+        tags: editForm.tags.filter(tag => tag !== tagToRemove)
+      });
+    }
   };
 
   // Save changes
   const saveChanges = async () => {
-    if (!id) return;
+    if (!editForm || !id) return;
     
     try {
       setSaving(true);
@@ -284,91 +230,6 @@ const AirdropDetails = () => {
     }
   };
 
-  // Image upload handlers
-  const handleImageUpload = async (file: File, type: 'logo' | 'banner') => {
-    if (!file) return;
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      alert('Please select an image file');
-      return;
-    }
-
-    // Validate file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Image size must be less than 5MB');
-      return;
-    }
-
-    try {
-      if (type === 'logo') {
-        setUploadingLogo(true);
-        setLogoFile(file);
-      } else {
-        setUploadingBanner(true);
-        setBannerFile(file);
-      }
-
-      // Convert to base64 for preview and storage
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const base64String = e.target?.result as string;
-        
-        if (type === 'logo') {
-          setLogoPreview(base64String);
-          handleInputChange('logoUrl', base64String);
-          setUploadingLogo(false);
-        } else {
-          setBannerPreview(base64String);
-          handleInputChange('bannerUrl', base64String);
-          setUploadingBanner(false);
-        }
-      };
-      
-      reader.readAsDataURL(file);
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      if (type === 'logo') {
-        setUploadingLogo(false);
-      } else {
-        setUploadingBanner(false);
-      }
-      alert('Failed to upload image');
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
-
-  const handleLogoDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    const files = e.dataTransfer.files;
-    if (files && files[0]) {
-      handleImageUpload(files[0], 'logo');
-    }
-  };
-
-  const handleBannerDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    const files = e.dataTransfer.files;
-    if (files && files[0]) {
-      handleImageUpload(files[0], 'banner');
-    }
-  };
-
-  const removeImage = (type: 'logo' | 'banner') => {
-    if (type === 'logo') {
-      setLogoFile(null);
-      setLogoPreview('');
-      handleInputChange('logoUrl', '');
-    } else {
-      setBannerFile(null);
-      setBannerPreview('');
-      handleInputChange('bannerUrl', '');
-    }
-  };
-
   if (loading) {
     return (
       <div className="bg-gray-950 min-h-screen">
@@ -401,7 +262,7 @@ const AirdropDetails = () => {
   }
 
   const displayData = isEditing ? editForm : airdrop;
-  if (!airdrop) return null; // Only check if airdrop data is loaded
+  if (!displayData) return null;
 
   return (
     <div className="bg-gray-950 min-h-screen">
@@ -462,66 +323,15 @@ const AirdropDetails = () => {
                   {/* Logo */}
                   <div className="w-24 h-24 flex-shrink-0">
                     {isEditing ? (
-                      <div className="space-y-3">
-                        <label className="block text-sm font-medium text-gray-300">Logo Image</label>
-                        
-                        {/* Current Logo Display */}
-                        <div className="w-24 h-24 relative">
-                          {logoPreview || displayData.logoUrl ? (
-                            <div className="relative group">
-                              <img
-                                src={logoPreview || displayData.logoUrl}
-                                alt="Logo preview"
-                                className="w-full h-full object-cover rounded-lg border border-gray-600"
-                              />
-                              <button
-                                onClick={() => removeImage('logo')}
-                                className="absolute -top-2 -right-2 bg-red-600 hover:bg-red-700 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-                              >
-                                ×
-                              </button>
-                            </div>
-                          ) : (
-                            <div
-                              className="w-full h-full border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-violet-500 transition-colors"
-                              onDragOver={handleDragOver}
-                              onDrop={handleLogoDrop}
-                              onClick={() => document.getElementById('logo-upload')?.click()}
-                            >
-                              {uploadingLogo ? (
-                                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-violet-600"></div>
-                              ) : (
-                                <>
-                                  <svg className="w-6 h-6 text-gray-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                  </svg>
-                                  <span className="text-xs text-gray-400 text-center">Upload Logo</span>
-                                </>
-                              )}
-                            </div>
-                          )}
-                        </div>
-
-                        {/* File Input */}
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-300">Logo URL</label>
                         <input
-                          id="logo-upload"
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => e.target.files && handleImageUpload(e.target.files[0], 'logo')}
-                          className="hidden"
+                          type="url"
+                          value={displayData.logoUrl}
+                          onChange={(e) => handleInputChange('logoUrl', e.target.value)}
+                          className="input-primary text-xs"
+                          placeholder="Logo URL"
                         />
-                        
-                        {/* URL Alternative */}
-                        <div className="space-y-2">
-                          <label className="block text-xs font-medium text-gray-400">Or paste URL:</label>
-                          <input
-                            type="url"
-                            value={displayData.logoUrl}
-                            onChange={(e) => handleInputChange('logoUrl', e.target.value)}
-                            className="input-primary text-xs"
-                            placeholder="https://example.com/logo.png"
-                          />
-                        </div>
                       </div>
                     ) : (
                       <img
@@ -612,69 +422,17 @@ const AirdropDetails = () => {
 
               {/* Banner */}
               <Card className="p-6">
-                <h3 className="text-lg font-semibold text-white mb-4">Banner Image</h3>
+                <h3 className="text-lg font-semibold text-white mb-4">Banner</h3>
                 {isEditing ? (
-                  <div className="space-y-4">
-                    {/* Current Banner Display */}
-                    <div className="w-full">
-                      {bannerPreview || displayData.bannerUrl ? (
-                        <div className="relative group">
-                          <img
-                            src={bannerPreview || displayData.bannerUrl}
-                            alt="Banner preview"
-                            className="w-full h-48 object-cover rounded-lg border border-gray-600"
-                          />
-                          <button
-                            onClick={() => removeImage('banner')}
-                            className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full w-8 h-8 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      ) : (
-                        <div
-                          className="w-full h-48 border-2 border-dashed border-gray-600 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-violet-500 transition-colors"
-                          onDragOver={handleDragOver}
-                          onDrop={handleBannerDrop}
-                          onClick={() => document.getElementById('banner-upload')?.click()}
-                        >
-                          {uploadingBanner ? (
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-600"></div>
-                          ) : (
-                            <>
-                              <svg className="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                              </svg>
-                              <p className="text-gray-400 text-center">
-                                <span className="font-medium">Click to upload banner</span> or drag and drop
-                              </p>
-                              <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 5MB</p>
-                            </>
-                          )}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* File Input */}
+                  <div className="space-y-3">
+                    <label className="block text-sm font-medium text-gray-300">Banner URL</label>
                     <input
-                      id="banner-upload"
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => e.target.files && handleImageUpload(e.target.files[0], 'banner')}
-                      className="hidden"
+                      type="url"
+                      value={displayData.bannerUrl}
+                      onChange={(e) => handleInputChange('bannerUrl', e.target.value)}
+                      className="input-primary"
+                      placeholder="Banner URL"
                     />
-                    
-                    {/* URL Alternative */}
-                    <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-400">Or paste banner URL:</label>
-                      <input
-                        type="url"
-                        value={displayData.bannerUrl}
-                        onChange={(e) => handleInputChange('bannerUrl', e.target.value)}
-                        className="input-primary"
-                        placeholder="https://example.com/banner.png"
-                      />
-                    </div>
                   </div>
                 ) : (
                   <div className="w-full h-48 rounded-lg overflow-hidden">
@@ -868,7 +626,7 @@ const AirdropDetails = () => {
               <Card className="p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">Social Media</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {Object.entries(displayData.socialMedia || {}).map(([platform, url]) => (
+                  {Object.entries(displayData.socialMedia).map(([platform, url]) => (
                     <div key={platform}>
                       <label className="block text-sm font-medium text-gray-300 mb-2 capitalize">{platform}</label>
                       {isEditing ? (
@@ -910,7 +668,7 @@ const AirdropDetails = () => {
                 {isEditing ? (
                   <div className="space-y-4">
                     <div className="flex flex-wrap gap-2">
-                      {(displayData.tags || []).map((tag, index) => (
+                      {displayData.tags.map((tag, index) => (
                         <span
                           key={index}
                           className="tag-badge group relative"
@@ -947,7 +705,7 @@ const AirdropDetails = () => {
                     <div className="space-y-2">
                       <p className="text-sm text-gray-400">Your existing tags:</p>
                       <div className="flex flex-wrap gap-2">
-                        {userTags.filter(tag => !(displayData.tags || []).includes(tag.name)).map((tag) => (
+                        {userTags.filter(tag => !displayData.tags.includes(tag.name)).map((tag) => (
                           <button
                             key={tag._id}
                             onClick={() => addTag(tag.name)}
@@ -961,7 +719,7 @@ const AirdropDetails = () => {
                   </div>
                 ) : (
                   <div className="flex flex-wrap gap-2">
-                    {(displayData.tags || []).map((tag, index) => (
+                    {displayData.tags.map((tag, index) => (
                       <span key={index} className="tag-badge">
                         {tag}
                       </span>

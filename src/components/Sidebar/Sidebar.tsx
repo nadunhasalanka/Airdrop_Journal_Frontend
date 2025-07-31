@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import NavLink from './NavLink';
 
 // Simplified, modern icons
@@ -61,7 +62,10 @@ const CloseIcon = () => (
 
 const Sidebar = () => {
     const location = useLocation();
+    const navigate = useNavigate();
+    const { user, signOut } = useAuth();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
     
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -70,6 +74,24 @@ const Sidebar = () => {
     const closeMobileMenu = () => {
         setIsMobileMenuOpen(false);
     };
+
+    const handleLogout = async () => {
+        try {
+            setIsLoggingOut(true);
+            await signOut();
+            navigate('/');
+        } catch (error) {
+            console.error('Logout error:', error);
+        } finally {
+            setIsLoggingOut(false);
+        }
+    };
+
+    // Get user display name and initials
+    const userDisplayName = user ? `${user.firstName} ${user.lastName}` : 'User';
+    const userInitials = user ? `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase() : 'U';
+    const userEmail = user?.email || '';
+    const userAvatar = user?.avatar;
 
     return (
         <>
@@ -166,23 +188,41 @@ const Sidebar = () => {
                 <div className="p-6 border-t border-slate-700 flex-shrink-0">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
-                            <img 
-                                src="https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&fit=crop" 
-                                alt="User Avatar" 
-                                className="w-10 h-10 rounded-full object-cover"
-                            />
-                            <div>
-                                <p className="text-sm font-medium text-gray-100">A. Hunter</p>
-                                <p className="text-xs text-gray-400">Pro Member</p>
+                            {userAvatar ? (
+                                <img 
+                                    src={userAvatar} 
+                                    alt="User Avatar" 
+                                    className="w-10 h-10 rounded-full object-cover"
+                                />
+                            ) : (
+                                <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center text-white font-medium text-sm">
+                                    {userInitials}
+                                </div>
+                            )}
+                            <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-gray-100 truncate" title={userDisplayName}>
+                                    {userDisplayName}
+                                </p>
+                                <p className="text-xs text-gray-400 truncate" title={userEmail}>
+                                    {userEmail}
+                                </p>
                             </div>
                         </div>
-                        <Link 
-                            to="/" 
-                            className="text-gray-500 hover:text-violet-400 transition-colors p-1 rounded-md"
-                            onClick={closeMobileMenu}
+                        <button 
+                            onClick={handleLogout}
+                            disabled={isLoggingOut}
+                            className="text-gray-500 hover:text-violet-400 transition-colors p-1 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+                            title="Sign Out"
                         >
-                            <LogoutIcon />
-                        </Link>
+                            {isLoggingOut ? (
+                                <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            ) : (
+                                <LogoutIcon />
+                            )}
+                        </button>
                     </div>
                 </div>
             </aside>

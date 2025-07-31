@@ -1,28 +1,119 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+
+interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface ValidationErrors {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+}
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+  const { signUp, isLoading, error, clearError } = useAuth();
+  
+  const [formData, setFormData] = useState<FormData>({
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
+  
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateForm = (): boolean => {
+    const errors: ValidationErrors = {};
+    
+    if (!formData.firstName.trim()) {
+      errors.firstName = 'First name is required';
+    } else if (formData.firstName.trim().length > 50) {
+      errors.firstName = 'First name must be less than 50 characters';
+    }
+    
+    if (!formData.lastName.trim()) {
+      errors.lastName = 'Last name is required';
+    } else if (formData.lastName.trim().length > 50) {
+      errors.lastName = 'Last name must be less than 50 characters';
+    }
+    
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = 'Please enter a valid email address';
+    }
+    
+    if (!formData.password) {
+      errors.password = 'Password is required';
+    } else if (formData.password.length < 8) {
+      errors.password = 'Password must be at least 8 characters';
+    } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(formData.password)) {
+      errors.password = 'Password must contain uppercase, lowercase, number, and special character';
+    }
+    
+    if (!formData.confirmPassword) {
+      errors.confirmPassword = 'Please confirm your password';
+    } else if (formData.password !== formData.confirmPassword) {
+      errors.confirmPassword = 'Passwords do not match';
+    }
+    
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you would create the account here
-    // For demo purposes, we'll just navigate to dashboard
-    if (formData.password === formData.confirmPassword) {
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    try {
+      setIsSubmitting(true);
+      clearError();
+      
+      await signUp(formData);
+      
+      // On success, navigate to dashboard
       navigate('/dashboard');
+    } catch (error) {
+      console.error('Sign up error:', error);
+      // Error is handled by the auth context
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [name]: value
     }));
+    
+    // Clear validation error when user starts typing
+    if (validationErrors[name as keyof ValidationErrors]) {
+      setValidationErrors(prev => ({
+        ...prev,
+        [name]: undefined
+      }));
+    }
+    
+    // Clear global error when user makes changes
+    if (error) {
+      clearError();
+    }
   };
 
   return (
@@ -38,10 +129,64 @@ const SignUp = () => {
             <p className="text-slate-400 mt-2">Start tracking airdrops in minutes.</p>
           </div>
 
+          {/* Global Error Message */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-900/20 border border-red-700/50 rounded-lg">
+              <p className="text-red-400 text-sm">{error}</p>
+            </div>
+          )}
+
           <form className="space-y-6" onSubmit={handleSubmit}>
+            {/* First Name */}
+            <div>
+              <label htmlFor="firstName" className="block text-sm font-medium text-slate-300 mb-2">
+                First Name *
+              </label>
+              <input
+                id="firstName"
+                name="firstName"
+                type="text"
+                autoComplete="given-name"
+                required
+                value={formData.firstName}
+                onChange={handleChange}
+                className={`w-full bg-slate-800/60 border rounded-lg px-3 py-2.5 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition ${
+                  validationErrors.firstName ? 'border-red-500' : 'border-slate-700'
+                }`}
+                placeholder="John"
+              />
+              {validationErrors.firstName && (
+                <p className="text-red-400 text-sm mt-1">{validationErrors.firstName}</p>
+              )}
+            </div>
+
+            {/* Last Name */}
+            <div>
+              <label htmlFor="lastName" className="block text-sm font-medium text-slate-300 mb-2">
+                Last Name *
+              </label>
+              <input
+                id="lastName"
+                name="lastName"
+                type="text"
+                autoComplete="family-name"
+                required
+                value={formData.lastName}
+                onChange={handleChange}
+                className={`w-full bg-slate-800/60 border rounded-lg px-3 py-2.5 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition ${
+                  validationErrors.lastName ? 'border-red-500' : 'border-slate-700'
+                }`}
+                placeholder="Doe"
+              />
+              {validationErrors.lastName && (
+                <p className="text-red-400 text-sm mt-1">{validationErrors.lastName}</p>
+              )}
+            </div>
+
+            {/* Email */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
-                Email Address
+                Email Address *
               </label>
               <input
                 id="email"
@@ -51,17 +196,20 @@ const SignUp = () => {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2.5 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                className={`w-full bg-slate-800/60 border rounded-lg px-3 py-2.5 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition ${
+                  validationErrors.email ? 'border-red-500' : 'border-slate-700'
+                }`}
                 placeholder="you@example.com"
               />
+              {validationErrors.email && (
+                <p className="text-red-400 text-sm mt-1">{validationErrors.email}</p>
+              )}
             </div>
 
+            {/* Password */}
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-slate-300 mb-2"
-              >
-                Password
+              <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-2">
+                Password *
               </label>
               <input
                 id="password"
@@ -71,72 +219,65 @@ const SignUp = () => {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2.5 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                className={`w-full bg-slate-800/60 border rounded-lg px-3 py-2.5 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition ${
+                  validationErrors.password ? 'border-red-500' : 'border-slate-700'
+                }`}
                 placeholder="••••••••"
               />
+              {validationErrors.password && (
+                <p className="text-red-400 text-sm mt-1">{validationErrors.password}</p>
+              )}
+              {!validationErrors.password && formData.password && (
+                <p className="text-slate-500 text-xs mt-1">
+                  Must contain uppercase, lowercase, number, and special character
+                </p>
+              )}
             </div>
             
+            {/* Confirm Password */}
             <div>
-              <label
-                htmlFor="confirm-password"
-                className="block text-sm font-medium text-slate-300 mb-2"
-              >
-                Confirm Password
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-300 mb-2">
+                Confirm Password *
               </label>
               <input
-                id="confirm-password"
+                id="confirmPassword"
                 name="confirmPassword"
                 type="password"
                 autoComplete="new-password"
                 required
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-3 py-2.5 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                className={`w-full bg-slate-800/60 border rounded-lg px-3 py-2.5 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition ${
+                  validationErrors.confirmPassword ? 'border-red-500' : 'border-slate-700'
+                }`}
                 placeholder="••••••••"
               />
-              {formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword && (
-                <p className="text-red-400 text-sm mt-1">Passwords do not match</p>
+              {validationErrors.confirmPassword && (
+                <p className="text-red-400 text-sm mt-1">{validationErrors.confirmPassword}</p>
               )}
             </div>
 
+            {/* Submit Button */}
             <div>
               <button
                 type="submit"
-                disabled={formData.password !== formData.confirmPassword}
-                className="w-full cta-button bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg text-lg shadow-indigo-500/30 shadow-xl hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isSubmitting || isLoading}
+                className="w-full cta-button bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg text-lg shadow-indigo-500/30 shadow-xl hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
-                Create Account
+                {isSubmitting || isLoading ? (
+                  <span className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Creating Account...
+                  </span>
+                ) : (
+                  'Create Account'
+                )}
               </button>
             </div>
           </form>
-
-          <div className="relative my-8">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-700" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-slate-900 text-slate-500">Or continue with</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <button 
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center justify-center w-full py-2.5 border border-slate-700 rounded-lg text-slate-300 hover:bg-slate-800 transition"
-            >
-              {/* SVG for Google Icon */}
-              <svg className="w-5 h-5 mr-2" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M47.532 24.555c0-1.559-.142-3.065-.402-4.52H24.31v8.52h13.06c-.563 2.76-2.223 5.12-4.68 6.69v5.52h7.109c4.162-3.83 6.533-9.57 6.533-16.21z" fill="#4285F4"></path><path d="M24.31 48c6.48 0 11.93-2.13 15.908-5.78l-7.11-5.52c-2.15 1.45-4.92 2.3-8.798 2.3-6.76 0-12.48-4.56-14.52-10.68H2.47v5.7C6.48 42.45 14.63 48 24.31 48z" fill="#34A853"></path><path d="M9.79 28.17a15.23 15.23 0 0 1 0-8.34v-5.7H2.47a24.06 24.06 0 0 0 0 19.74l7.32-5.7z" fill="#FBBC05"></path><path d="M24.31 9.48c3.52 0 6.7 1.22 9.21 3.63l6.309-6.26C36.23 2.22 30.79 0 24.31 0 14.63 0 6.48 5.55 2.47 14.13l7.32 5.7c2.04-6.12 7.76-10.68 14.52-10.68z" fill="#EA4335"></path></svg>
-              Google
-            </button>
-            <button 
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center justify-center w-full py-2.5 border border-slate-700 rounded-lg text-slate-300 hover:bg-slate-800 transition"
-            >
-              {/* SVG for Twitter Icon */}
-              <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46 6c-.67.3-1.39.5-2.14.58.77-.46 1.36-1.2 1.64-2.06-.72.43-1.51.74-2.35.9-.68-.72-1.64-1.17-2.7-1.17-2.05 0-3.71 1.66-3.71 3.71 0 .29.03.58.09.85-3.08-.16-5.81-1.63-7.64-3.87-.32.55-.5 1.18-.5 1.86 0 1.28.65 2.42 1.65 3.08-.6-.02-1.17-.18-1.66-.46v.05c0 1.79 1.27 3.28 2.97 3.62-.31.08-.64.13-.98.13-.24 0-.47-.02-.7-.07.47 1.47 1.83 2.54 3.45 2.57-1.27.99-2.86 1.58-4.6 1.58-.3 0-.59-.02-.88-.05 1.64 1.05 3.58 1.66 5.66 1.66 6.79 0 10.5-5.62 10.5-10.5v-.47c.72-.52 1.34-1.17 1.84-1.92z"></path></svg>
-              Twitter
-            </button>
-          </div>
 
           <div className="text-center mt-8">
             <p className="text-sm text-slate-400">

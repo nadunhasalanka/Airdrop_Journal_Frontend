@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Card from '@/components/Dashboard/Card';
+import airdropService from '@/services/airdropService';
+import userTagService from '@/services/userTagService';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface AirdropFormData {
   name: string;
@@ -20,6 +23,8 @@ interface AirdropFormData {
   notes: string;
   isDailyTask: boolean;
   dailyTaskNote: string;
+  tokenSymbol: string;
+  startDate: string;
   socialMedia: {
     twitter: string;
     telegram: string;
@@ -32,6 +37,7 @@ interface AirdropFormData {
 
 const AddAirdrop = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [formData, setFormData] = useState<AirdropFormData>({
     name: '',
     description: '',
@@ -49,6 +55,8 @@ const AddAirdrop = () => {
     notes: '',
     isDailyTask: false,
     dailyTaskNote: '',
+    tokenSymbol: '',
+    startDate: '',
     socialMedia: {
       twitter: '',
       telegram: '',
@@ -59,8 +67,58 @@ const AddAirdrop = () => {
     }
   });
 
+  // Image upload handlers
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setLogoFile(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        setLogoPreview(result);
+        setFormData(prev => ({ ...prev, logoUrl: result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleBannerUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setBannerFile(file);
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = reader.result as string;
+        setBannerPreview(result);
+        setFormData(prev => ({ ...prev, bannerUrl: result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeLogoImage = () => {
+    setLogoFile(null);
+    setLogoPreview('');
+    setFormData(prev => ({ ...prev, logoUrl: '' }));
+  };
+
+  const removeBannerImage = () => {
+    setBannerFile(null);
+    setBannerPreview('');
+    setFormData(prev => ({ ...prev, bannerUrl: '' }));
+  };
+
   const [newTag, setNewTag] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [userTags, setUserTags] = useState<any[]>([]);
+  const [loadingTags, setLoadingTags] = useState(true);
+  const [tagSuggestions, setTagSuggestions] = useState<any[]>([]);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState('');
+  const [bannerPreview, setBannerPreview] = useState('');
 
   // Available options
   const ecosystemOptions = ['Ethereum', 'Solana', 'Polygon', 'Arbitrum', 'Optimism', 'BSC', 'Avalanche', 'Multi-chain'];
@@ -68,12 +126,53 @@ const AddAirdrop = () => {
   const statusOptions = ['Farming', 'Claimable', 'Completed', 'Upcoming'];
   const priorityOptions = ['High', 'Medium', 'Low'];
 
-  const availableTags = [
-    'Layer 2', 'Ethereum', 'ZK-Proofs', 'DeFi', 'Bridge', 'Testnet', 'Mainnet',
-    'Telegram', 'Gaming', 'P2E', 'Social', 'TON', 'Cross-chain', 'NFT', 'Staking',
-    'Yield', 'DAO', 'Governance', 'High Priority', 'Medium Priority', 'Low Priority',
-    'Daily Task', 'Weekly Task', 'One-time', 'Recurring'
-  ];
+  // Load user tags on component mount
+  useEffect(() => {
+    const loadUserTags = async () => {
+      try {
+        setLoadingTags(true);
+        const result = await userTagService.getTags();
+        if (result.success) {
+          setUserTags(result.data);
+        }
+      } catch (error) {
+        console.error('Error loading user tags:', error);
+      } finally {
+        setLoadingTags(false);
+      }
+    };
+
+    if (user) {
+      loadUserTags();
+    }
+  }, [user]);
+
+  // Get tag suggestions when typing
+  useEffect(() => {
+    const getSuggestions = async () => {
+      if (newTag.length > 0) {
+        try {
+          const result = await userTagService.getSuggestions(newTag, 8);
+          if (result.success) {
+            // Filter out already selected tags
+            const filtered = result.data.filter(
+              (tag: any) => !formData.tags.includes(tag.name)
+            );
+            setTagSuggestions(filtered);
+          }
+        } catch (error) {
+          console.error('Error getting tag suggestions:', error);
+        }
+      } else {
+        setTagSuggestions([]);
+      }
+    };
+
+    const debounceTimer = setTimeout(getSuggestions, 300);
+    return () => clearTimeout(debounceTimer);
+  }, [newTag, formData.tags]);
+
+  const availableTags = userTags.map(tag => tag.name);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -92,14 +191,31 @@ const AddAirdrop = () => {
     }));
   };
 
-  const addTag = (tag: string) => {
-    if (tag && !formData.tags.includes(tag)) {
+  const addTag = async (tag: string) => {
+    if (tag && !formData.tags.includes(tag.toLowerCase())) {
+      // Check if tag exists in user's tags
+      const existingTag = userTags.find(t => t.name === tag.toLowerCase());
+      
+      if (!existingTag) {
+        // Create new tag if it doesn't exist
+        try {
+          const result = await userTagService.createTag({ name: tag });
+          if (result.success) {
+            setUserTags(prev => [...prev, result.data]);
+          }
+        } catch (error) {
+          console.error('Error creating tag:', error);
+          // Still add the tag to the form even if creation fails
+        }
+      }
+      
       setFormData(prev => ({
         ...prev,
-        tags: [...prev.tags, tag]
+        tags: [...prev.tags, tag.toLowerCase()]
       }));
     }
     setNewTag('');
+    setTagSuggestions([]);
   };
 
   const removeTag = (tagToRemove: string) => {
@@ -116,25 +232,50 @@ const AddAirdrop = () => {
     }
   };
 
-  const filteredSuggestions = availableTags.filter(tag => 
-    tag.toLowerCase().includes(newTag.toLowerCase()) && !formData.tags.includes(tag)
-  );
+  const filteredSuggestions = tagSuggestions.length > 0 
+    ? tagSuggestions 
+    : availableTags
+        .filter(tag => 
+          tag.toLowerCase().includes(newTag.toLowerCase()) && 
+          !formData.tags.includes(tag.toLowerCase())
+        )
+        .slice(0, 8)
+        .map(name => ({ name, color: '#8B5CF6' }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError('');
+    setSuccess('');
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      // Check if user is authenticated
+      if (!user) {
+        throw new Error('You must be logged in to create an airdrop');
+      }
 
-    // In a real app, you would send the data to your backend
-    console.log('Airdrop data:', formData);
+      // Create the airdrop using the service
+      const result = await airdropService.createAirdrop(formData, user.id);
 
-    setIsSubmitting(false);
-    navigate('/airdrops');
+      if (result.success) {
+        setSuccess(result.message || 'Airdrop created successfully!');
+        
+        // Wait a moment to show success message, then navigate
+        setTimeout(() => {
+          navigate('/airdrops');
+        }, 1500);
+      } else {
+        throw new Error('Failed to create airdrop');
+      }
+    } catch (error: any) {
+      console.error('Error creating airdrop:', error);
+      setError(error.message || 'Failed to create airdrop. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const isFormValid = formData.name && formData.description && formData.officialLink;
+  const isFormValid = formData.name.trim() && formData.description.trim() && formData.officialLink.trim();
 
   return (
     <div className="bg-gray-950 min-h-screen">
@@ -159,6 +300,19 @@ const AddAirdrop = () => {
           </header>
 
           <form onSubmit={handleSubmit} className="space-y-6 lg:space-y-8">
+            {/* Error/Success Messages */}
+            {error && (
+              <div className="bg-red-900/20 border border-red-700/50 rounded-lg p-4">
+                <p className="text-red-400 text-sm">{error}</p>
+              </div>
+            )}
+            
+            {success && (
+              <div className="bg-green-900/20 border border-green-700/50 rounded-lg p-4">
+                <p className="text-green-400 text-sm">{success}</p>
+              </div>
+            )}
+
             {/* Basic Information */}
             <Card>
               <div className="p-4 lg:p-6">
@@ -277,6 +431,33 @@ const AddAirdrop = () => {
                       className="form-input w-full"
                     />
                   </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Token Symbol
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.tokenSymbol}
+                      onChange={(e) => handleInputChange('tokenSymbol', e.target.value.toUpperCase())}
+                      placeholder="e.g., ZKS, ARB"
+                      className="form-input w-full"
+                      maxLength={10}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Start Date
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.startDate}
+                      onChange={(e) => handleInputChange('startDate', e.target.value)}
+                      className="form-input w-full"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">When did you start farming this airdrop?</p>
+                  </div>
                 </div>
               </div>
             </Card>
@@ -316,28 +497,62 @@ const AddAirdrop = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Logo URL
+                      Logo Image
                     </label>
-                    <input
-                      type="url"
-                      value={formData.logoUrl}
-                      onChange={(e) => handleInputChange('logoUrl', e.target.value)}
-                      placeholder="https://example.com/logo.png"
-                      className="form-input w-full"
-                    />
+                    <div className="space-y-3">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLogoUpload}
+                        className="form-input w-full file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-violet-600 file:text-white hover:file:bg-violet-700"
+                      />
+                      {logoPreview && (
+                        <div className="relative inline-block">
+                          <img 
+                            src={logoPreview} 
+                            alt="Logo preview" 
+                            className="w-16 h-16 rounded-lg object-cover border border-gray-700"
+                          />
+                          <button
+                            type="button"
+                            onClick={removeLogoImage}
+                            className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-300 mb-2">
-                      Banner URL
+                      Banner Image
                     </label>
-                    <input
-                      type="url"
-                      value={formData.bannerUrl}
-                      onChange={(e) => handleInputChange('bannerUrl', e.target.value)}
-                      placeholder="https://example.com/banner.png"
-                      className="form-input w-full"
-                    />
+                    <div className="space-y-3">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleBannerUpload}
+                        className="form-input w-full file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-violet-600 file:text-white hover:file:bg-violet-700"
+                      />
+                      {bannerPreview && (
+                        <div className="relative inline-block">
+                          <img 
+                            src={bannerPreview} 
+                            alt="Banner preview" 
+                            className="w-32 h-16 rounded-lg object-cover border border-gray-700"
+                          />
+                          <button
+                            type="button"
+                            onClick={removeBannerImage}
+                            className="absolute -top-2 -right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -402,14 +617,18 @@ const AddAirdrop = () => {
                   {/* Tag Suggestions */}
                   {newTag && filteredSuggestions.length > 0 && (
                     <div className="absolute top-full left-0 right-0 mt-1 bg-gray-800 border border-gray-700/50 rounded-lg shadow-lg z-10 max-h-40 overflow-y-auto">
-                      {filteredSuggestions.slice(0, 8).map(suggestion => (
+                      {filteredSuggestions.slice(0, 8).map((suggestion, index) => (
                         <button
-                          key={suggestion}
+                          key={index}
                           type="button"
-                          onClick={() => addTag(suggestion)}
-                          className="w-full text-left px-3 py-2 text-gray-300 hover:bg-gray-700/50 transition-colors"
+                          onClick={() => addTag(suggestion.name)}
+                          className="w-full text-left px-3 py-2 text-gray-300 hover:bg-gray-700/50 transition-colors flex items-center gap-2"
                         >
-                          {suggestion}
+                          <span
+                            className="w-3 h-3 rounded-full"
+                            style={{ backgroundColor: suggestion.color }}
+                          ></span>
+                          {suggestion.name}
                         </button>
                       ))}
                     </div>
@@ -483,16 +702,23 @@ const AddAirdrop = () => {
               <button
                 type="button"
                 onClick={() => navigate('/airdrops')}
-                className="btn-ghost text-sm lg:text-base"
+                disabled={isSubmitting}
+                className="btn-ghost text-sm lg:text-base disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={!isFormValid || isSubmitting}
-                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base"
+                className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base flex items-center gap-2"
               >
-                {isSubmitting ? 'Adding Airdrop...' : 'Add Airdrop'}
+                {isSubmitting && (
+                  <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                )}
+                {isSubmitting ? 'Creating Airdrop...' : 'Add Airdrop'}
               </button>
             </div>
           </form>

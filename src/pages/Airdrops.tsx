@@ -1,30 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Card from '@/components/Dashboard/Card';
+import airdropService from '@/services/airdropService';
+import userTagService from '@/services/userTagService';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Airdrop {
-  id: string;
+  _id: string;
   name: string;
   description: string;
-  tags: string[];
-  status: 'Farming' | 'Claimable' | 'Completed' | 'Upcoming';
-  tasksCompleted: number;
-  totalTasks: number;
-  deadline: string;
-  estimatedValue: string;
-  network: string;
-  category: string;
-  priority: 'High' | 'Medium' | 'Low';
-  lastUpdated: string;
   ecosystem: 'Ethereum' | 'Solana' | 'Polygon' | 'Arbitrum' | 'Optimism' | 'BSC' | 'Avalanche' | 'Multi-chain';
   type: 'Testnet' | 'Mainnet' | 'Telegram' | 'Web3' | 'Social';
+  status: 'Farming' | 'Claimable' | 'Completed' | 'Upcoming';
+  deadline: string;
+  estimatedValue: string;
+  priority: 'High' | 'Medium' | 'Low';
   officialLink: string;
   referralLink?: string;
   logoUrl: string;
+  bannerUrl: string;
+  tags: string[];
+  notes: string;
+  isDailyTask: boolean;
+  dailyTaskNote: string;
+  tokenSymbol: string;
+  startDate: string;
+  socialMedia: {
+    twitter: string;
+    telegram: string;
+    discord: string;
+    medium: string;
+    github: string;
+    website: string;
+  };
+  user?: string;
+  network?: string;
+  category?: string;
+  tasksCompleted?: number;
+  totalTasks?: number;
+  lastUpdated?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+interface UserTag {
+  _id: string;
+  name: string;
+  color: string;
+  user: string;
+  usageCount: number;
 }
 
 const Airdrops = () => {
+  const { user } = useAuth();
+  const [airdrops, setAirdrops] = useState<Airdrop[]>([]);
+  const [userTags, setUserTags] = useState<UserTag[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>('All');
   const [ecosystemFilter, setEcosystemFilter] = useState<string>('All');
@@ -32,175 +64,38 @@ const Airdrops = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [copiedLink, setCopiedLink] = useState<string>('');
 
-  const airdrops: Airdrop[] = [
-    {
-      id: '1',
-      name: 'ZkSync Era',
-      description: 'Layer 2 scaling solution for Ethereum with zero-knowledge proofs. Complete transactions and interact with dApps to earn potential rewards.',
-      tags: ['Layer 2', 'Ethereum', 'ZK-Proofs', 'DeFi', 'Bridge'],
-      status: 'Farming',
-      tasksCompleted: 8,
-      totalTasks: 15,
-      deadline: 'TBA',
-      estimatedValue: '$500-2000',
-      network: 'Ethereum',
-      category: 'Infrastructure',
-      priority: 'High',
-      lastUpdated: '2 hours ago',
-      ecosystem: 'Ethereum',
-      type: 'Mainnet',
-      officialLink: 'https://zksync.io',
-      referralLink: 'https://zksync.io?ref=airdropjournal',
-      logoUrl: 'https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
-    },
-    {
-      id: '2',
-      name: 'LayerZero',
-      description: 'Omnichain interoperability protocol enabling cross-chain applications. Bridge assets and use cross-chain dApps across multiple networks.',
-      tags: ['Interoperability', 'Cross-chain', 'Bridge', 'Omnichain', 'DeFi'],
-      status: 'Farming',
-      tasksCompleted: 23,
-      totalTasks: 30,
-      deadline: 'Q2 2024',
-      estimatedValue: '$1000-5000',
-      network: 'Multi-chain',
-      category: 'Infrastructure',
-      priority: 'High',
-      lastUpdated: '1 day ago',
-      ecosystem: 'Multi-chain',
-      type: 'Web3',
-      officialLink: 'https://layerzero.network',
-      referralLink: 'https://layerzero.network?ref=airdropjournal',
-      logoUrl: 'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
-    },
-    {
-      id: '3',
-      name: 'Starknet',
-      description: 'Ethereum Layer 2 using STARK technology. Deploy contracts, interact with dApps, and participate in the growing ecosystem.',
-      tags: ['Layer 2', 'STARK', 'Ethereum', 'Smart Contracts', 'Cairo'],
-      status: 'Claimable',
-      tasksCompleted: 12,
-      totalTasks: 12,
-      deadline: '14 days',
-      estimatedValue: '$200-800',
-      network: 'Ethereum',
-      category: 'Infrastructure',
-      priority: 'Medium',
-      lastUpdated: '3 hours ago',
-      ecosystem: 'Ethereum',
-      type: 'Mainnet',
-      officialLink: 'https://starknet.io',
-      referralLink: 'https://starknet.io?ref=airdropjournal',
-      logoUrl: 'https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
-    },
-    {
-      id: '4',
-      name: 'Wormhole',
-      description: 'Cross-chain bridge connecting multiple blockchains. Already distributed tokens to early users who bridged assets.',
-      tags: ['Bridge', 'Cross-chain', 'Multi-chain', 'Completed', 'Solana'],
-      status: 'Completed',
-      tasksCompleted: 8,
-      totalTasks: 8,
-      deadline: 'Completed',
-      estimatedValue: '$1200',
-      network: 'Multi-chain',
-      category: 'Infrastructure',
-      priority: 'Low',
-      lastUpdated: '1 week ago',
-      ecosystem: 'Multi-chain',
-      type: 'Mainnet',
-      officialLink: 'https://wormhole.com',
-      logoUrl: 'https://images.pexels.com/photos/1181244/pexels-photo-1181244.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
-    },
-    {
-      id: '5',
-      name: 'Scroll',
-      description: 'zkEVM Layer 2 solution for Ethereum. Participate in testnet and mainnet activities to earn potential rewards.',
-      tags: ['zkEVM', 'Layer 2', 'Ethereum', 'Testnet', 'Mainnet'],
-      status: 'Farming',
-      tasksCompleted: 5,
-      totalTasks: 20,
-      deadline: 'TBA',
-      estimatedValue: '$300-1500',
-      network: 'Ethereum',
-      category: 'Infrastructure',
-      priority: 'Medium',
-      lastUpdated: '5 hours ago',
-      ecosystem: 'Ethereum',
-      type: 'Testnet',
-      officialLink: 'https://scroll.io',
-      referralLink: 'https://scroll.io?ref=airdropjournal',
-      logoUrl: 'https://images.pexels.com/photos/1181298/pexels-photo-1181298.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
-    },
-    {
-      id: '6',
-      name: 'Blast',
-      description: 'Ethereum Layer 2 with native yield for ETH and stablecoins. Interact with yield-generating dApps and earn rewards.',
-      tags: ['Layer 2', 'Yield', 'ETH', 'Stablecoins', 'DeFi'],
-      status: 'Farming',
-      tasksCompleted: 12,
-      totalTasks: 18,
-      deadline: 'TBA',
-      estimatedValue: '$400-1200',
-      network: 'Ethereum',
-      category: 'DeFi',
-      priority: 'High',
-      lastUpdated: '1 hour ago',
-      ecosystem: 'Ethereum',
-      type: 'Mainnet',
-      officialLink: 'https://blast.io',
-      referralLink: 'https://blast.io/airdrop?ref=airdropjournal',
-      logoUrl: 'https://images.pexels.com/photos/1181316/pexels-photo-1181316.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
-    },
-    {
-      id: '7',
-      name: 'Telegram Dogs',
-      description: 'Play-to-earn game on Telegram. Complete daily tasks, invite friends, and earn DOGS tokens through gameplay.',
-      tags: ['Telegram', 'Gaming', 'P2E', 'Social', 'TON'],
-      status: 'Farming',
-      tasksCompleted: 15,
-      totalTasks: 25,
-      deadline: 'Q3 2024',
-      estimatedValue: '$50-300',
-      network: 'TON',
-      category: 'Gaming',
-      priority: 'Medium',
-      lastUpdated: '30 minutes ago',
-      ecosystem: 'Multi-chain',
-      type: 'Telegram',
-      officialLink: 'https://t.me/dogshouse_bot',
-      referralLink: 'https://t.me/dogshouse_bot?start=ref_airdropjournal',
-      logoUrl: 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
-    },
-    {
-      id: '8',
-      name: 'Galxe Campaigns',
-      description: 'Complete various Web3 quests and campaigns across different protocols. Earn credentials and potential rewards.',
-      tags: ['Quests', 'Credentials', 'Multi-protocol', 'Social', 'NFT'],
-      status: 'Farming',
-      tasksCompleted: 8,
-      totalTasks: 15,
-      deadline: 'Ongoing',
-      estimatedValue: '$100-500',
-      network: 'Multi-chain',
-      category: 'Social',
-      priority: 'Low',
-      lastUpdated: '2 days ago',
-      ecosystem: 'Multi-chain',
-      type: 'Web3',
-      officialLink: 'https://galxe.com',
-      referralLink: 'https://galxe.com?referral=airdropjournal',
-      logoUrl: 'https://images.pexels.com/photos/1181467/pexels-photo-1181467.jpeg?auto=compress&cs=tinysrgb&w=64&h=64&fit=crop'
-    }
-  ];
+  useEffect(() => {
+    const loadData = async () => {
+      if (!user) return;
+      
+      try {
+        setLoading(true);
+        const [airdropsResponse, tagsResponse] = await Promise.all([
+          airdropService.getUserAirdrops(),
+          userTagService.getTags()
+        ]);
+        
+        setAirdrops(airdropsResponse.data || []);
+        setUserTags(tagsResponse.data || []);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        setAirdrops([]);
+        setUserTags([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [user]);
 
   // Get all unique values for filters
-  const allTags = Array.from(new Set(airdrops.flatMap(airdrop => airdrop.tags)));
-  const allEcosystems = Array.from(new Set(airdrops.map(airdrop => airdrop.ecosystem)));
-  const allTypes = Array.from(new Set(airdrops.map(airdrop => airdrop.type)));
+  const allTags = Array.from(new Set((userTags || []).map(tag => tag.name)));
+  const allEcosystems = Array.from(new Set((airdrops || []).map(airdrop => airdrop.ecosystem)));
+  const allTypes = Array.from(new Set((airdrops || []).map(airdrop => airdrop.type)));
 
   // Filter airdrops based on selected filters
-  const filteredAirdrops = airdrops.filter(airdrop => {
+  const filteredAirdrops = (airdrops || []).filter(airdrop => {
     const matchesSearch = airdrop.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          airdrop.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'All' || airdrop.status === statusFilter;
@@ -345,17 +240,24 @@ const Airdrops = () => {
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-3">Filter by Tags</label>
                   <div className="flex flex-wrap gap-2">
-                    {allTags.map(tag => (
+                    {(userTags || []).map(tag => (
                       <button
-                        key={tag}
-                        onClick={() => toggleTag(tag)}
-                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                          selectedTags.includes(tag)
+                        key={tag._id}
+                        onClick={() => toggleTag(tag.name)}
+                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                          selectedTags.includes(tag.name)
                             ? 'tag-active'
                             : 'tag hover:bg-gray-700/50'
                         }`}
                       >
-                        {tag}
+                        <span
+                          className="w-2 h-2 rounded-full"
+                          style={{ backgroundColor: tag.color }}
+                        ></span>
+                        {tag.name}
+                        {tag.usageCount > 0 && (
+                          <span className="text-xs opacity-60 ml-1">({tag.usageCount})</span>
+                        )}
                       </button>
                     ))}
                   </div>
@@ -375,25 +277,77 @@ const Airdrops = () => {
           {/* Results Count */}
           <div className="mb-6">
             <p className="text-gray-400">
-              Showing {filteredAirdrops.length} of {airdrops.length} airdrops
+              Showing {filteredAirdrops.length} of {(airdrops || []).length} airdrops
             </p>
           </div>
 
+          {/* Loading State */}
+          {loading && (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-600"></div>
+              <span className="ml-3 text-gray-400">Loading airdrops...</span>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!loading && (airdrops || []).length === 0 && (
+            <Card className="text-center py-12">
+              <div className="text-gray-400 mb-4">
+                <svg className="mx-auto h-12 w-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2 2h16a2 2 0 002-2v-5zM8 5V3a2 2 0 012-2h4a2 2 0 012 2v2" />
+                </svg>
+                <h3 className="text-lg font-medium text-gray-300 mb-2">No airdrops yet</h3>
+                <p className="text-gray-500">Start by adding your first airdrop to track your progress</p>
+              </div>
+              <Link
+                to="/add-airdrop"
+                className="inline-flex items-center px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white font-medium rounded-lg transition-colors"
+              >
+                Add Your First Airdrop
+              </Link>
+            </Card>
+          )}
+
+          {/* No Results State */}
+          {!loading && (airdrops || []).length > 0 && filteredAirdrops.length === 0 && (
+            <Card className="text-center py-12">
+              <div className="text-gray-400">
+                <h3 className="text-lg font-medium text-gray-300 mb-2">No matching airdrops</h3>
+                <p className="text-gray-500">Try adjusting your filters or search terms</p>
+              </div>
+            </Card>
+          )}
+
           {/* Airdrops Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
-            {filteredAirdrops.map(airdrop => (
-              <Card key={airdrop.id} className="hover:border-violet-600/30 transition-all duration-200">
+          {!loading && filteredAirdrops.length > 0 && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
+              {filteredAirdrops.map(airdrop => (
+              <Card key={airdrop._id} className="hover:border-violet-600/30 transition-all duration-200">
                 <div className="p-4 lg:p-6">
                   {/* Header with Logo */}
                   <div className="flex items-start gap-4 mb-4">
-                    <img 
-                      src={airdrop.logoUrl} 
-                      alt={`${airdrop.name} logo`}
-                      className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
-                    />
+                    {airdrop.logoUrl ? (
+                      <img 
+                        src={airdrop.logoUrl} 
+                        alt={`${airdrop.name} logo`}
+                        className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/placeholder.svg';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-lg bg-gray-700 flex items-center justify-center flex-shrink-0">
+                        <span className="text-gray-400 text-xl font-bold">
+                          {airdrop.name.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                    )}
                     <div className="flex-1 min-w-0">
                       <h3 className="text-lg lg:text-xl font-semibold text-gray-100 mb-1 truncate">{airdrop.name}</h3>
-                      <p className="text-sm text-gray-400">{airdrop.ecosystem} • {airdrop.category}</p>
+                      <p className="text-sm text-gray-400">{airdrop.ecosystem} • {airdrop.category || 'DeFi'}</p>
+                      {airdrop.tokenSymbol && (
+                        <p className="text-xs text-violet-400 font-medium">${airdrop.tokenSymbol}</p>
+                      )}
                     </div>
                     <div className="flex flex-col items-end gap-2">
                       <span className={`px-2 py-1 text-xs font-medium rounded-lg ${getStatusClass(airdrop.status)}`}>
@@ -423,39 +377,50 @@ const Airdrops = () => {
                   </div>
 
                   {/* Progress */}
-                  <div className="mb-4">
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="text-gray-400">Progress</span>
-                      <span className="text-gray-300">{airdrop.tasksCompleted}/{airdrop.totalTasks}</span>
+                  {airdrop.tasksCompleted !== undefined && airdrop.totalTasks !== undefined && (
+                    <div className="mb-4">
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="text-gray-400">Progress</span>
+                        <span className="text-gray-300">{airdrop.tasksCompleted}/{airdrop.totalTasks}</span>
+                      </div>
+                      <div className="w-full bg-gray-800/50 rounded-full h-2">
+                        <div 
+                          className="bg-violet-500 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${Math.min((airdrop.tasksCompleted / airdrop.totalTasks) * 100, 100)}%` }}
+                        ></div>
+                      </div>
                     </div>
-                    <div className="w-full bg-gray-800/50 rounded-full h-2">
-                      <div 
-                        className="bg-violet-500 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${(airdrop.tasksCompleted / airdrop.totalTasks) * 100}%` }}
-                      ></div>
-                    </div>
-                  </div>
+                  )}
 
                   {/* Footer Info */}
                   <div className="flex justify-between items-center text-sm mb-4">
                     <div>
                       <p className="text-gray-400">Est. Value</p>
-                      <p className="text-gray-200 font-medium">{airdrop.estimatedValue}</p>
+                      <p className="text-gray-200 font-medium">{airdrop.estimatedValue || 'TBA'}</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-gray-400">Deadline</p>
+                      <p className="text-gray-200 font-medium">{airdrop.deadline || 'TBA'}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-gray-400">Deadline</p>
-                      <p className="text-gray-200 font-medium">{airdrop.deadline}</p>
+                      <span className={`px-2 py-1 text-xs font-medium rounded-lg ${getPriorityClass(airdrop.priority)}`}>
+                        {airdrop.priority}
+                      </span>
+                      {airdrop.isDailyTask && (
+                        <div className="mt-1">
+                          <span className="px-2 py-1 text-xs bg-orange-600/20 text-orange-400 rounded-lg">
+                            Daily Task
+                          </span>
+                        </div>
+                      )}
                     </div>
-                    <span className={`px-2 py-1 text-xs font-medium rounded-lg ${getPriorityClass(airdrop.priority)}`}>
-                      {airdrop.priority}
-                    </span>
                   </div>
 
                   {/* Action Buttons */}
                   <div className="flex flex-col gap-3">
                     <div className="flex gap-2">
                       <Link 
-                        to={`/airdrops/${airdrop.id}`}
+                        to={`/airdrops/${airdrop._id}`}
                         className="flex-1 btn-primary text-center text-sm"
                       >
                         View Details
@@ -520,24 +485,19 @@ const Airdrops = () => {
 
                   {/* Last Updated */}
                   <div className="mt-4 pt-4 border-t border-gray-800/30">
-                    <p className="text-xs text-gray-500">Updated {airdrop.lastUpdated}</p>
+                    <p className="text-xs text-gray-500">
+                      Updated {airdrop.lastUpdated || 'recently'}
+                      {airdrop.startDate && (
+                        <span className="ml-3">
+                          Started {new Date(airdrop.startDate).toLocaleDateString()}
+                        </span>
+                      )}
+                    </p>
                   </div>
                 </div>
               </Card>
             ))}
-          </div>
-
-          {/* Empty State */}
-          {filteredAirdrops.length === 0 && (
-            <Card className="text-center py-12">
-              <div className="text-gray-400">
-                <svg className="mx-auto h-12 w-12 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                <h3 className="text-lg font-medium text-gray-300 mb-2">No airdrops found</h3>
-                <p>Try adjusting your search or filter criteria</p>
-              </div>
-            </Card>
+            </div>
           )}
         </div>
       </main>
