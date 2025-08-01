@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Card from '@/components/Dashboard/Card';
 import userService from '@/services/userService';
@@ -8,7 +9,6 @@ interface UserProfile {
   lastName: string;
   email: string;
   username: string;
-  bio: string;
   avatar: string;
 }
 
@@ -19,13 +19,13 @@ interface PasswordData {
 }
 
 const Settings = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'profile' | 'security'>('profile');
   const [profile, setProfile] = useState<UserProfile>({
     firstName: '',
     lastName: '',
     email: '',
     username: '',
-    bio: '',
     avatar: 'https://via.placeholder.com/150'
   });
   const [passwordData, setPasswordData] = useState<PasswordData>({
@@ -46,6 +46,17 @@ const Settings = () => {
     try {
       setLoading(true);
       setError(null);
+      
+      // Check if user is authenticated
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        setError('Please log in to access settings');
+        setLoading(false);
+        // Redirect to login page after a delay
+        setTimeout(() => navigate('/signin'), 2000);
+        return;
+      }
+      
       const response = await userService.getProfile();
       
       if (response.success) {
@@ -54,13 +65,17 @@ const Settings = () => {
           lastName: response.data.lastName || '',
           email: response.data.email || '',
           username: response.data.username || '',
-          bio: response.data.bio || '',
           avatar: response.data.avatar || 'https://via.placeholder.com/150'
         });
       }
     } catch (err: any) {
       console.error('Error fetching profile:', err);
-      setError('Failed to load profile data');
+      if (err.message.includes('not logged in') || err.message.includes('401')) {
+        setError('Your session has expired. Please log in again.');
+        setTimeout(() => navigate('/signin'), 2000);
+      } else {
+        setError('Failed to load profile data');
+      }
     } finally {
       setLoading(false);
     }
@@ -221,7 +236,7 @@ const Settings = () => {
                     <div className="flex-1 space-y-4 text-center sm:text-left">
                       <div>
                         <h3 className="text-lg font-medium text-gray-100">{profile.firstName} {profile.lastName}</h3>
-                        <p className="text-sm text-gray-400">@{profile.username}</p>
+                        <p className="text-sm text-gray-400">{profile.username}</p>
                       </div>
                       <div className="flex flex-col sm:flex-row gap-3">
                         <label className="btn-secondary cursor-pointer">
@@ -293,17 +308,6 @@ const Settings = () => {
                         />
                       </div>
                     </div>
-                    
-                    <div className="mb-6">
-                      <label className="block text-sm font-medium text-gray-300 mb-2">Bio</label>
-                      <textarea
-                        value={profile.bio}
-                        onChange={(e) => setProfile(prev => ({ ...prev, bio: e.target.value }))}
-                        rows={4}
-                        className="form-input resize-none"
-                        placeholder="Tell us a bit about yourself..."
-                      />
-                    </div>
 
                     <div className="flex justify-end">
                       <button 
@@ -373,46 +377,6 @@ const Settings = () => {
                     </div>
                   </div>
                 </form>
-              </Card>
-
-              {/* Account Security */}
-              <Card>
-                <div className="p-4 lg:p-8">
-                  <h2 className="text-lg lg:text-xl font-semibold text-gray-100 mb-4 lg:mb-6">Account Security</h2>
-                  
-                  <div className="space-y-4 lg:space-y-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-900/30 rounded-lg border border-gray-800/40">
-                      <div className="mb-3 sm:mb-0">
-                        <h3 className="font-medium text-gray-200">Two-Factor Authentication</h3>
-                        <p className="text-sm text-gray-400">Add an extra layer of security to your account</p>
-                      </div>
-                      <button className="btn-secondary w-full sm:w-auto">
-                        Enable 2FA
-                      </button>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-900/30 rounded-lg border border-gray-800/40">
-                      <div className="mb-3 sm:mb-0">
-                        <h3 className="font-medium text-gray-200">Login Alerts</h3>
-                        <p className="text-sm text-gray-400">Get notified of new sign-ins to your account</p>
-                      </div>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" defaultChecked />
-                        <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
-                      </label>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-red-900/20 rounded-lg border border-red-500/30">
-                      <div className="mb-3 sm:mb-0">
-                        <h3 className="font-medium text-red-300">Delete Account</h3>
-                        <p className="text-sm text-gray-400">Permanently delete your account and all data</p>
-                      </div>
-                      <button className="btn-ghost text-red-400 hover:text-red-300 w-full sm:w-auto">
-                        Delete Account
-                      </button>
-                    </div>
-                  </div>
-                </div>
               </Card>
             </div>
           )}

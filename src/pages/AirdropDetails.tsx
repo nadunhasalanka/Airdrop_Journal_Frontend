@@ -421,15 +421,15 @@ const AirdropDetails = () => {
                 <>
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="btn-secondary"
+                    className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-gray-200 rounded-lg transition-colors text-sm font-medium"
                   >
-                    ✏️ Edit
+                    Edit
                   </button>
                   <button
                     onClick={deleteAirdrop}
-                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm font-medium"
                   >
-                    🗑️ Delete
+                    Delete
                   </button>
                 </>
               ) : (
@@ -437,15 +437,15 @@ const AirdropDetails = () => {
                   <button
                     onClick={saveChanges}
                     disabled={isSaving}
-                    className="btn-primary disabled:opacity-50"
+                    className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-lg transition-colors disabled:opacity-50 text-sm font-medium"
                   >
-                    {isSaving ? '💾 Saving...' : '💾 Save Changes'}
+                    {isSaving ? 'Saving...' : 'Save Changes'}
                   </button>
                   <button
                     onClick={cancelEdit}
-                    className="btn-secondary"
+                    className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-gray-200 rounded-lg transition-colors text-sm font-medium"
                   >
-                    ❌ Cancel
+                    Cancel
                   </button>
                 </>
               )}
@@ -821,9 +821,18 @@ const AirdropDetails = () => {
                         </a>
                         <button
                           onClick={() => copyToClipboard(displayData.officialLink, 'official')}
-                          className="copy-btn"
+                          className="p-2 text-gray-400 hover:text-violet-400 transition-colors"
+                          title="Copy link"
                         >
-                          {copiedLink === 'official' ? '✓' : '📋'}
+                          {copiedLink === 'official' ? (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          ) : (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                          )}
                         </button>
                       </div>
                     )}
@@ -852,9 +861,18 @@ const AirdropDetails = () => {
                         </a>
                         <button
                           onClick={() => copyToClipboard(displayData.referralLink!, 'referral')}
-                          className="copy-btn"
+                          className="p-2 text-gray-400 hover:text-violet-400 transition-colors"
+                          title="Copy link"
                         >
-                          {copiedLink === 'referral' ? '✓' : '📋'}
+                          {copiedLink === 'referral' ? (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          ) : (
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                          )}
                         </button>
                       </div>
                     ) : (
@@ -891,9 +909,18 @@ const AirdropDetails = () => {
                           </a>
                           <button
                             onClick={() => copyToClipboard(url, platform)}
-                            className="copy-btn"
+                            className="p-2 text-gray-400 hover:text-violet-400 transition-colors"
+                            title="Copy link"
                           >
-                            {copiedLink === platform ? '✓' : '📋'}
+                            {copiedLink === platform ? (
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              </svg>
+                            ) : (
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                              </svg>
+                            )}
                           </button>
                         </div>
                       ) : (
@@ -937,7 +964,7 @@ const AirdropDetails = () => {
                       />
                       <button
                         onClick={() => addTag(newTag)}
-                        className="btn-primary"
+                        className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-lg transition-colors text-sm font-medium"
                       >
                         Add
                       </button>
@@ -951,9 +978,9 @@ const AirdropDetails = () => {
                           <button
                             key={tag._id}
                             onClick={() => addTag(tag.name)}
-                            className="text-sm px-2 py-1 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded transition-colors"
+                            className="text-sm px-3 py-1 bg-slate-700 hover:bg-slate-600 text-gray-300 rounded-md transition-colors"
                           >
-                            + {tag.name}
+                            {tag.name}
                           </button>
                         ))}
                       </div>
@@ -1027,41 +1054,6 @@ const AirdropDetails = () => {
 
             {/* Sidebar Column */}
             <div className="space-y-6">
-              {/* Quick Stats */}
-              <Card className="p-6">
-                <h3 className="text-lg font-semibold text-white mb-4">Quick Stats</h3>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Status:</span>
-                    <span className={`${getStatusClass(displayData.status)} font-medium`}>
-                      {displayData.status}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Priority:</span>
-                    <span className={`${getPriorityClass(displayData.priority)} font-medium`}>
-                      {displayData.priority}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Type:</span>
-                    <span className="text-gray-200">{displayData.type}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Ecosystem:</span>
-                    <span className="text-gray-200">{displayData.ecosystem}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Est. Value:</span>
-                    <span className="text-gray-200">{displayData.estimatedValue}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Deadline:</span>
-                    <span className="text-gray-200">{displayData.deadline}</span>
-                  </div>
-                </div>
-              </Card>
-
               {/* Quick Actions */}
               <Card className="p-6">
                 <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
@@ -1070,26 +1062,48 @@ const AirdropDetails = () => {
                     href={displayData.officialLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-primary w-full text-center"
+                    className="flex items-center justify-center space-x-2 w-full px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-lg transition-colors text-sm font-medium"
                   >
-                    🌐 Visit Official Site
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    <span>Visit Official Site</span>
                   </a>
                   {displayData.referralLink && (
-                    <a
-                      href={displayData.referralLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-secondary w-full text-center"
-                    >
-                      🔗 Use Referral Link
-                    </a>
+                    <>
+                      <a
+                        href={displayData.referralLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center space-x-2 w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-gray-200 rounded-lg transition-colors text-sm font-medium"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                        </svg>
+                        <span>Use Referral Link</span>
+                      </a>
+                      <button
+                        onClick={() => copyToClipboard(displayData.referralLink!, 'referral-quick')}
+                        className="flex items-center justify-center space-x-2 w-full px-4 py-2 bg-slate-700 hover:bg-slate-600 text-gray-200 rounded-lg transition-colors text-sm font-medium"
+                      >
+                        {copiedLink === 'referral-quick' ? (
+                          <>
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            <span>Copied!</span>
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            <span>Copy Referral Link</span>
+                          </>
+                        )}
+                      </button>
+                    </>
                   )}
-                  <button
-                    onClick={() => copyToClipboard(displayData.officialLink, 'quick')}
-                    className="btn-secondary w-full"
-                  >
-                    {copiedLink === 'quick' ? '✓ Copied!' : '📋 Copy Official Link'}
-                  </button>
                 </div>
               </Card>
 

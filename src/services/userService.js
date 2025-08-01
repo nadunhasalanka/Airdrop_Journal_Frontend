@@ -42,10 +42,18 @@ export const userService = {
   // Update user profile
   updateProfile: async (profileData) => {
     try {
+      // Filter out empty or undefined fields to avoid validation errors
+      const filteredData = {};
+      Object.keys(profileData).forEach(key => {
+        if (profileData[key] !== '' && profileData[key] !== null && profileData[key] !== undefined && key !== 'avatar') {
+          filteredData[key] = profileData[key];
+        }
+      });
+
       const response = await fetch(`${API_BASE_URL}/auth/profile`, {
         method: 'PUT',
         headers: getAuthHeaders(),
-        body: JSON.stringify(profileData)
+        body: JSON.stringify(filteredData)
       });
 
       return await handleResponse(response);

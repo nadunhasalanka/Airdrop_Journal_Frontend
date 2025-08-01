@@ -84,10 +84,14 @@ const Dashboard = () => {
 
     const getStatusClass = (status: string) => {
         switch (status) {
-            case 'Farming': return 'status-farming';
-            case 'Claimable': return 'status-claimable animate-pulse';
-            case 'Completed': return 'status-completed';
-            default: return 'status-upcoming';
+            case 'Farming': 
+                return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+            case 'Claimable': 
+                return 'bg-amber-500/20 text-amber-300 border-amber-500/30 animate-pulse';
+            case 'Completed': 
+                return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
+            default: 
+                return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
         }
     };
 
@@ -170,7 +174,7 @@ const Dashboard = () => {
                         <div className="xl:col-span-2">
                             <Card>
                                 <div className="p-4 lg:p-6">
-                                    <h2 className="text-lg lg:text-xl font-semibold text-gray-100 mb-4 lg:mb-6">Your Tracked Airdrops</h2>
+                                    <h2 className="text-lg lg:text-xl font-semibold text-gray-100 mb-4 lg:mb-6">Active Airdrops</h2>
                                     <div className="overflow-x-auto">
                                         <table className="w-full">
                                             <thead className="border-b border-gray-800/40">
@@ -178,19 +182,18 @@ const Dashboard = () => {
                                                     <th className="text-left p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">Project</th>
                                                     <th className="text-left p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">Status</th>
                                                     <th className="text-left p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">Tasks</th>
-                                                    <th className="text-left p-2 lg:p-4 font-medium text-gray-400 text-sm lg:text-base">Deadline</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 {loading ? (
                                                     <tr>
-                                                        <td colSpan={4} className="p-4 text-center text-gray-400">
+                                                        <td colSpan={3} className="p-4 text-center text-gray-400">
                                                             Loading airdrops...
                                                         </td>
                                                     </tr>
                                                 ) : airdrops.length === 0 ? (
                                                     <tr>
-                                                        <td colSpan={4} className="p-4 text-center text-gray-400">
+                                                        <td colSpan={3} className="p-4 text-center text-gray-400">
                                                             No airdrops found. <Link to="/airdrops/add" className="text-purple-400 hover:text-purple-300">Add your first airdrop</Link>
                                                         </td>
                                                     </tr>
@@ -199,15 +202,12 @@ const Dashboard = () => {
                                                         <tr key={airdrop._id} className="table-row cursor-pointer">
                                                             <td className="p-2 lg:p-4 font-medium text-gray-200 text-sm lg:text-base">{airdrop.name}</td>
                                                             <td className="p-2 lg:p-4">
-                                                                <span className={`px-2 lg:px-3 py-1 lg:py-1.5 text-xs font-medium rounded-lg ${getStatusClass(airdrop.status)}`}>
+                                                                <span className={`status-badge ${getStatusClass(airdrop.status)}`}>
                                                                     {airdrop.status}
                                                                 </span>
                                                             </td>
                                                             <td className="p-2 lg:p-4 text-gray-300 text-sm lg:text-base">
                                                                 {airdrop.isDailyTask ? 'Daily Task' : airdrop.type || 'One-time'}
-                                                            </td>
-                                                            <td className="p-2 lg:p-4 text-gray-300 text-sm lg:text-base">
-                                                                {airdrop.deadline ? new Date(airdrop.deadline).toLocaleDateString() : 'TBA'}
                                                             </td>
                                                         </tr>
                                                     ))

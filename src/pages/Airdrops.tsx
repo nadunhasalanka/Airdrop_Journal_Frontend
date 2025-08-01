@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import Card from '@/components/Dashboard/Card';
+import AirdropCard from '@/components/AirdropCard';
 import airdropService from '@/services/airdropService';
 import userTagService from '@/services/userTagService';
 import { useAuth } from '@/contexts/AuthContext';
@@ -350,7 +351,7 @@ const Airdrops = () => {
                       )}
                     </div>
                     <div className="flex flex-col items-end gap-2">
-                      <span className={`px-2 py-1 text-xs font-medium rounded-lg ${getStatusClass(airdrop.status)}`}>
+                      <span className={`status-badge ${getStatusClass(airdrop.status)}`}>
                         {airdrop.status}
                       </span>
                       <span className={`px-2 py-1 text-xs font-medium rounded-lg ${getTypeClass(airdrop.type)}`}>
@@ -365,12 +366,12 @@ const Airdrops = () => {
                   {/* Tags */}
                   <div className="flex flex-wrap gap-1 mb-4">
                     {airdrop.tags.slice(0, 4).map(tag => (
-                      <span key={tag} className="tag text-xs">
+                      <span key={tag} className="tag-badge">
                         {tag}
                       </span>
                     ))}
                     {airdrop.tags.length > 4 && (
-                      <span className="tag text-xs">
+                      <span className="tag-badge">
                         +{airdrop.tags.length - 4}
                       </span>
                     )}
@@ -437,31 +438,10 @@ const Airdrops = () => {
                     
                     {/* Copy Links */}
                     <div className="flex gap-2">
-                      <button
-                        onClick={() => copyToClipboard(airdrop.officialLink, `${airdrop.name}-official`)}
-                        className="flex-1 btn-ghost text-xs flex items-center justify-center gap-1"
-                      >
-                        {copiedLink === `${airdrop.name}-official` ? (
-                          <>
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                            Copied!
-                          </>
-                        ) : (
-                          <>
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                            </svg>
-                            Copy Link
-                          </>
-                        )}
-                      </button>
-                      
-                      {airdrop.referralLink && (
+                      {airdrop.referralLink ? (
                         <button
                           onClick={() => copyToClipboard(airdrop.referralLink!, `${airdrop.name}-referral`)}
-                          className="flex-1 bg-emerald-800/30 hover:bg-emerald-700/30 text-emerald-300 py-2 px-3 rounded-lg text-xs font-medium transition-colors flex items-center justify-center gap-1"
+                          className="flex-1 btn-ghost text-xs flex items-center justify-center gap-1"
                         >
                           {copiedLink === `${airdrop.name}-referral` ? (
                             <>
@@ -475,7 +455,28 @@ const Airdrops = () => {
                               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                               </svg>
-                              Copy Referral
+                              Copy Referral Link
+                            </>
+                          )}
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => copyToClipboard(airdrop.officialLink, `${airdrop.name}-official`)}
+                          className="flex-1 btn-ghost text-xs flex items-center justify-center gap-1"
+                        >
+                          {copiedLink === `${airdrop.name}-official` ? (
+                            <>
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              </svg>
+                              Copied!
+                            </>
+                          ) : (
+                            <>
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                              </svg>
+                              Copy Official Link
                             </>
                           )}
                         </button>

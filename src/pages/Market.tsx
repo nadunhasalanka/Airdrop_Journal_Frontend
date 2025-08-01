@@ -346,7 +346,7 @@ const Market = () => {
                       <p className="text-sm text-gray-400 mb-3">{topic.description}</p>
                       <div className="flex flex-wrap gap-1">
                         {topic.relatedCoins.slice(0, 3).map(coin => (
-                          <span key={coin} className="tag text-xs">
+                          <span key={coin} className="tag-badge">
                             {coin}
                           </span>
                         ))}
@@ -518,7 +518,7 @@ const Market = () => {
                           <span>{article.publishedAt}</span>
                           <div className="flex gap-1">
                             {article.coins.map(coin => (
-                              <span key={coin} className="tag text-xs">
+                              <span key={coin} className="tag-badge">
                                 {coin}
                               </span>
                             ))}

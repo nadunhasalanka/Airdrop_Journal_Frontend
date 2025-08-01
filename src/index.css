@@ -309,80 +309,117 @@ select.input-primary option {
     background-color: rgba(31, 41, 55, 0.3);
 }
 
-/* Tag styles */
+/* Tag styles - Improved visual design */
 .tag {
-    background-color: rgba(55, 65, 81, 0.5);
-    color: #D1D5DB;
-    border-radius: 8px;
-    padding: 0.25rem 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(55, 65, 81, 0.6) 0%, rgba(75, 85, 99, 0.4) 100%);
+    color: #E5E7EB;
+    border-radius: 12px;
+    padding: 0.375rem 0.75rem;
     font-size: 0.75rem;
-    font-weight: 500;
+    font-weight: 600;
+    border: 1px solid rgba(107, 114, 128, 0.3);
+    backdrop-filter: blur(8px);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tag:hover {
+    background: linear-gradient(135deg, rgba(75, 85, 99, 0.7) 0%, rgba(107, 114, 128, 0.5) 100%);
+    border-color: rgba(124, 58, 237, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
 }
 
 .tag-active {
-    background-color: rgba(124, 58, 237, 0.2);
-    color: #C4B5FD;
-    border: 1px solid rgba(124, 58, 237, 0.4);
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.3) 0%, rgba(168, 85, 247, 0.2) 100%);
+    color: #E9D5FF;
+    border: 1px solid rgba(124, 58, 237, 0.5);
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.2);
+}
+
+/* Unified Badge System - Consistent design across all components */
+
+/* Base badge styles */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
 }
 
 /* Status badges */
 .status-badge {
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
     font-size: 0.75rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    text-transform: capitalize;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
 }
 
 .status-farming {
-    background-color: rgba(34, 197, 94, 0.2);
-    color: #86EFAC;
-    border: 1px solid rgba(34, 197, 94, 0.4);
+    background-color: rgba(34, 197, 94, 0.15);
+    color: #A7F3D0;
+    border-color: rgba(34, 197, 94, 0.3);
 }
 
 .status-claimable {
-    background-color: rgba(251, 191, 36, 0.2);
-    color: #FCD34D;
-    border: 1px solid rgba(251, 191, 36, 0.4);
+    background-color: rgba(251, 191, 36, 0.15);
+    color: #FDE68A;
+    border-color: rgba(251, 191, 36, 0.3);
 }
 
 .status-completed {
-    background-color: rgba(59, 130, 246, 0.2);
-    color: #93C5FD;
-    border: 1px solid rgba(59, 130, 246, 0.4);
+    background-color: rgba(59, 130, 246, 0.15);
+    color: #BFDBFE;
+    border-color: rgba(59, 130, 246, 0.3);
 }
 
 .status-upcoming {
-    background-color: rgba(156, 163, 175, 0.2);
-    color: #D1D5DB;
-    border: 1px solid rgba(156, 163, 175, 0.4);
+    background-color: rgba(156, 163, 175, 0.15);
+    color: #E5E7EB;
+    border-color: rgba(156, 163, 175, 0.3);
 }
 
 /* Priority badges */
 .priority-badge {
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.5rem;
     font-size: 0.75rem;
     font-weight: 600;
+    text-transform: capitalize;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
 }
 
 .priority-high {
-    background-color: rgba(239, 68, 68, 0.2);
+    background-color: rgba(239, 68, 68, 0.15);
     color: #FCA5A5;
-    border: 1px solid rgba(239, 68, 68, 0.4);
+    border-color: rgba(239, 68, 68, 0.3);
 }
 
 .priority-medium {
-    background-color: rgba(251, 191, 36, 0.2);
+    background-color: rgba(251, 191, 36, 0.15);
     color: #FCD34D;
-    border: 1px solid rgba(251, 191, 36, 0.4);
+    border-color: rgba(251, 191, 36, 0.3);
 }
 
 .priority-low {
-    background-color: rgba(34, 197, 94, 0.2);
+    background-color: rgba(34, 197, 94, 0.15);
     color: #86EFAC;
-    border: 1px solid rgba(34, 197, 94, 0.4);
+    border-color: rgba(34, 197, 94, 0.3);
 }
 
 /* Tag badges */
@@ -391,17 +428,87 @@ select.input-primary option {
     align-items: center;
     padding: 0.375rem 0.75rem;
     background-color: rgba(55, 65, 81, 0.5);
-    color: #D1D5DB;
-    border-radius: 9999px;
+    color: #F3F4F6;
+    border-radius: 0.5rem;
     font-size: 0.75rem;
-    font-weight: 500;
-    border: 1px solid rgba(75, 85, 99, 0.3);
+    font-weight: 600;
+    border: 1px solid rgba(107, 114, 128, 0.3);
     transition: all 0.2s ease;
 }
 
 .tag-badge:hover {
-    background-color: rgba(55, 65, 81, 0.7);
+    background-color: rgba(124, 58, 237, 0.2);
     border-color: rgba(124, 58, 237, 0.4);
+    color: #E9D5FF;
+}
+
+/* Generic tag class for consistency */
+.tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+    background-color: rgba(55, 65, 81, 0.5);
+    color: #F3F4F6;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid rgba(107, 114, 128, 0.3);
+    transition: all 0.2s ease;
+}
+
+.tag:hover {
+    background-color: rgba(124, 58, 237, 0.2);
+    border-color: rgba(124, 58, 237, 0.4);
+    color: #E9D5FF;
+}
+
+/* Ecosystem badges - Special styling for blockchain ecosystems */
+.ecosystem-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.375rem 0.875rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ecosystem-ethereum {
+    background: linear-gradient(135deg, rgba(98, 126, 234, 0.25) 0%, rgba(98, 126, 234, 0.15) 100%);
+    color: #A5B4FC;
+    border: 1px solid rgba(98, 126, 234, 0.4);
+}
+
+.ecosystem-solana {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.25) 0%, rgba(147, 51, 234, 0.15) 100%);
+    color: #C4B5FD;
+    border: 1px solid rgba(124, 58, 237, 0.4);
+}
+
+.ecosystem-polygon {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(124, 58, 237, 0.15) 100%);
+    color: #C4B5FD;
+    border: 1px solid rgba(139, 92, 246, 0.4);
+}
+
+.ecosystem-arbitrum {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.25) 0%, rgba(16, 185, 129, 0.15) 100%);
+    color: #A7F3D0;
+    border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.ecosystem-bsc {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.25) 0%, rgba(245, 158, 11, 0.15) 100%);
+    color: #FDE68A;
+    border: 1px solid rgba(251, 191, 36, 0.4);
+}
+
+.ecosystem-default {
+    background: linear-gradient(135deg, rgba(107, 114, 128, 0.25) 0%, rgba(75, 85, 99, 0.15) 100%);
+    color: #E5E7EB;
+    border: 1px solid rgba(107, 114, 128, 0.4);
 }
 
 /* Copy button */
